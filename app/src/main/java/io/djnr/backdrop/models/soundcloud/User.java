@@ -1,9 +1,12 @@
 package io.djnr.backdrop.models.soundcloud;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class User implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -174,4 +177,50 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
+
+    protected User(Parcel in) {
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        kind = in.readString();
+        permalink = in.readString();
+        username = in.readString();
+        lastModified = in.readString();
+        uri = in.readString();
+        permalinkUrl = in.readString();
+        avatarUrl = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
+        }
+        dest.writeString(kind);
+        dest.writeString(permalink);
+        dest.writeString(username);
+        dest.writeString(lastModified);
+        dest.writeString(uri);
+        dest.writeString(permalinkUrl);
+        dest.writeString(avatarUrl);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }
