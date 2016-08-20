@@ -1,9 +1,12 @@
 package io.djnr.backdrop.models.soundcloud;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Track {
+public class Track implements Parcelable {
 
     @SerializedName("kind")
     @Expose
@@ -930,4 +933,172 @@ public class Track {
         this.attachmentsUri = attachmentsUri;
     }
 
+
+    protected Track(Parcel in) {
+        kind = in.readString();
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        createdAt = in.readString();
+        userId = in.readByte() == 0x00 ? null : in.readInt();
+        duration = in.readByte() == 0x00 ? null : in.readInt();
+        byte commentableVal = in.readByte();
+        commentable = commentableVal == 0x02 ? null : commentableVal != 0x00;
+        state = in.readString();
+        originalContentSize = in.readByte() == 0x00 ? null : in.readInt();
+        lastModified = in.readString();
+        sharing = in.readString();
+        tagList = in.readString();
+        permalink = in.readString();
+        byte streamableVal = in.readByte();
+        streamable = streamableVal == 0x02 ? null : streamableVal != 0x00;
+        embeddableBy = in.readString();
+        byte downloadableVal = in.readByte();
+        downloadable = downloadableVal == 0x02 ? null : downloadableVal != 0x00;
+        purchaseUrl = (Object) in.readValue(Object.class.getClassLoader());
+        labelId = (Object) in.readValue(Object.class.getClassLoader());
+        purchaseTitle = (Object) in.readValue(Object.class.getClassLoader());
+        genre = in.readString();
+        title = in.readString();
+        description = in.readString();
+        labelName = in.readString();
+        release = in.readString();
+        trackType = in.readString();
+        keySignature = in.readString();
+        isrc = in.readString();
+        videoUrl = (Object) in.readValue(Object.class.getClassLoader());
+        bpm = (Object) in.readValue(Object.class.getClassLoader());
+        releaseYear = (Object) in.readValue(Object.class.getClassLoader());
+        releaseMonth = (Object) in.readValue(Object.class.getClassLoader());
+        releaseDay = (Object) in.readValue(Object.class.getClassLoader());
+        originalFormat = in.readString();
+        license = in.readString();
+        uri = in.readString();
+        user = (User) in.readValue(User.class.getClassLoader());
+        permalinkUrl = in.readString();
+        artworkUrl = in.readString();
+        waveformUrl = in.readString();
+        streamUrl = in.readString();
+        playbackCount = in.readByte() == 0x00 ? null : in.readInt();
+        downloadCount = in.readByte() == 0x00 ? null : in.readInt();
+        favoritingsCount = in.readByte() == 0x00 ? null : in.readInt();
+        commentCount = in.readByte() == 0x00 ? null : in.readInt();
+        attachmentsUri = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(kind);
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
+        }
+        dest.writeString(createdAt);
+        if (userId == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(userId);
+        }
+        if (duration == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(duration);
+        }
+        if (commentable == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (commentable ? 0x01 : 0x00));
+        }
+        dest.writeString(state);
+        if (originalContentSize == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(originalContentSize);
+        }
+        dest.writeString(lastModified);
+        dest.writeString(sharing);
+        dest.writeString(tagList);
+        dest.writeString(permalink);
+        if (streamable == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (streamable ? 0x01 : 0x00));
+        }
+        dest.writeString(embeddableBy);
+        if (downloadable == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (downloadable ? 0x01 : 0x00));
+        }
+        dest.writeValue(purchaseUrl);
+        dest.writeValue(labelId);
+        dest.writeValue(purchaseTitle);
+        dest.writeString(genre);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(labelName);
+        dest.writeString(release);
+        dest.writeString(trackType);
+        dest.writeString(keySignature);
+        dest.writeString(isrc);
+        dest.writeValue(videoUrl);
+        dest.writeValue(bpm);
+        dest.writeValue(releaseYear);
+        dest.writeValue(releaseMonth);
+        dest.writeValue(releaseDay);
+        dest.writeString(originalFormat);
+        dest.writeString(license);
+        dest.writeString(uri);
+        dest.writeValue(user);
+        dest.writeString(permalinkUrl);
+        dest.writeString(artworkUrl);
+        dest.writeString(waveformUrl);
+        dest.writeString(streamUrl);
+        if (playbackCount == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(playbackCount);
+        }
+        if (downloadCount == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(downloadCount);
+        }
+        if (favoritingsCount == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(favoritingsCount);
+        }
+        if (commentCount == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(commentCount);
+        }
+        dest.writeString(attachmentsUri);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Track> CREATOR = new Parcelable.Creator<Track>() {
+        @Override
+        public Track createFromParcel(Parcel in) {
+            return new Track(in);
+        }
+
+        @Override
+        public Track[] newArray(int size) {
+            return new Track[size];
+        }
+    };
 }

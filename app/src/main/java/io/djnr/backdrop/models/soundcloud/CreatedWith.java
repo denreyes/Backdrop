@@ -1,9 +1,12 @@
 package io.djnr.backdrop.models.soundcloud;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CreatedWith {
+public class CreatedWith implements Parcelable {
 
     @SerializedName("permalink_url")
     @Expose
@@ -153,4 +156,48 @@ public class CreatedWith {
         this.kind = kind;
     }
 
+
+    protected CreatedWith(Parcel in) {
+        permalinkUrl = in.readString();
+        name = in.readString();
+        externalUrl = in.readString();
+        uri = in.readString();
+        creator = in.readString();
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        kind = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(permalinkUrl);
+        dest.writeString(name);
+        dest.writeString(externalUrl);
+        dest.writeString(uri);
+        dest.writeString(creator);
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
+        }
+        dest.writeString(kind);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<CreatedWith> CREATOR = new Parcelable.Creator<CreatedWith>() {
+        @Override
+        public CreatedWith createFromParcel(Parcel in) {
+            return new CreatedWith(in);
+        }
+
+        @Override
+        public CreatedWith[] newArray(int size) {
+            return new CreatedWith[size];
+        }
+    };
 }

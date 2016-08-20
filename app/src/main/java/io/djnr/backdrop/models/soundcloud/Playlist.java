@@ -1,11 +1,14 @@
 package io.djnr.backdrop.models.soundcloud;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Playlist {
+public class Playlist implements Parcelable {
 
     @SerializedName("duration")
     @Expose
@@ -722,4 +725,132 @@ public class Playlist {
         this.labelId = labelId;
     }
 
+
+    protected Playlist(Parcel in) {
+        duration = in.readByte() == 0x00 ? null : in.readInt();
+        releaseDay = (Object) in.readValue(Object.class.getClassLoader());
+        permalinkUrl = in.readString();
+        genre = (Object) in.readValue(Object.class.getClassLoader());
+        permalink = in.readString();
+        purchaseUrl = (Object) in.readValue(Object.class.getClassLoader());
+        releaseMonth = (Object) in.readValue(Object.class.getClassLoader());
+        description = (Object) in.readValue(Object.class.getClassLoader());
+        uri = in.readString();
+        labelName = (Object) in.readValue(Object.class.getClassLoader());
+        tagList = in.readString();
+        releaseYear = (Object) in.readValue(Object.class.getClassLoader());
+        trackCount = in.readByte() == 0x00 ? null : in.readInt();
+        userId = in.readByte() == 0x00 ? null : in.readInt();
+        lastModified = in.readString();
+        license = in.readString();
+        if (in.readByte() == 0x01) {
+            tracks = new ArrayList<Track>();
+            in.readList(tracks, Track.class.getClassLoader());
+        } else {
+            tracks = null;
+        }
+        playlistType = (Object) in.readValue(Object.class.getClassLoader());
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        downloadable = (Object) in.readValue(Object.class.getClassLoader());
+        sharing = in.readString();
+        createdAt = in.readString();
+        release = (Object) in.readValue(Object.class.getClassLoader());
+        kind = in.readString();
+        title = in.readString();
+        type = (Object) in.readValue(Object.class.getClassLoader());
+        purchaseTitle = (Object) in.readValue(Object.class.getClassLoader());
+        createdWith = (CreatedWith) in.readValue(CreatedWith.class.getClassLoader());
+        artworkUrl = (Object) in.readValue(Object.class.getClassLoader());
+        ean = (Object) in.readValue(Object.class.getClassLoader());
+        byte streamableVal = in.readByte();
+        streamable = streamableVal == 0x02 ? null : streamableVal != 0x00;
+        user = (User_) in.readValue(User_.class.getClassLoader());
+        embeddableBy = in.readString();
+        labelId = (Object) in.readValue(Object.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (duration == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(duration);
+        }
+        dest.writeValue(releaseDay);
+        dest.writeString(permalinkUrl);
+        dest.writeValue(genre);
+        dest.writeString(permalink);
+        dest.writeValue(purchaseUrl);
+        dest.writeValue(releaseMonth);
+        dest.writeValue(description);
+        dest.writeString(uri);
+        dest.writeValue(labelName);
+        dest.writeString(tagList);
+        dest.writeValue(releaseYear);
+        if (trackCount == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(trackCount);
+        }
+        if (userId == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(userId);
+        }
+        dest.writeString(lastModified);
+        dest.writeString(license);
+        if (tracks == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(tracks);
+        }
+        dest.writeValue(playlistType);
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
+        }
+        dest.writeValue(downloadable);
+        dest.writeString(sharing);
+        dest.writeString(createdAt);
+        dest.writeValue(release);
+        dest.writeString(kind);
+        dest.writeString(title);
+        dest.writeValue(type);
+        dest.writeValue(purchaseTitle);
+        dest.writeValue(createdWith);
+        dest.writeValue(artworkUrl);
+        dest.writeValue(ean);
+        if (streamable == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (streamable ? 0x01 : 0x00));
+        }
+        dest.writeValue(user);
+        dest.writeString(embeddableBy);
+        dest.writeValue(labelId);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Playlist> CREATOR = new Parcelable.Creator<Playlist>() {
+        @Override
+        public Playlist createFromParcel(Parcel in) {
+            return new Playlist(in);
+        }
+
+        @Override
+        public Playlist[] newArray(int size) {
+            return new Playlist[size];
+        }
+    };
 }
