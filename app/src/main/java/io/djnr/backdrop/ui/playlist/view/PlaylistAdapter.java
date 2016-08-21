@@ -1,9 +1,7 @@
-package io.djnr.backdrop;
+package io.djnr.backdrop.ui.playlist.view;
 
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +12,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.djnr.backdrop.R;
 import io.djnr.backdrop.models.soundcloud.Track;
-import io.djnr.backdrop.utils.Constants;
+import io.djnr.backdrop.utils.Config;
 
 /**
  * Created by Dj on 8/20/2016.
@@ -43,14 +42,13 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-            Log.i(TAG, "Stream_url: "+mTracks.get(getPosition()).getStreamUrl() + "?client_id=" + Constants.SC_CLIENT_KEY);
             if (mMediaPlayer.isPlaying()) {
                 mMediaPlayer.stop();
                 mMediaPlayer.reset();
             }
 
             try {
-                mMediaPlayer.setDataSource(mTracks.get(getPosition()).getStreamUrl() + "?client_id=" + Constants.SC_CLIENT_KEY);
+                mMediaPlayer.setDataSource(mTracks.get(getPosition()).getStreamUrl() + "?client_id=" + Config.SC_CLIENT_KEY);
                 mMediaPlayer.prepareAsync();
             } catch (IOException e) {
                 e.printStackTrace();

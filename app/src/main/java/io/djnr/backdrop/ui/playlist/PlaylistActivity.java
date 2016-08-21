@@ -1,10 +1,11 @@
-package io.djnr.backdrop;
+package io.djnr.backdrop.ui.playlist;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
+
+import io.djnr.backdrop.R;
+import io.djnr.backdrop.ui.playlist.view.PlaylistFragment;
 
 /**
  * Created by Dj on 8/20/2016.

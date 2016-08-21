@@ -1,7 +1,10 @@
-package io.djnr.backdrop;
+package io.djnr.backdrop.ui.spotlight;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import io.djnr.backdrop.R;
+import io.djnr.backdrop.ui.spotlight.view.SpotlightFragment;
 
 public class MainActivity extends AppCompatActivity {
 
