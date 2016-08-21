@@ -1,9 +1,8 @@
-package io.djnr.backdrop;
+package io.djnr.backdrop.ui.spotlight.view;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.djnr.backdrop.R;
 import io.djnr.backdrop.models.soundcloud.Playlist;
+import io.djnr.backdrop.ui.playlist.PlaylistActivity;
+import io.djnr.backdrop.ui.playlist.view.PlaylistFragment;
 
 /**
  * Created by Dj on 8/19/2016.
