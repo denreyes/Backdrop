@@ -2,7 +2,9 @@ package io.djnr.backdrop.ui.playlist.presenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.MediaPlayer;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.ui.playlist.IPlaylist;
 import io.djnr.backdrop.ui.playlist.view.PlaylistFragment;
+import io.djnr.backdrop.utils.Config;
 
 /**
  * Created by Dj on 8/20/2016.
@@ -51,5 +54,20 @@ public class PlaylistPresenter implements IPlaylist.ProvidedPresenter, IPlaylist
                 .getParcelableExtra(PlaylistFragment.SC_PLAYLIST)).getTracks();
 
         getView().setPlaylistRecycler(playlist);
+    }
+
+    @Override
+    public void handleNewTrack(MediaPlayer mediaPlayer, Track track) {
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+        }
+
+        try {
+            mediaPlayer.setDataSource(track.getStreamUrl() + "?client_id=" + Config.SC_CLIENT_KEY);
+            mediaPlayer.prepareAsync();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
