@@ -3,7 +3,9 @@ package io.djnr.backdrop.ui.spotlight.presenter;
 import android.content.Context;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
+import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.ui.spotlight.ISpotlight;
 
 /**
@@ -19,6 +21,7 @@ public class SpotlightPresenter implements ISpotlight.ProvidedPresenter, ISpotli
 
     public void setModel(ISpotlight.ProvidedModel model){
         this.mModel = model;
+        fetchSpotlight();
     }
 
     private ISpotlight.RequiredView getView() throws NullPointerException{
@@ -37,5 +40,15 @@ public class SpotlightPresenter implements ISpotlight.ProvidedPresenter, ISpotli
     @Override
     public Context getActivityContext() {
         return getView().getActivityContext();
+    }
+
+    @Override
+    public void setSpotlightPlaylists(List<Playlist> playlists) {
+        getView().displaySpotlightPlaylists(playlists);
+    }
+
+    @Override
+    public void fetchSpotlight() {
+        mModel.getSpotlightPlaylists();
     }
 }
