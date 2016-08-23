@@ -70,6 +70,6 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
 
     @Override
     public void setPlaylistRecycler(List<Track> tracks) {
-        mRecyclerPlaylist.setAdapter(new PlaylistAdapter(tracks, mMediaPlayer));
+        mRecyclerPlaylist.setAdapter(new PlaylistAdapter(tracks, mMediaPlayer, mPresenter));
     }
 }

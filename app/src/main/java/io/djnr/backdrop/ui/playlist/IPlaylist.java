@@ -1,6 +1,7 @@
 package io.djnr.backdrop.ui.playlist;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public interface IPlaylist {
 
     interface ProvidedPresenter{
         void getDataFromIntent();
+        void handleNewTrack(MediaPlayer mediaPlayer, Track track);
     };
 
     interface RequiredPresenter{
