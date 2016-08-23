@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import io.djnr.backdrop.dagger.module.AppModule;
 import io.djnr.backdrop.dagger.module.PlaylistFragmentModule;
+import io.djnr.backdrop.dagger.module.SpotlightFragmentModule;
 
 /**
  * Created by Dj on 8/21/2016.
@@ -16,4 +17,5 @@ import io.djnr.backdrop.dagger.module.PlaylistFragmentModule;
 public interface AppComponent {
     Application application();
     PlaylistFragmentComponent getPlaylistComponent(PlaylistFragmentModule module);
+    SpotlightFragmentComponent getSpotlightComponent(SpotlightFragmentModule module);
 }
