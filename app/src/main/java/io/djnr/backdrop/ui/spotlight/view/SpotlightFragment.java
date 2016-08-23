@@ -30,7 +30,7 @@ import retrofit2.Response;
 /**
  * Created by Dj on 8/18/2016.
  */
-public class SpotlightFragment extends Fragment implements ISpotlight.RequiredView{
+public class SpotlightFragment extends Fragment implements ISpotlight.RequiredView {
     private static final String TAG = "SpotlightPresenter";
     @BindView(R.id.recycler_spotlight)
     RecyclerView mRecyclerSpotlight;
@@ -44,22 +44,7 @@ public class SpotlightFragment extends Fragment implements ISpotlight.RequiredVi
         View view = inflater.inflate(R.layout.fragment_spotlight, container, false);
         ButterKnife.bind(this, view);
         mRecyclerSpotlight.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         setupComponent();
-
-        SoundcloudAPI.Factory.getInstance().playlistSpotlight().enqueue(new Callback<List<Playlist>>() {
-            @Override
-            public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
-                SpotlightAdapter adapter = new SpotlightAdapter(response.body());
-                mRecyclerSpotlight.setAdapter(adapter);
-            }
-
-            @Override
-            public void onFailure(Call<List<Playlist>> call, Throwable t) {
-                Log.e(TAG, "onFailure: "+t.getCause());
-            }
-        });
-
         return view;
     }
 
@@ -78,5 +63,11 @@ public class SpotlightFragment extends Fragment implements ISpotlight.RequiredVi
     @Override
     public Context getActivityContext() {
         return getActivity();
+    }
+
+    @Override
+    public void displaySpotlightPlaylists(List<Playlist> playlists) {
+        SpotlightAdapter adapter = new SpotlightAdapter(playlists);
+        mRecyclerSpotlight.setAdapter(adapter);
     }
 }

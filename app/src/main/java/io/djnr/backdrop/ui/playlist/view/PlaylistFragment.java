@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -19,6 +21,7 @@ import butterknife.ButterKnife;
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.dagger.module.PlaylistFragmentModule;
 import io.djnr.backdrop.models.soundcloud.Playlist;
+import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.ui.App;
 import io.djnr.backdrop.ui.playlist.IPlaylist;
 
@@ -45,10 +48,6 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
         mRecyclerPlaylist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         setupComponent();
-
-        mPlaylist = getActivity().getIntent().getParcelableExtra(SC_PLAYLIST);
-        mRecyclerPlaylist.setAdapter(new PlaylistAdapter(mPlaylist.getTracks(), mMediaPlayer));
-
         return view;
     }
 
@@ -67,5 +66,10 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
     @Override
     public Context getActivityContext() {
         return getActivity();
+    }
+
+    @Override
+    public void setPlaylistRecycler(List<Track> tracks) {
+        mRecyclerPlaylist.setAdapter(new PlaylistAdapter(tracks, mMediaPlayer));
     }
 }
