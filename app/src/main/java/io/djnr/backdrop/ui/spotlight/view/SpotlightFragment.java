@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -43,7 +44,7 @@ public class SpotlightFragment extends Fragment implements ISpotlight.RequiredVi
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_spotlight, container, false);
         ButterKnife.bind(this, view);
-        mRecyclerSpotlight.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerSpotlight.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         setupComponent();
         return view;
     }
