@@ -50,24 +50,11 @@ public class PlaylistPresenter implements IPlaylist.ProvidedPresenter, IPlaylist
 
     @Override
     public void getDataFromIntent() {
-        List<Track> playlist = ((Playlist)((Activity)getActivityContext()).getIntent()
-                .getParcelableExtra(PlaylistFragment.SC_PLAYLIST)).getTracks();
+        Playlist playlist = ((Playlist)((Activity)getActivityContext()).getIntent()
+                .getParcelableExtra(PlaylistFragment.SC_PLAYLIST));
+        List<Track> tracks = playlist.getTracks();
 
-        getView().setPlaylistRecycler(playlist);
-    }
-
-    @Override
-    public void handleNewTrack(MediaPlayer mediaPlayer, Track track) {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-            mediaPlayer.reset();
-        }
-
-        try {
-            mediaPlayer.setDataSource(track.getStreamUrl() + "?client_id=" + Config.SC_CLIENT_KEY);
-            mediaPlayer.prepareAsync();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        getView().setPlaylistRecycler(tracks);
+        getView().setupViews(playlist);
     }
 }

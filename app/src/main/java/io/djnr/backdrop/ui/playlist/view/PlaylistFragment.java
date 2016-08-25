@@ -11,6 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -24,6 +27,7 @@ import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.ui.App;
 import io.djnr.backdrop.ui.playlist.IPlaylist;
+import io.djnr.backdrop.views.DividerItemDeco;
 
 /**
  * Created by Dj on 8/20/2016.
@@ -31,6 +35,8 @@ import io.djnr.backdrop.ui.playlist.IPlaylist;
 public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView{
     @BindView(R.id.recycler_spotlight)
     RecyclerView mRecyclerPlaylist;
+    @BindView(R.id.img_art)
+    ImageView mImageArt;
 
     public static final String SC_PLAYLIST = "SC_PLAYLIST";
     Playlist mPlaylist;
@@ -46,6 +52,7 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
         View view = inflater.inflate(R.layout.fragment_playlist, container, false);
         ButterKnife.bind(this, view);
         mRecyclerPlaylist.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerPlaylist.addItemDecoration(new DividerItemDeco(getActivity()));
 
         setupComponent();
         return view;
@@ -70,6 +77,17 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
 
     @Override
     public void setPlaylistRecycler(List<Track> tracks) {
-        mRecyclerPlaylist.setAdapter(new PlaylistAdapter(tracks, mMediaPlayer, mPresenter));
+        mRecyclerPlaylist.setAdapter(new PlaylistAdapter(tracks, mMediaPlayer));
+    }
+
+    @Override
+    public void setupViews(Playlist playlist) {
+        try {
+            Glide.with(getActivity())
+                    .load(playlist.getArtworkUrl().toString().replace("large.jpg", "t500x500.jpg"))
+                    .centerCrop()
+                    .crossFade()
+                    .into(mImageArt);
+        }catch (NullPointerException e){}
     }
 }

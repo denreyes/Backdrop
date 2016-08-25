@@ -3,15 +3,20 @@ package io.djnr.backdrop.ui.spotlight.view;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.ui.playlist.PlaylistActivity;
@@ -28,21 +33,23 @@ public class SpotlightAdapter extends RecyclerView.Adapter<SpotlightAdapter.View
         this.mList = list;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener{
-        @BindView(R.id.text_title)
-        TextView mTextTitle;
+    public class ViewHolder extends RecyclerView.ViewHolder{
+//        @BindView(R.id.text_title)
+//        TextView mTextTitle;
+//        @BindView(R.id.text_count)
+//        TextView mTextCount;
+        @BindView(R.id.thumbnail)
+        ImageView mThumbnail;
         Context context;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             context = itemView.getContext();
-            itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View v) {
+        @OnClick(R.id.thumbnail)
+        public void onClickCard() {
             Intent intent = new Intent(context, PlaylistActivity.class);
             intent.putExtra(PlaylistFragment.SC_PLAYLIST, mList.get(getPosition()));
             context.startActivity(intent);
@@ -51,13 +58,18 @@ public class SpotlightAdapter extends RecyclerView.Adapter<SpotlightAdapter.View
 
     @Override
     public SpotlightAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_spotlight, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item_spotlight, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(SpotlightAdapter.ViewHolder holder, int position) {
-        holder.mTextTitle.setText(mList.get(position).getTitle());
+//        holder.mTextTitle.setText(mList.get(position).getTitle());
+//        holder.mTextCount.setText(mList.get(position).getTrackCount() + " songs.");
+        try {
+            Glide.with(holder.context).load(mList.get(position).getArtworkUrl().toString().replace("large.jpg", "t500x500.jpg"))
+                    .into(holder.mThumbnail);
+        }catch (NullPointerException e){}
     }
 
     @Override

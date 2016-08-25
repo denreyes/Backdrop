@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 
 import java.util.List;
 
+import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 
 /**
@@ -16,11 +17,11 @@ public interface IPlaylist {
         Context getAppContext();
         Context getActivityContext();
         void setPlaylistRecycler(List<Track> tracks);
+        void setupViews(Playlist playlist);
     };
 
     interface ProvidedPresenter{
         void getDataFromIntent();
-        void handleNewTrack(MediaPlayer mediaPlayer, Track track);
     };
 
     interface RequiredPresenter{
