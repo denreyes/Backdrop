@@ -5,4 +5,5 @@
     <color name="colorAccent">#d05254</color>
 
     <color name="divider">#424242</color>
+    <color name="fab_dark">@color/colorPrimaryDark</color>
 </resources>

@@ -16,6 +16,7 @@
         android:id="@+id/thumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:transitionName="album_art"
         android:clickable="true"
         android:background="?android:attr/selectableItemBackground"
         android:scaleType="fitXY" />

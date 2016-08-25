@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.playlist.PlaylistActivity"/>
+        <activity android:name=".ui.ambient.AmbientActivity"/>
     </application>
 
 </manifest>
