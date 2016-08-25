@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -20,7 +20,9 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:id="@+id/backdrop"
+                android:src="@drawable/img_rain_white"
+                android:id="@+id/img_ambient"
+                android:transitionName="ambient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -38,11 +40,10 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
         android:id="@+id/recycler_spotlight"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
 
 
     <android.support.design.widget.FloatingActionButton
@@ -50,6 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:src="@drawable/ic_drop"
         app:layout_anchor="@id/appbar"
         app:layout_anchorGravity="bottom|right|end" />
 

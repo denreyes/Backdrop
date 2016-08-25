@@ -1,7 +1,9 @@
 package io.djnr.backdrop.ui.spotlight.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,7 +54,9 @@ public class SpotlightAdapter extends RecyclerView.Adapter<SpotlightAdapter.View
         public void onClickCard() {
             Intent intent = new Intent(context, PlaylistActivity.class);
             intent.putExtra(PlaylistFragment.SC_PLAYLIST, mList.get(getPosition()));
-            context.startActivity(intent);
+            ActivityOptionsCompat options = ActivityOptionsCompat.
+                    makeSceneTransitionAnimation((Activity)context, (View)mThumbnail, "album_art");
+            context.startActivity(intent, options.toBundle());
         }
     }
 

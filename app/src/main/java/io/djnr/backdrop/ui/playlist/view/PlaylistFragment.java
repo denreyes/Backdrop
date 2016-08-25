@@ -1,10 +1,12 @@
 package io.djnr.backdrop.ui.playlist.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -21,11 +24,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.dagger.module.PlaylistFragmentModule;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.ui.App;
+import io.djnr.backdrop.ui.ambient.AmbientActivity;
 import io.djnr.backdrop.ui.playlist.IPlaylist;
 import io.djnr.backdrop.views.DividerItemDeco;
 
@@ -37,6 +42,10 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
     RecyclerView mRecyclerPlaylist;
     @BindView(R.id.img_art)
     ImageView mImageArt;
+    @BindView(R.id.album_title)
+    TextView mTextAlbumTitle;
+    @BindView(R.id.album_artist)
+    TextView mTextAlbumArtist;
 
     public static final String SC_PLAYLIST = "SC_PLAYLIST";
     Playlist mPlaylist;
@@ -52,10 +61,14 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
         View view = inflater.inflate(R.layout.fragment_playlist, container, false);
         ButterKnife.bind(this, view);
         mRecyclerPlaylist.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerPlaylist.addItemDecoration(new DividerItemDeco(getActivity()));
-
         setupComponent();
         return view;
+    }
+
+    @OnClick(R.id.fab_drop)
+    public void onClickDrop(){
+        ActivityOptionsCompat options =  ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity());
+        startActivity(new Intent(getActivity(), AmbientActivity.class), options.toBundle());
     }
 
     private void setupComponent() {
@@ -88,6 +101,8 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
                     .centerCrop()
                     .crossFade()
                     .into(mImageArt);
+            mTextAlbumTitle.setText(playlist.getTitle());
+            mTextAlbumArtist.setText(playlist.getUser().getUsername());
         }catch (NullPointerException e){}
     }
 }

@@ -81,7 +81,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         holder.mTextTitle.setText(mTracks.get(position).getTitle());
         holder.mTextArtist.setText(mTracks.get(position).getUser().getUsername());
         Glide.with(holder.context).load(mTracks.get(position).getArtworkUrl())
-                .into(holder.mThumbnail);
+                .placeholder(R.drawable.no_img).into(holder.mThumbnail);
     }
 
     @Override

@@ -30,7 +30,7 @@
             android:fontFamily="sans-serif"
             android:singleLine="true"
             android:text="Title"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/text_artist"
