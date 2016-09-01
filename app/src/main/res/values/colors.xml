@@ -6,4 +6,5 @@
 
     <color name="divider">#424242</color>
     <color name="fab_dark">@color/colorPrimaryDark</color>
+    <color name="dark_background">#303030</color>
 </resources>

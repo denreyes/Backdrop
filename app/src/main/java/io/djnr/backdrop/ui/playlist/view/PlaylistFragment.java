@@ -2,8 +2,6 @@ package io.djnr.backdrop.ui.playlist.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -32,7 +30,8 @@ import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.ui.App;
 import io.djnr.backdrop.ui.ambient.AmbientActivity;
 import io.djnr.backdrop.ui.playlist.IPlaylist;
-import io.djnr.backdrop.views.DividerItemDeco;
+import io.djnr.backdrop.ui.MainActivity;
+import io.djnr.backdrop.services.TrackService;
 
 /**
  * Created by Dj on 8/20/2016.
@@ -49,9 +48,8 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
 
     public static final String SC_PLAYLIST = "SC_PLAYLIST";
     Playlist mPlaylist;
+    TrackService mTrackService;
 
-    @Inject
-    MediaPlayer mMediaPlayer;
     @Inject
     IPlaylist.ProvidedPresenter mPresenter;
 
@@ -61,7 +59,9 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
         View view = inflater.inflate(R.layout.fragment_playlist, container, false);
         ButterKnife.bind(this, view);
         mRecyclerPlaylist.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mTrackService = ((MainActivity)getActivity()).getTrackService();
         setupComponent();
+
         return view;
     }
 
@@ -89,8 +89,13 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
     }
 
     @Override
+    public Fragment getFragment(){
+        return this;
+    }
+
+    @Override
     public void setPlaylistRecycler(List<Track> tracks) {
-        mRecyclerPlaylist.setAdapter(new PlaylistAdapter(tracks, mMediaPlayer));
+        mRecyclerPlaylist.setAdapter(new PlaylistAdapter(tracks, mTrackService));
     }
 
     @Override

@@ -3,6 +3,7 @@ package io.djnr.backdrop.ui.playlist.presenter;
 import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.support.v4.app.Fragment;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -49,12 +50,16 @@ public class PlaylistPresenter implements IPlaylist.ProvidedPresenter, IPlaylist
     }
 
     @Override
-    public void getDataFromIntent() {
-        Playlist playlist = ((Playlist)((Activity)getActivityContext()).getIntent()
-                .getParcelableExtra(PlaylistFragment.SC_PLAYLIST));
-        List<Track> tracks = playlist.getTracks();
+    public Fragment getFragment() {
+        return getView().getFragment();
+    }
 
-        getView().setPlaylistRecycler(tracks);
+    @Override
+    public void getDataFromIntent() {
+        Playlist playlist = (getView().getFragment().getArguments()
+                .getParcelable(PlaylistFragment.SC_PLAYLIST));
+
+        getView().setPlaylistRecycler(playlist.getTracks());
         getView().setupViews(playlist);
     }
 }

@@ -3,12 +3,13 @@ package io.djnr.backdrop.dagger.module;
 import android.app.Application;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.djnr.backdrop.dagger.scope.FragmentScope;
+import io.djnr.backdrop.services.TrackService;
 
 /**
  * Created by Dj on 8/21/2016.
@@ -31,6 +32,7 @@ public class AppModule {
     @Provides
     @Singleton
     MediaPlayer providesMediaPlayer(){
+        Log.i("TrackService", "providesMediaPlayer: ");
         MediaPlayer mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -44,5 +46,11 @@ public class AppModule {
             }
         });
         return mediaPlayer;
+    }
+
+    @Provides
+    @Singleton
+    TrackService providesTrackService(){
+        return new TrackService();
     }
 }

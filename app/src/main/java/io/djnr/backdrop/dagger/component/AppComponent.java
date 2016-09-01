@@ -8,6 +8,7 @@ import dagger.Component;
 import io.djnr.backdrop.dagger.module.AppModule;
 import io.djnr.backdrop.dagger.module.PlaylistFragmentModule;
 import io.djnr.backdrop.dagger.module.SpotlightFragmentModule;
+import io.djnr.backdrop.dagger.module.TrackServiceModule;
 
 /**
  * Created by Dj on 8/21/2016.
@@ -18,4 +19,5 @@ public interface AppComponent {
     Application application();
     PlaylistFragmentComponent getPlaylistComponent(PlaylistFragmentModule module);
     SpotlightFragmentComponent getSpotlightComponent(SpotlightFragmentModule module);
+    TrackServiceComponent getTrackServiceComponent(TrackServiceModule module);
 }
