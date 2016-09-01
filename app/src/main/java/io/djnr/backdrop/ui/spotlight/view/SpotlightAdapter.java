@@ -1,16 +1,14 @@
 package io.djnr.backdrop.ui.spotlight.view;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.support.v4.app.ActivityOptionsCompat;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -21,8 +19,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.models.soundcloud.Playlist;
-import io.djnr.backdrop.ui.playlist.PlaylistActivity;
 import io.djnr.backdrop.ui.playlist.view.PlaylistFragment;
+import io.djnr.backdrop.ui.MainActivity;
 
 /**
  * Created by Dj on 8/19/2016.
@@ -31,32 +29,38 @@ public class SpotlightAdapter extends RecyclerView.Adapter<SpotlightAdapter.View
     private static final String TAG = "SpotlightAdapter";
     List<Playlist> mList;
 
-    public SpotlightAdapter(List<Playlist> list){
+    public SpotlightAdapter(List<Playlist> list) {
         this.mList = list;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-//        @BindView(R.id.text_title)
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        //        @BindView(R.id.text_title)
 //        TextView mTextTitle;
 //        @BindView(R.id.text_count)
 //        TextView mTextCount;
         @BindView(R.id.thumbnail)
         ImageView mThumbnail;
         Context context;
+        FragmentManager fragmentManager;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             context = itemView.getContext();
+            fragmentManager = ((MainActivity) context).getSupportFragmentManager();
         }
 
         @OnClick(R.id.thumbnail)
         public void onClickCard() {
-            Intent intent = new Intent(context, PlaylistActivity.class);
-            intent.putExtra(PlaylistFragment.SC_PLAYLIST, mList.get(getPosition()));
-            ActivityOptionsCompat options = ActivityOptionsCompat.
-                    makeSceneTransitionAnimation((Activity)context, (View)mThumbnail, "album_art");
-            context.startActivity(intent, options.toBundle());
+            Bundle args = new Bundle();
+            args.putParcelable(PlaylistFragment.SC_PLAYLIST, mList.get(getPosition()));
+
+            PlaylistFragment playlistFragment = new PlaylistFragment();
+            playlistFragment.setArguments(args);
+            fragmentManager.beginTransaction().add(R.id.container, playlistFragment)
+                    .addToBackStack(playlistFragment.getClass().getName())
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit();
         }
     }
 
@@ -73,7 +77,8 @@ public class SpotlightAdapter extends RecyclerView.Adapter<SpotlightAdapter.View
         try {
             Glide.with(holder.context).load(mList.get(position).getArtworkUrl().toString().replace("large.jpg", "t500x500.jpg"))
                     .into(holder.mThumbnail);
-        }catch (NullPointerException e){}
+        } catch (NullPointerException e) {
+        }
     }
 
     @Override

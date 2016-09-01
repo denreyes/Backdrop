@@ -2,6 +2,7 @@ package io.djnr.backdrop.ui.playlist;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.support.v4.app.Fragment;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public interface IPlaylist {
     interface RequiredView{
         Context getAppContext();
         Context getActivityContext();
+        Fragment getFragment();
         void setPlaylistRecycler(List<Track> tracks);
         void setupViews(Playlist playlist);
     };
@@ -27,6 +29,7 @@ public interface IPlaylist {
     interface RequiredPresenter{
         Context getAppContext();
         Context getActivityContext();
+        Fragment getFragment();
     };
 
     interface ProvidedModel{

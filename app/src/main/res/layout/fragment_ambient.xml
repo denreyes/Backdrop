@@ -43,7 +43,7 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:clickable="true"
-                android:src="@drawable/img_ambient_rain"
+                android:src="@drawable/img_activated_rain"
                 android:transitionName="ambient" />
 
             <Space
