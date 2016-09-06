@@ -27,8 +27,8 @@
             android:id="@+id/text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
             android:singleLine="true"
+            android:fontFamily="sans-serif-black"
             android:text="Title"
             android:textSize="14sp" />
 
@@ -36,7 +36,6 @@
             android:id="@+id/text_artist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
             android:singleLine="true"
             android:text="Artist"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
