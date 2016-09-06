@@ -15,6 +15,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.djnr.backdrop.R;
+import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
 
@@ -23,12 +24,16 @@ import io.djnr.backdrop.services.TrackService;
  */
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> {
     private static final String TAG = "PlaylistAdapter";
+    Playlist mPlaylist;
     List<Track> mTracks;
     TrackService mTrackService;
+    PlaylistFragment.PlayerUpdater mUpdater;
 
-    public PlaylistAdapter(List<Track> tracks, TrackService trackService) {
-        this.mTracks = tracks;
+    public PlaylistAdapter(Playlist playlist, TrackService trackService, PlaylistFragment.PlayerUpdater updater) {
+        this.mPlaylist = playlist;
+        this.mTracks = playlist.getTracks();
         this.mTrackService = trackService;
+        this.mUpdater = updater;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
@@ -53,6 +58,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
             mTrackService.setList(mTracks);
             mTrackService.setSong(getPosition());
             mTrackService.playSong();
+            mUpdater.updatePlayer(mPlaylist, getPosition());
         }
     }
 
