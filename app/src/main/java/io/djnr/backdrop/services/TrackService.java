@@ -22,7 +22,7 @@ import io.djnr.backdrop.utils.Config;
  */
 public class TrackService extends Service implements
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
-        MediaPlayer.OnCompletionListener{
+        MediaPlayer.OnCompletionListener {
     private static final String TAG = "TrackService";
 
     @Inject
@@ -50,14 +50,14 @@ public class TrackService extends Service implements
                 .inject(this);
     }
 
-    public void initMusicPlayer(){
+    public void initMusicPlayer() {
         player.setOnPreparedListener(this);
         player.setOnCompletionListener(this);
         player.setOnErrorListener(this);
     }
 
-    public void setList(List<Track> theSongs){
-        songs=theSongs;
+    public void setList(List<Track> theSongs) {
+        songs = theSongs;
     }
 
     public class MusicBinder extends Binder {
@@ -94,20 +94,57 @@ public class TrackService extends Service implements
         mp.start();
     }
 
-    public void setSong(int songIndex){
-        songPosn=songIndex;
+    public void setSong(int songIndex) {
+        songPosn = songIndex;
     }
 
-    public void playSong(){
+    public void playSong() {
         player.reset();
 
-        try{
+        try {
             player.setDataSource(songs.get(songPosn).getStreamUrl() + "?client_id=" + Config.SC_CLIENT_KEY);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             Log.e(TAG, "Error setting data source", e);
         }
 
         player.prepareAsync();
+    }
+
+    public void playPrev() {
+        songPosn--;
+        if (songPosn < 0)
+            songPosn = songs.size() - 1;
+        playSong();
+    }
+
+    public void playNext() {
+        songPosn++;
+        if (songPosn >= songs.size())
+            songPosn = 0;
+        playSong();
+    }
+
+    public int getPosn() {
+        return player.getCurrentPosition();
+    }
+
+    public int getDur() {
+        return player.getDuration();
+    }
+
+    public boolean isPlaying() {
+        return player.isPlaying();
+    }
+
+    public void pausePlayer() {
+        player.pause();
+    }
+
+    public void seek(int posn) {
+        player.seekTo(posn);
+    }
+
+    public void go() {
+        player.start();
     }
 }
