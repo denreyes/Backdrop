@@ -59,7 +59,7 @@ public class PlaylistPresenter implements IPlaylist.ProvidedPresenter, IPlaylist
         Playlist playlist = (getView().getFragment().getArguments()
                 .getParcelable(PlaylistFragment.SC_PLAYLIST));
 
-        getView().setPlaylistRecycler(playlist.getTracks());
+        getView().setPlaylistRecycler(playlist);
         getView().setupViews(playlist);
     }
 }

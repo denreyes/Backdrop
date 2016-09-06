@@ -18,7 +18,7 @@ public interface IPlaylist {
         Context getAppContext();
         Context getActivityContext();
         Fragment getFragment();
-        void setPlaylistRecycler(List<Track> tracks);
+        void setPlaylistRecycler(Playlist playlist);
         void setupViews(Playlist playlist);
     };
 

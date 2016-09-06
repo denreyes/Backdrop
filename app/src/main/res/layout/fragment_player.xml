@@ -27,8 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="12dp"
-        android:layout_toEndOf="@+id/frameLayout"
-        android:layout_toRightOf="@+id/frameLayout"
+        android:layout_toEndOf="@+id/frame_control"
+        android:layout_toRightOf="@+id/frame_control"
         android:fontFamily="sans-serif-black"
         android:paddingTop="14dp"
         android:text="Title"
@@ -40,13 +40,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_title"
         android:layout_marginLeft="12dp"
-        android:layout_toEndOf="@+id/frameLayout"
-        android:layout_toRightOf="@+id/frameLayout"
+        android:layout_toEndOf="@+id/frame_control"
+        android:layout_toRightOf="@+id/frame_control"
         android:text="Artist"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
 
     <FrameLayout
-        android:id="@+id/frameLayout"
+        android:id="@+id/frame_control"
         android:layout_width="60dp"
         android:layout_height="match_parent"
         android:background="#ccd05254">

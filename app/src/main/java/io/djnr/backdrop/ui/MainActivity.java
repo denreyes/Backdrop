@@ -40,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        if (playIntent == null) {
+            playIntent = new Intent(this, TrackService.class);
+            bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
+            startService(playIntent);
+        }
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, new SpotlightFragment())
                 .replace(R.id.player_container, new PlayerFragment()).commit();
@@ -51,20 +58,6 @@ public class MainActivity extends AppCompatActivity {
             );
             params.setMargins(0, 0, 0, 82);
             mContainer.setLayoutParams(params);
-
-            Toast.makeText(this, "is Shown", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, "not Shown", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (playIntent == null) {
-            playIntent = new Intent(this, TrackService.class);
-            bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
-            startService(playIntent);
         }
     }
 

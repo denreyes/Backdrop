@@ -32,6 +32,7 @@ import io.djnr.backdrop.ui.ambient.AmbientActivity;
 import io.djnr.backdrop.ui.playlist.IPlaylist;
 import io.djnr.backdrop.ui.MainActivity;
 import io.djnr.backdrop.services.TrackService;
+import io.djnr.backdrop.ui.spotlight.ISpotlight;
 
 /**
  * Created by Dj on 8/20/2016.
@@ -49,6 +50,7 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
     public static final String SC_PLAYLIST = "SC_PLAYLIST";
     Playlist mPlaylist;
     TrackService mTrackService;
+    PlayerUpdater mPlayerCallback;
 
     @Inject
     IPlaylist.ProvidedPresenter mPresenter;
@@ -60,6 +62,12 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
         ButterKnife.bind(this, view);
         mRecyclerPlaylist.setLayoutManager(new LinearLayoutManager(getActivity()));
         mTrackService = ((MainActivity)getActivity()).getTrackService();
+        try {
+            mPlayerCallback = (PlayerUpdater) (getActivity().getSupportFragmentManager().findFragmentById(R.id.player_container));
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Fragment must implement PlayerUpdater");
+        }
+
         setupComponent();
 
         return view;
@@ -94,8 +102,9 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
     }
 
     @Override
-    public void setPlaylistRecycler(List<Track> tracks) {
-        mRecyclerPlaylist.setAdapter(new PlaylistAdapter(tracks, mTrackService));
+    public void setPlaylistRecycler(Playlist playlist) {
+        PlaylistAdapter adapter = new PlaylistAdapter(playlist, mTrackService, mPlayerCallback);
+        mRecyclerPlaylist.setAdapter(adapter);
     }
 
     @Override
@@ -109,5 +118,9 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
             mTextAlbumTitle.setText(playlist.getTitle());
             mTextAlbumArtist.setText(playlist.getUser().getUsername());
         }catch (NullPointerException e){}
+    }
+
+    public interface PlayerUpdater{
+        public void updatePlayer(Playlist playlist, int currentPos);
     }
 }
