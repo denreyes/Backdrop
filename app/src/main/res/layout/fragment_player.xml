@@ -32,6 +32,7 @@
         android:fontFamily="sans-serif-black"
         android:paddingTop="14dp"
         android:text="Title"
+        android:textColor="@android:color/white"
         android:textSize="14sp" />
 
     <TextView

@@ -124,11 +124,11 @@ public class TrackService extends Service implements
         playSong();
     }
 
-    public int getPosn() {
+    public int getPosition() {
         return player.getCurrentPosition();
     }
 
-    public int getDur() {
+    public int getDuration() {
         return player.getDuration();
     }
 
