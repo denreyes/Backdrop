@@ -56,7 +56,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-            ((MainActivity)context).setupMusicController();
+            ((MainActivity)context).showMusicController();
 
             mTrackService.setList(mTracks);
             mTrackService.setSong(getPosition());

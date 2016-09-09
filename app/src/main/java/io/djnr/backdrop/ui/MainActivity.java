@@ -54,9 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public void setupMusicController() {
+    public void showMusicController() {
         if(mPlayerContainer.getVisibility() != View.VISIBLE) {
-            Log.i(TAG, "gone");
             mPlayerContainer.setVisibility(View.VISIBLE);
 
             CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(
@@ -66,8 +65,20 @@ public class MainActivity extends AppCompatActivity {
 
             params.setMargins(0, 0, 0, 82);
             mContainer.setLayoutParams(params);
-        }else {
-            Log.i(TAG, "not gone");
+        }
+    }
+
+    public void hideMusicController(){
+        if(mPlayerContainer.getVisibility() == View.VISIBLE) {
+            mPlayerContainer.setVisibility(View.INVISIBLE);
+
+            CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(
+                    CoordinatorLayout.LayoutParams.MATCH_PARENT,
+                    CoordinatorLayout.LayoutParams.MATCH_PARENT
+            );
+
+            params.setMargins(0, 0, 0, 0);
+            mContainer.setLayoutParams(params);
         }
     }
 
@@ -88,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        Log.i("TrackService", "Service Destroyed: ");
         stopService(playIntent);
         musicSrv = null;
         super.onDestroy();
