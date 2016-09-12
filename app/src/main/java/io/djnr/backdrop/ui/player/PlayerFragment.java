@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,6 +27,7 @@ import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.ui.MainActivity;
 import io.djnr.backdrop.ui.playlist.view.PlaylistFragment;
+import io.djnr.backdrop.ui.track.TrackFragment;
 
 /**
  * Created by Dj on 9/5/2016.
@@ -44,17 +46,16 @@ public class PlayerFragment extends Fragment implements PlaylistFragment.PlayerU
     @BindView(R.id.seekBar)
     SeekBar mSeekbar;
 
-    TrackService mTrackService;
-    int controlRes;
-    boolean isPlaying;
-    Handler seekHandler = new Handler();
+    private Playlist mPlaylist;
+    private int currentPos;
+    private boolean isPlaying;
+    private Handler seekHandler = new Handler();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_player, container, false);
         ButterKnife.bind(this, view);
-        controlRes = R.drawable.ic_play;
         isPlaying = false;
         mSeekbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -84,16 +85,17 @@ public class PlayerFragment extends Fragment implements PlaylistFragment.PlayerU
 
     @Override
     public void updatePlayer(Playlist playlist, int currentPos) {
+        this.mPlaylist = playlist;
+        this.currentPos = currentPos;
+
         Track currentTrack = playlist.getTracks().get(currentPos);
         Glide.with(this).load(currentTrack.getArtworkUrl()).centerCrop().crossFade().into(mImageArt);
         mTextTitle.setText(currentTrack.getTitle());
         mTextArtist.setText(currentTrack.getUser().getUsername());
 
-        Log.i(TAG, "updatePlayer: UPDATED");
         seekHandler.removeCallbacks(moveSeekThread);
         seekHandler.postDelayed(moveSeekThread, 200);
         mImageControl.setImageResource(R.drawable.ic_pause);
-        controlRes = R.drawable.ic_pause;
         isPlaying = true;
     }
 
@@ -103,15 +105,30 @@ public class PlayerFragment extends Fragment implements PlaylistFragment.PlayerU
         if (isPlaying) { //if playing pause
             service.pausePlayer();
             mImageControl.setImageResource(R.drawable.ic_play);
-            controlRes = R.drawable.ic_play;
             isPlaying = false;
             seekHandler.removeCallbacks(moveSeekThread);
         } else { // if paused play
             service.go();
             mImageControl.setImageResource(R.drawable.ic_pause);
-            controlRes = R.drawable.ic_pause;
             isPlaying = true;
             seekHandler.postDelayed(moveSeekThread, 200);
         }
+    }
+
+    @OnClick(R.id.img_btn_up)
+    public void onUpClicked(){
+        Bundle args = new Bundle();
+        args.putParcelable("PLAYLIST", mPlaylist);
+        args.putInt("CURRENT_POS", currentPos);
+
+        TrackFragment trackFragment = new TrackFragment();
+        trackFragment.setArguments(args);
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_out_up, R.anim.slide_in_up,
+                        R.anim.slide_out_up, R.anim.slide_in_up)
+                .add(R.id.container, trackFragment)
+                .addToBackStack(trackFragment.getClass().getSimpleName())
+                .commit();
     }
 }

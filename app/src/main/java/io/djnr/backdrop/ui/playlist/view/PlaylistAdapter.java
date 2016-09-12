@@ -18,6 +18,7 @@ import io.djnr.backdrop.R;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
+import io.djnr.backdrop.ui.MainActivity;
 
 /**
  * Created by Dj on 8/20/2016.
@@ -55,9 +56,12 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
+            ((MainActivity)context).showMusicController();
+
             mTrackService.setList(mTracks);
             mTrackService.setSong(getPosition());
             mTrackService.playSong();
+
             mUpdater.updatePlayer(mPlaylist, getPosition());
         }
     }

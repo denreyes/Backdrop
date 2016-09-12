@@ -24,6 +24,7 @@ import io.djnr.backdrop.ui.spotlight.view.SpotlightFragment;
 import io.djnr.backdrop.services.TrackService;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
     @Inject
     TrackService musicSrv;
@@ -49,14 +50,34 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, new SpotlightFragment())
-                .replace(R.id.player_container, new PlayerFragment()).commit();
+                .replace(R.id.player_container, new PlayerFragment())
+                .commit();
+    }
 
-        if (mPlayerContainer.getVisibility() == View.VISIBLE) {
+    public void showMusicController() {
+        if(mPlayerContainer.getVisibility() != View.VISIBLE) {
+            mPlayerContainer.setVisibility(View.VISIBLE);
+
             CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(
                     CoordinatorLayout.LayoutParams.MATCH_PARENT,
                     CoordinatorLayout.LayoutParams.MATCH_PARENT
             );
+
             params.setMargins(0, 0, 0, 82);
+            mContainer.setLayoutParams(params);
+        }
+    }
+
+    public void hideMusicController(){
+        if(mPlayerContainer.getVisibility() == View.VISIBLE) {
+            mPlayerContainer.setVisibility(View.INVISIBLE);
+
+            CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(
+                    CoordinatorLayout.LayoutParams.MATCH_PARENT,
+                    CoordinatorLayout.LayoutParams.MATCH_PARENT
+            );
+
+            params.setMargins(0, 0, 0, 0);
             mContainer.setLayoutParams(params);
         }
     }
@@ -78,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        Log.i("TrackService", "Service Destroyed: ");
         stopService(playIntent);
         musicSrv = null;
         super.onDestroy();

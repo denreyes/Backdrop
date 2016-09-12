@@ -12,6 +12,7 @@
         android:id="@+id/player_container"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:visibility="invisible"
         android:layout_gravity="bottom" />
 
 </android.support.design.widget.CoordinatorLayout>
