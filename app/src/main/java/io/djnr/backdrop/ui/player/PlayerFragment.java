@@ -125,8 +125,10 @@ public class PlayerFragment extends Fragment implements PlaylistFragment.PlayerU
         trackFragment.setArguments(args);
 
         getActivity().getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_out_up, R.anim.slide_in_up,
+                        R.anim.slide_out_up, R.anim.slide_in_up)
                 .add(R.id.container, trackFragment)
-                .addToBackStack(PlayerFragment.class.getSimpleName())
+                .addToBackStack(trackFragment.getClass().getSimpleName())
                 .commit();
     }
 }

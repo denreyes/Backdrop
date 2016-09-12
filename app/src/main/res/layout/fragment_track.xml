@@ -1,70 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_background">
 
-    <TextView
-        android:id="@+id/txt_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="Title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/txt_artist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_title"
-        android:layout_centerHorizontal="true"
-        android:text="Artist"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <FrameLayout
-        android:id="@+id/frame_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_artist"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp">
-
-        <ImageView
-            android:id="@+id/img_track_art"
-            android:layout_width="250dp"
-            android:layout_height="250dp" />
-
-        <android.support.design.widget.FloatingActionButton
+        <TextView
+            android:id="@+id/txt_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/img_track_art"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="95dp"
-            android:src="@drawable/ic_play" />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="Title"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/txt_artist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_title"
+            android:layout_centerHorizontal="true"
+            android:text="Artist"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <TextView
-        android:id="@+id/txt_track_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/frame_layout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:fontFamily="sans-serif-black"
-        android:text="Track Title"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_artist"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp">
 
-    <TextView
-        android:id="@+id/txt_track_artist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_track_title"
-        android:layout_centerHorizontal="true"
-        android:text="Track Artist"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
-</RelativeLayout>
+            <ImageView
+                android:id="@+id/img_track_art"
+                android:layout_width="250dp"
+                android:layout_height="250dp" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/img_track_art"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="95dp"
+                android:src="@drawable/ic_play" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/txt_track_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/frame_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Track Title"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txt_track_artist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_track_title"
+            android:layout_centerHorizontal="true"
+            android:text="Track Artist"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
