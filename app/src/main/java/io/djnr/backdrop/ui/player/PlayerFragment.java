@@ -31,6 +31,7 @@ import io.djnr.backdrop.ui.track.TrackFragment;
 
 /**
  * Created by Dj on 9/5/2016.
+ *
  */
 public class PlayerFragment extends Fragment implements PlaylistFragment.PlayerUpdater {
     private static final String TAG = "PlayerFragment";
