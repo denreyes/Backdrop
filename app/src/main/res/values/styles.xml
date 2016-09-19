@@ -16,4 +16,8 @@
         <item name="android:maxHeight">8dip</item>
     </style>
 
+    <style name="CollapsingToolbarLayoutExpandedTextStyle" parent="AppTheme">
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
+
 </resources>
