@@ -1,12 +1,9 @@
-package io.djnr.backdrop.ui.player;
+package io.djnr.backdrop.ui.track;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -25,16 +21,16 @@ import io.djnr.backdrop.R;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
-import io.djnr.backdrop.ui.MainActivity;
 import io.djnr.backdrop.ui.playlist.view.PlaylistFragment;
-import io.djnr.backdrop.ui.track.TrackFragment;
+import io.djnr.backdrop.ui.track.MaxTrackFragment;
+import io.djnr.backdrop.utils.MusicServiceProvider;
 
 /**
  * Created by Dj on 9/5/2016.
  *
  */
-public class PlayerFragment extends Fragment implements PlaylistFragment.PlayerUpdater {
-    private static final String TAG = "PlayerFragment";
+public class MinTrackFragment extends Fragment implements PlaylistFragment.PlayerUpdater, MaxTrackFragment.ControlUpdater {
+    private static final String TAG = "MinTrackFragment";
 
     @BindView(R.id.img_album_art)
     ImageView mImageArt;
@@ -52,6 +48,8 @@ public class PlayerFragment extends Fragment implements PlaylistFragment.PlayerU
     private boolean isPlaying;
     private Handler seekHandler = new Handler();
 
+    MusicServiceProvider mMusicServiceCallback;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,13 +62,18 @@ public class PlayerFragment extends Fragment implements PlaylistFragment.PlayerU
                 return true;
             }
         });
+        try {
+            mMusicServiceCallback = (MusicServiceProvider) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Fragment must implement PlayerUpdater");
+        }
 
         return view;
     }
 
     private Runnable moveSeekThread = new Runnable() {
         public void run() {
-            TrackService trackService = ((MainActivity)getActivity()).getTrackService();
+            TrackService trackService = mMusicServiceCallback.getTrackService();
 
             if(trackService.isPlaying()){
                 int mediaPos_new = trackService.getPosition();
@@ -90,7 +93,8 @@ public class PlayerFragment extends Fragment implements PlaylistFragment.PlayerU
         this.currentPos = currentPos;
 
         Track currentTrack = playlist.getTracks().get(currentPos);
-        Glide.with(this).load(currentTrack.getArtworkUrl()).centerCrop().crossFade().into(mImageArt);
+        Glide.with(this).load(currentTrack.getArtworkUrl().replace("large.jpg", "t500x500.jpg"))
+                .centerCrop().crossFade().into(mImageArt);
         mTextTitle.setText(currentTrack.getTitle());
         mTextArtist.setText(currentTrack.getUser().getUsername());
 
@@ -102,7 +106,7 @@ public class PlayerFragment extends Fragment implements PlaylistFragment.PlayerU
 
     @OnClick({R.id.img_btn_control, R.id.frame_control})
     public void onControlClicked() {
-        TrackService service = ((MainActivity) getActivity()).getTrackService();
+        TrackService service = mMusicServiceCallback.getTrackService();
         if (isPlaying) { //if playing pause
             service.pausePlayer();
             mImageControl.setImageResource(R.drawable.ic_play);
@@ -121,15 +125,23 @@ public class PlayerFragment extends Fragment implements PlaylistFragment.PlayerU
         Bundle args = new Bundle();
         args.putParcelable("PLAYLIST", mPlaylist);
         args.putInt("CURRENT_POS", currentPos);
+        args.putBoolean("IS_PLAYING", isPlaying);
 
-        TrackFragment trackFragment = new TrackFragment();
-        trackFragment.setArguments(args);
+        MaxTrackFragment maxTrackFragment = new MaxTrackFragment();
+        maxTrackFragment.setArguments(args);
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_out_up, R.anim.slide_in_up,
                         R.anim.slide_out_up, R.anim.slide_in_up)
-                .add(R.id.container, trackFragment)
-                .addToBackStack(trackFragment.getClass().getSimpleName())
+                .add(R.id.container, maxTrackFragment)
+                .addToBackStack(maxTrackFragment.getClass().getSimpleName())
                 .commit();
+    }
+
+    @Override
+    public void updateControl(boolean isPlaying) {
+        this.isPlaying = isPlaying;
+
+        onControlClicked();
     }
 }
