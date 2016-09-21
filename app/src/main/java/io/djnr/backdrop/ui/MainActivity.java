@@ -8,22 +8,20 @@ import android.os.IBinder;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.djnr.backdrop.R;
-import io.djnr.backdrop.ui.player.PlayerFragment;
+import io.djnr.backdrop.ui.track.MinTrackFragment;
 import io.djnr.backdrop.ui.spotlight.view.SpotlightFragment;
 import io.djnr.backdrop.services.TrackService;
+import io.djnr.backdrop.utils.MusicServiceProvider;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MusicServiceProvider{
     private static final String TAG = "MainActivity";
 
     @Inject
@@ -50,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, new SpotlightFragment())
-                .replace(R.id.player_container, new PlayerFragment())
+                .replace(R.id.player_container, new MinTrackFragment())
                 .commit();
     }
 
@@ -104,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
     public TrackService getTrackService() {
         return musicSrv;
     }

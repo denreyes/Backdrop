@@ -1,24 +1,20 @@
 package io.djnr.backdrop.ui.track;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -27,16 +23,19 @@ import com.bumptech.glide.request.target.Target;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
+import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.ui.MainActivity;
+import io.djnr.backdrop.utils.MusicServiceProvider;
 
 /**
  * Created by Dj on 9/7/2016.
  */
-public class TrackFragment extends Fragment {
+public class MaxTrackFragment extends Fragment {
     @BindView(R.id.img_track_art)
     CircleImageView mImageArt;
     @BindView(R.id.txt_title)
@@ -49,12 +48,17 @@ public class TrackFragment extends Fragment {
     TextView mTextTrackArtist;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.fab_play)
+    FloatingActionButton mFabPlay;
 
     private Playlist mPlaylist;
     private int currentPos;
+    private boolean isPlaying;
+    private ObjectAnimator mRotate;
 
-    private static final float ROTATE_FROM = 0.0f;
-    private static final float ROTATE_TO = -10.0f * 360.0f;
+    private ControlUpdater mPlayerCallback;
+    private MusicServiceProvider mMusicServiceCallback;
+    private long mAnimationTime = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,30 +76,44 @@ public class TrackFragment extends Fragment {
         ((MainActivity) getActivity()).setSupportActionBar(mToolbar);
         mPlaylist = getArguments().getParcelable("PLAYLIST");
         currentPos = getArguments().getInt("CURRENT_POS");
+        isPlaying = getArguments().getBoolean("IS_PLAYING");
         Track track = mPlaylist.getTracks().get(currentPos);
+
+        try {
+            mMusicServiceCallback = (MusicServiceProvider) getActivity();
+            mPlayerCallback = (ControlUpdater) (getActivity().getSupportFragmentManager().findFragmentById(R.id.player_container));
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Fragment must implement PlayerUpdater");
+        }
 
         mTextTitle.setText(mPlaylist.getTitle());
         mTextArtist.setText(mPlaylist.getUser().getUsername());
         mTextTrackTitle.setText(track.getTitle());
         mTextTrackArtist.setText(track.getUser().getUsername());
+        if (isPlaying) {
+            mFabPlay.setImageResource(R.drawable.ic_pause);
+        }
         Glide.with(this).load(track.getArtworkUrl().replace("large.jpg", "t500x500.jpg"))
-
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        Log.i("GLIDEE", "EXCEPTION");
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        new Handler().postDelayed(new Runnable()
-                        {
+                        new Handler().postDelayed(new Runnable() {
                             @Override
-                            public void run()
-                            {
-                                Animation rotation = AnimationUtils.loadAnimation(getActivity(), R.anim.disc_spin);
-                                mImageArt.startAnimation(rotation);
+                            public void run() {
+                                //Rotate Animation
+                                mRotate = ObjectAnimator.ofFloat(mImageArt,
+                                        "rotation", 0f, 359f);
+                                mRotate.setRepeatCount(ObjectAnimator.INFINITE);
+                                mRotate.setRepeatMode(ObjectAnimator.RESTART);
+                                mRotate.setDuration(20000);
+                                mRotate.setInterpolator(new LinearInterpolator());
+                                if (isPlaying)
+                                    mRotate.start();
                             }
                         }, 1000);
                         return false;
@@ -104,7 +122,6 @@ public class TrackFragment extends Fragment {
                 .into(mImageArt);
         return view;
     }
-
 
 
     @Override
@@ -126,5 +143,37 @@ public class TrackFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         ((MainActivity) getActivity()).showMusicController();
+    }
+
+    @OnClick(R.id.fab_play)
+    public void onControlClicked() {
+        mPlayerCallback.updateControl(isPlaying);
+        if (isPlaying) { //if playing pause
+            mFabPlay.setImageResource(R.drawable.ic_play);
+            stopAnimation();
+            isPlaying = false;
+        } else { // if paused play
+            mFabPlay.setImageResource(R.drawable.ic_pause);
+            playAnimation();
+            isPlaying = true;
+        }
+    }
+
+    private void stopAnimation() {
+        if (mRotate != null) {
+            mAnimationTime = mRotate.getCurrentPlayTime();
+            mRotate.cancel();
+        }
+    }
+
+    private void playAnimation() {
+        if (mRotate != null) {
+            mRotate.start();
+            mRotate.setCurrentPlayTime(mAnimationTime);
+        }
+    }
+
+    public interface ControlUpdater{
+        public void updateControl(boolean isPlaying);
     }
 }

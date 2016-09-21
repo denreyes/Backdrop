@@ -33,6 +33,7 @@ import io.djnr.backdrop.ui.playlist.IPlaylist;
 import io.djnr.backdrop.ui.MainActivity;
 import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.ui.spotlight.ISpotlight;
+import io.djnr.backdrop.utils.MusicServiceProvider;
 
 /**
  * Created by Dj on 8/20/2016.
@@ -48,12 +49,13 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
     TextView mTextAlbumArtist;
 
     public static final String SC_PLAYLIST = "SC_PLAYLIST";
-    Playlist mPlaylist;
-    TrackService mTrackService;
-    PlayerUpdater mPlayerCallback;
+    private Playlist mPlaylist;
+    private PlayerUpdater mPlayerCallback;
+    private MusicServiceProvider mMusicServiceCallback;
 
     @Inject
     IPlaylist.ProvidedPresenter mPresenter;
+
 
     @Nullable
     @Override
@@ -61,8 +63,8 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
         View view = inflater.inflate(R.layout.fragment_playlist, container, false);
         ButterKnife.bind(this, view);
         mRecyclerPlaylist.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mTrackService = ((MainActivity)getActivity()).getTrackService();
         try {
+            mMusicServiceCallback = (MusicServiceProvider) getActivity();
             mPlayerCallback = (PlayerUpdater) (getActivity().getSupportFragmentManager().findFragmentById(R.id.player_container));
         } catch (ClassCastException e) {
             throw new ClassCastException("Fragment must implement PlayerUpdater");
@@ -103,7 +105,7 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
 
     @Override
     public void setPlaylistRecycler(Playlist playlist) {
-        PlaylistAdapter adapter = new PlaylistAdapter(playlist, mTrackService, mPlayerCallback);
+        PlaylistAdapter adapter = new PlaylistAdapter(playlist, mMusicServiceCallback.getTrackService(), mPlayerCallback);
         mRecyclerPlaylist.setAdapter(adapter);
     }
 
