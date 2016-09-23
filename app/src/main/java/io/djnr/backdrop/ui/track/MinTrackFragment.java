@@ -22,7 +22,6 @@ import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.ui.playlist.view.PlaylistFragment;
-import io.djnr.backdrop.ui.track.MaxTrackFragment;
 import io.djnr.backdrop.utils.MusicServiceProvider;
 
 /**
@@ -53,7 +52,7 @@ public class MinTrackFragment extends Fragment implements PlaylistFragment.Playe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_player, container, false);
+        View view = inflater.inflate(R.layout.fragment_track_min, container, false);
         ButterKnife.bind(this, view);
         isPlaying = false;
         mSeekbar.setOnTouchListener(new View.OnTouchListener() {
@@ -99,6 +98,7 @@ public class MinTrackFragment extends Fragment implements PlaylistFragment.Playe
         mTextArtist.setText(currentTrack.getUser().getUsername());
 
         seekHandler.removeCallbacks(moveSeekThread);
+        mSeekbar.setProgress(0);
         seekHandler.postDelayed(moveSeekThread, 200);
         mImageControl.setImageResource(R.drawable.ic_pause);
         isPlaying = true;
@@ -139,9 +139,23 @@ public class MinTrackFragment extends Fragment implements PlaylistFragment.Playe
     }
 
     @Override
-    public void updateControl(boolean isPlaying) {
+    public void updateOnPause(boolean isPlaying) {
         this.isPlaying = isPlaying;
-
         onControlClicked();
     }
+
+    @Override
+    public void updateOnSkip(int currentPos) {
+        this.currentPos = currentPos;
+        Track track = mPlaylist.getTracks().get(currentPos);
+        Glide.with(this).load(track.getArtworkUrl().replace("large.jpg", "t500x500.jpg"))
+                .centerCrop().crossFade().into(mImageArt);
+        mTextTitle.setText(track.getTitle());
+        mTextArtist.setText(track.getUser().getUsername());
+
+        seekHandler.removeCallbacks(moveSeekThread);
+        mSeekbar.setProgress(0);
+        seekHandler.postDelayed(moveSeekThread, 200);
+    }
+
 }
