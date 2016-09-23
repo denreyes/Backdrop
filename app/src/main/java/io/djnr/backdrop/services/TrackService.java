@@ -56,8 +56,8 @@ public class TrackService extends Service implements
         player.setOnErrorListener(this);
     }
 
-    public void setList(List<Track> theSongs) {
-        songs = theSongs;
+    public void setList(List<Track> songs) {
+        this.songs = songs;
     }
 
     public class MusicBinder extends Binder {

@@ -67,6 +67,26 @@
                         android:layout_marginTop="95dp"
                         android:src="@drawable/ic_play" />
 
+                    <ImageView
+                        android:id="@+id/img_skip_previous"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_margin="25dp"
+                        android:clickable="true"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_skip_previous" />
+
+                    <ImageView
+                        android:id="@+id/img_skip_next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center"
+                        android:layout_margin="25dp"
+                        android:clickable="true"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_skip_next" />
+
                 </FrameLayout>
 
                 <TextView

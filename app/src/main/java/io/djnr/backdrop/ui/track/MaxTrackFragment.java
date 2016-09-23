@@ -14,12 +14,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +54,7 @@ public class MaxTrackFragment extends Fragment {
     @BindView(R.id.fab_play)
     FloatingActionButton mFabPlay;
 
-    private Playlist mPlaylist;
+    private List<Track> mTracks;
     private int currentPos;
     private boolean isPlaying;
     private ObjectAnimator mRotate;
@@ -69,15 +72,16 @@ public class MaxTrackFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_track, container, false);
+        View view = inflater.inflate(R.layout.fragment_track_max, container, false);
         ButterKnife.bind(this, view);
         ((MainActivity) getActivity()).hideMusicController();
 
         ((MainActivity) getActivity()).setSupportActionBar(mToolbar);
-        mPlaylist = getArguments().getParcelable("PLAYLIST");
+        Playlist playlist = ((Playlist)getArguments().getParcelable("PLAYLIST"));
         currentPos = getArguments().getInt("CURRENT_POS");
         isPlaying = getArguments().getBoolean("IS_PLAYING");
-        Track track = mPlaylist.getTracks().get(currentPos);
+        mTracks = playlist.getTracks();
+        Track track = mTracks.get(currentPos);
 
         try {
             mMusicServiceCallback = (MusicServiceProvider) getActivity();
@@ -86,14 +90,40 @@ public class MaxTrackFragment extends Fragment {
             throw new ClassCastException("Fragment must implement PlayerUpdater");
         }
 
-        mTextTitle.setText(mPlaylist.getTitle());
-        mTextArtist.setText(mPlaylist.getUser().getUsername());
+        mTextTitle.setText(playlist.getTitle());
+        mTextArtist.setText(playlist.getUser().getUsername());
         mTextTrackTitle.setText(track.getTitle());
         mTextTrackArtist.setText(track.getUser().getUsername());
         if (isPlaying) {
             mFabPlay.setImageResource(R.drawable.ic_pause);
         }
-        Glide.with(this).load(track.getArtworkUrl().replace("large.jpg", "t500x500.jpg"))
+        spinningRecordImage(track.getArtworkUrl().replace("large.jpg", "t500x500.jpg"));
+        return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.trackfragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.min_player) {
+            getActivity().onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((MainActivity) getActivity()).showMusicController();
+    }
+
+    private void spinningRecordImage(String imgUrl){
+        Glide.with(this).load(imgUrl)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -120,34 +150,11 @@ public class MaxTrackFragment extends Fragment {
                     }
                 })
                 .into(mImageArt);
-        return view;
-    }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.trackfragment, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.min_player) {
-            getActivity().onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        ((MainActivity) getActivity()).showMusicController();
     }
 
     @OnClick(R.id.fab_play)
     public void onControlClicked() {
-        mPlayerCallback.updateControl(isPlaying);
+        mPlayerCallback.updateOnPause(isPlaying);
         if (isPlaying) { //if playing pause
             mFabPlay.setImageResource(R.drawable.ic_play);
             stopAnimation();
@@ -157,6 +164,36 @@ public class MaxTrackFragment extends Fragment {
             playAnimation();
             isPlaying = true;
         }
+    }
+
+    @OnClick(R.id.img_skip_next)
+    public void onSkipNextClicked(){
+        this.currentPos++;
+        mMusicServiceCallback.getTrackService().playNext();
+        mPlayerCallback.updateOnSkip(currentPos);
+        Track track = mTracks.get(currentPos);
+
+        mRotate.end();
+        mAnimationTime = 0;
+        spinningRecordImage(track.getArtworkUrl().replace("large.jpg", "t500x500.jpg"));
+
+        mTextTrackTitle.setText(track.getTitle());
+        mTextTrackArtist.setText(track.getUser().getUsername());
+    }
+
+    @OnClick(R.id.img_skip_previous)
+    public void onSkipPreviousClicked(){
+        this.currentPos--;
+        mMusicServiceCallback.getTrackService().playPrev();
+        mPlayerCallback.updateOnSkip(currentPos);
+        Track track = mTracks.get(currentPos);
+
+        mRotate.end();
+        mAnimationTime = 0;
+        spinningRecordImage(track.getArtworkUrl().replace("large.jpg", "t500x500.jpg"));
+
+        mTextTrackTitle.setText(track.getTitle());
+        mTextTrackArtist.setText(track.getUser().getUsername());
     }
 
     private void stopAnimation() {
@@ -174,6 +211,7 @@ public class MaxTrackFragment extends Fragment {
     }
 
     public interface ControlUpdater{
-        public void updateControl(boolean isPlaying);
+        public void updateOnPause(boolean isPlaying);
+        public void updateOnSkip(int currentPos);
     }
 }
