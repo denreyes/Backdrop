@@ -1,6 +1,8 @@
 package io.djnr.backdrop.ui.track;
 
 import android.animation.ObjectAnimator;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -34,17 +36,16 @@ import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.ui.MainActivity;
 import io.djnr.backdrop.utils.MusicServiceProvider;
+import jp.wasabeef.blurry.Blurry;
 
 /**
  * Created by Dj on 9/7/2016.
  */
 public class MaxTrackFragment extends Fragment {
+    @BindView(R.id.img_bg)
+    ImageView mImageBg;
     @BindView(R.id.img_track_art)
     CircleImageView mImageArt;
-    @BindView(R.id.txt_title)
-    TextView mTextTitle;
-    @BindView(R.id.txt_artist)
-    TextView mTextArtist;
     @BindView(R.id.txt_track_title)
     TextView mTextTrackTitle;
     @BindView(R.id.txt_track_artist)
@@ -58,6 +59,7 @@ public class MaxTrackFragment extends Fragment {
     private int currentPos;
     private boolean isPlaying;
     private ObjectAnimator mRotate;
+    private Bitmap mArtBitmap;
 
     private ControlUpdater mPlayerCallback;
     private MusicServiceProvider mMusicServiceCallback;
@@ -77,9 +79,10 @@ public class MaxTrackFragment extends Fragment {
         ((MainActivity) getActivity()).hideMusicController();
 
         ((MainActivity) getActivity()).setSupportActionBar(mToolbar);
-        Playlist playlist = ((Playlist)getArguments().getParcelable("PLAYLIST"));
+        Playlist playlist = ((Playlist) getArguments().getParcelable("PLAYLIST"));
         currentPos = getArguments().getInt("CURRENT_POS");
         isPlaying = getArguments().getBoolean("IS_PLAYING");
+        mArtBitmap = getArguments().getParcelable("BITMAP_IMAGE");
         mTracks = playlist.getTracks();
         Track track = mTracks.get(currentPos);
 
@@ -90,14 +93,36 @@ public class MaxTrackFragment extends Fragment {
             throw new ClassCastException("Fragment must implement PlayerUpdater");
         }
 
-        mTextTitle.setText(playlist.getTitle());
-        mTextArtist.setText(playlist.getUser().getUsername());
         mTextTrackTitle.setText(track.getTitle());
         mTextTrackArtist.setText(track.getUser().getUsername());
         if (isPlaying) {
             mFabPlay.setImageResource(R.drawable.ic_pause);
         }
-        spinningRecordImage(track.getArtworkUrl().replace("large.jpg", "t500x500.jpg"));
+
+        String imgUrl = track.getArtworkUrl().replace("large.jpg", "t500x500.jpg");
+
+        mImageBg.setImageBitmap(mArtBitmap);
+        mImageArt.setImageBitmap(mArtBitmap);
+
+        new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Blurry.with(getActivity()).radius(6).sampling(4)
+                                .color(Color.argb(204, 0, 0, 0))
+                                .animate(500)
+                                .async().capture(mImageBg).into(mImageBg);
+
+                        mRotate = ObjectAnimator.ofFloat(mImageArt,
+                                "rotation", 0f, 359f);
+                        mRotate.setRepeatCount(ObjectAnimator.INFINITE);
+                        mRotate.setRepeatMode(ObjectAnimator.RESTART);
+                        mRotate.setDuration(20000);
+                        mRotate.setInterpolator(new LinearInterpolator());
+                        if (isPlaying)
+                            mRotate.start();
+                    }
+        });
+
         return view;
     }
 
@@ -122,7 +147,7 @@ public class MaxTrackFragment extends Fragment {
         ((MainActivity) getActivity()).showMusicController();
     }
 
-    private void spinningRecordImage(String imgUrl){
+    private void spinningRecordImage(String imgUrl, ImageView imageView) {
         Glide.with(this).load(imgUrl)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
@@ -149,7 +174,7 @@ public class MaxTrackFragment extends Fragment {
                         return false;
                     }
                 })
-                .into(mImageArt);
+                .into(imageView);
     }
 
     @OnClick(R.id.fab_play)
@@ -167,7 +192,7 @@ public class MaxTrackFragment extends Fragment {
     }
 
     @OnClick(R.id.img_skip_next)
-    public void onSkipNextClicked(){
+    public void onSkipNextClicked() {
         this.currentPos++;
         mMusicServiceCallback.getTrackService().playNext();
         mPlayerCallback.updateOnSkip(currentPos);
@@ -175,14 +200,14 @@ public class MaxTrackFragment extends Fragment {
 
         mRotate.end();
         mAnimationTime = 0;
-        spinningRecordImage(track.getArtworkUrl().replace("large.jpg", "t500x500.jpg"));
+        spinningRecordImage(track.getArtworkUrl().replace("large.jpg", "t500x500.jpg"), mImageArt);
 
         mTextTrackTitle.setText(track.getTitle());
         mTextTrackArtist.setText(track.getUser().getUsername());
     }
 
     @OnClick(R.id.img_skip_previous)
-    public void onSkipPreviousClicked(){
+    public void onSkipPreviousClicked() {
         this.currentPos--;
         mMusicServiceCallback.getTrackService().playPrev();
         mPlayerCallback.updateOnSkip(currentPos);
@@ -190,7 +215,7 @@ public class MaxTrackFragment extends Fragment {
 
         mRotate.end();
         mAnimationTime = 0;
-        spinningRecordImage(track.getArtworkUrl().replace("large.jpg", "t500x500.jpg"));
+        spinningRecordImage(track.getArtworkUrl().replace("large.jpg", "t500x500.jpg"), mImageArt);
 
         mTextTrackTitle.setText(track.getTitle());
         mTextTrackArtist.setText(track.getUser().getUsername());
@@ -210,8 +235,9 @@ public class MaxTrackFragment extends Fragment {
         }
     }
 
-    public interface ControlUpdater{
+    public interface ControlUpdater {
         public void updateOnPause(boolean isPlaying);
+
         public void updateOnSkip(int currentPos);
     }
 }

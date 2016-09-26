@@ -1,18 +1,28 @@
 package io.djnr.backdrop.ui.track;
 
+import android.animation.ObjectAnimator;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +33,7 @@ import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.ui.playlist.view.PlaylistFragment;
 import io.djnr.backdrop.utils.MusicServiceProvider;
+import jp.wasabeef.blurry.Blurry;
 
 /**
  * Created by Dj on 9/5/2016.
@@ -46,6 +57,7 @@ public class MinTrackFragment extends Fragment implements PlaylistFragment.Playe
     private int currentPos;
     private boolean isPlaying;
     private Handler seekHandler = new Handler();
+    private Bitmap mArtBitmap;
 
     MusicServiceProvider mMusicServiceCallback;
 
@@ -92,8 +104,43 @@ public class MinTrackFragment extends Fragment implements PlaylistFragment.Playe
         this.currentPos = currentPos;
 
         Track currentTrack = playlist.getTracks().get(currentPos);
-        Glide.with(this).load(currentTrack.getArtworkUrl().replace("large.jpg", "t500x500.jpg"))
-                .centerCrop().crossFade().into(mImageArt);
+
+        new AsyncTask<Track, Void, Bitmap>() {
+            @Override
+            protected Bitmap doInBackground(Track... params) {
+                Looper.prepare();
+                mArtBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.no_img);
+                try {
+                    mArtBitmap = Glide.with(getActivity()).load(params[0].getArtworkUrl().replace("large.jpg", "t500x500.jpg"))
+                            .asBitmap().into(-1,-1).get();
+                } catch (final ExecutionException e) {
+                    Log.e(TAG, e.getMessage());
+                } catch (final InterruptedException e) {
+                    Log.e(TAG, e.getMessage());
+                } catch (final NullPointerException e) {
+                    Log.e(TAG, e.getMessage());
+                }
+                return mArtBitmap;
+            }
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                if (null != bitmap) {
+                    mImageArt.setImageBitmap(bitmap);
+
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Blurry.with(getActivity()).radius(6).sampling(4)
+                                    .color(Color.argb(204, 0, 0, 0))
+                                    .animate(500)
+                                    .async().capture(mImageArt).into(mImageArt);
+                        }
+                    });
+                };
+            }
+        }.execute(currentTrack);
+
+
         mTextTitle.setText(currentTrack.getTitle());
         mTextArtist.setText(currentTrack.getUser().getUsername());
 
@@ -126,6 +173,7 @@ public class MinTrackFragment extends Fragment implements PlaylistFragment.Playe
         args.putParcelable("PLAYLIST", mPlaylist);
         args.putInt("CURRENT_POS", currentPos);
         args.putBoolean("IS_PLAYING", isPlaying);
+        args.putParcelable("BITMAP_IMAGE", mArtBitmap);
 
         MaxTrackFragment maxTrackFragment = new MaxTrackFragment();
         maxTrackFragment.setArguments(args);

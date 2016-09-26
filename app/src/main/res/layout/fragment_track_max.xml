@@ -21,42 +21,29 @@
             app:expandedTitleTextAppearance="@style/CollapsingToolbarLayoutExpandedTextStyle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+            <ImageView
+                android:id="@+id/img_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp">
-
-                <TextView
-                    android:id="@+id/txt_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:text="Title"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <TextView
-                    android:id="@+id/txt_artist"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_title"
-                    android:layout_centerHorizontal="true"
-                    android:text="Artist"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <FrameLayout
                     android:id="@+id/frame_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_artist"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="16dp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/img_track_art"
                         android:layout_width="250dp"
-                        android:layout_height="250dp" />
+                        android:layout_height="250dp"
+                        android:scaleType="centerCrop" />
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@id/fab_play"
@@ -89,13 +76,23 @@
 
                 </FrameLayout>
 
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/frame_layout"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginRight="36dp"
+                    android:layout_marginTop="16dp" />
+
                 <TextView
                     android:id="@+id/txt_track_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/frame_layout"
+                    android:layout_below="@+id/seekBar"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="sans-serif-black"
                     android:text="Track Title"
                     android:textColor="@android:color/white"
@@ -107,6 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/txt_track_title"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="24dp"
                     android:text="Track Artist"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
             </RelativeLayout>
