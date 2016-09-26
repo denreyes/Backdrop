@@ -37,6 +37,12 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         this.mUpdater = updater;
     }
 
+    public PlaylistAdapter(Playlist playlist, TrackService trackService){
+        this.mPlaylist = playlist;
+        this.mTracks = playlist.getTracks();
+        this.mTrackService = trackService;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener{
         @BindView(R.id.text_title)
@@ -56,13 +62,14 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-            ((MainActivity)context).showMusicController();
-
             mTrackService.setList(mTracks);
             mTrackService.setSong(getPosition());
             mTrackService.playSong();
 
-            mUpdater.updatePlayer(mPlaylist, getPosition());
+            if (mUpdater != null){
+                ((MainActivity) context).showMusicController();
+                mUpdater.updatePlayer(mPlaylist, getPosition());
+            }
         }
     }
 
