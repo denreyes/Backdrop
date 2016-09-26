@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +39,7 @@ import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.ui.MainActivity;
+import io.djnr.backdrop.ui.playlist.view.PlaylistAdapter;
 import io.djnr.backdrop.utils.MusicServiceProvider;
 import jp.wasabeef.blurry.Blurry;
 
@@ -62,6 +65,8 @@ public class MaxTrackFragment extends Fragment {
     TextView mTextProgress;
     @BindView(R.id.txt_seek_duration)
     TextView mTextDuration;
+    @BindView(R.id.recycler_tracks)
+    RecyclerView mRecyclerTracks;
 
     private List<Track> mTracks;
     private int currentPos;
@@ -85,6 +90,7 @@ public class MaxTrackFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_track_max, container, false);
         ButterKnife.bind(this, view);
         ((MainActivity) getActivity()).hideMusicController();
+        mRecyclerTracks.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         ((MainActivity) getActivity()).setSupportActionBar(mToolbar);
         Playlist playlist = ((Playlist) getArguments().getParcelable("PLAYLIST"));
@@ -158,6 +164,7 @@ public class MaxTrackFragment extends Fragment {
             }
         });
 
+        mRecyclerTracks.setAdapter(new PlaylistAdapter(playlist, mMusicServiceCallback.getTrackService()));
         return view;
     }
 
@@ -252,25 +259,17 @@ public class MaxTrackFragment extends Fragment {
     public void onSkipNextClicked() {
         this.currentPos++;
         mMusicServiceCallback.getTrackService().playNext();
-        mPlayerCallback.updateOnSkip(currentPos);
-        Track track = mTracks.get(currentPos);
-
-        mRotate.end();
-        mAnimationTime = 0;
-        spinningRecordImage(track.getArtworkUrl().replace("large.jpg", "t500x500.jpg"), mImageArt);
-
-        mTextTrackTitle.setText(track.getTitle());
-        mTextTrackArtist.setText(track.getUser().getUsername());
-
-        seekHandler.removeCallbacks(moveSeekThread);
-        mSeekbar.setProgress(0);
-        seekHandler.postDelayed(moveSeekThread, 500);
+        skipUpdate();
     }
 
     @OnClick(R.id.img_skip_previous)
     public void onSkipPreviousClicked() {
         this.currentPos--;
         mMusicServiceCallback.getTrackService().playPrev();
+        skipUpdate();
+    }
+
+    private void skipUpdate(){
         mPlayerCallback.updateOnSkip(currentPos);
         Track track = mTracks.get(currentPos);
 
