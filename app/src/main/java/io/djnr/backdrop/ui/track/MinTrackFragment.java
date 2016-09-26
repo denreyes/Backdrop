@@ -93,7 +93,7 @@ public class MinTrackFragment extends Fragment implements PlaylistFragment.Playe
                 mSeekbar.setProgress(mediaPos_new);
             }
 
-            seekHandler.postDelayed(this, 200); //Looping the thread after 0.1 second
+            seekHandler.postDelayed(this, 500); //Looping the thread after 0.1 second
 
         }
     };
@@ -203,7 +203,7 @@ public class MinTrackFragment extends Fragment implements PlaylistFragment.Playe
 
         seekHandler.removeCallbacks(moveSeekThread);
         mSeekbar.setProgress(0);
-        seekHandler.postDelayed(moveSeekThread, 200);
+        seekHandler.postDelayed(moveSeekThread, 500);
     }
 
 }

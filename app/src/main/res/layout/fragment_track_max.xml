@@ -68,7 +68,7 @@
                         android:id="@+id/img_skip_next"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right|center"
+                        android:layout_gravity="end|center"
                         android:layout_margin="25dp"
                         android:clickable="true"
                         android:padding="10dp"
@@ -76,21 +76,45 @@
 
                 </FrameLayout>
 
-                <SeekBar
-                    android:id="@+id/seekBar"
+                <LinearLayout
+                    android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/frame_layout"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="36dp"
-                    android:layout_marginRight="36dp"
-                    android:layout_marginTop="16dp" />
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="16dp">
+
+                    <TextView
+                        android:id="@+id/txt_seek_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="0:00"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+                    <SeekBar
+                        android:id="@+id/seekBar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/txt_seek_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="0:00"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/txt_track_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/seekBar"
+                    android:layout_below="@+id/linearLayout"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="12dp"
                     android:fontFamily="sans-serif-black"

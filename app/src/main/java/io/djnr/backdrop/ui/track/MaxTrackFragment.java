@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +26,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,16 +56,22 @@ public class MaxTrackFragment extends Fragment {
     Toolbar mToolbar;
     @BindView(R.id.fab_play)
     FloatingActionButton mFabPlay;
+    @BindView(R.id.seekBar)
+    SeekBar mSeekbar;
+    @BindView(R.id.txt_seek_progress)
+    TextView mTextProgress;
+    @BindView(R.id.txt_seek_duration)
+    TextView mTextDuration;
 
     private List<Track> mTracks;
     private int currentPos;
     private boolean isPlaying;
     private ObjectAnimator mRotate;
     private Bitmap mArtBitmap;
-
     private ControlUpdater mPlayerCallback;
     private MusicServiceProvider mMusicServiceCallback;
     private long mAnimationTime = 0;
+    private Handler seekHandler = new Handler();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -123,6 +131,33 @@ public class MaxTrackFragment extends Fragment {
                     }
         });
 
+        if(isPlaying){
+            seekHandler.postDelayed(moveSeekThread, 200);
+            mTextDuration.setText("0:00");
+        }
+
+        mSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser) {
+                    TrackService trackService = mMusicServiceCallback.getTrackService();
+                    trackService.seek(progress);
+                    seekBar.setProgress(progress);
+                    mTextProgress.setText(getMinutesFormat(progress));
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
         return view;
     }
 
@@ -145,6 +180,28 @@ public class MaxTrackFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         ((MainActivity) getActivity()).showMusicController();
+    }
+
+    private Runnable moveSeekThread = new Runnable() {
+        public void run() {
+            TrackService trackService = mMusicServiceCallback.getTrackService();
+
+            if(trackService.isPlaying()){
+                int timeProgress = trackService.getPosition();
+                int timeMax = trackService.getDuration();
+                mSeekbar.setMax(timeMax);
+                mSeekbar.setProgress(timeProgress);
+                mTextDuration.setText(getMinutesFormat(timeMax));
+                mTextProgress.setText(getMinutesFormat(timeProgress));
+            }
+
+            seekHandler.postDelayed(this, 500); //Looping the thread after 0.1 second
+        }
+    };
+
+    private String getMinutesFormat(int time){
+        return String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) time),
+                TimeUnit.MILLISECONDS.toSeconds((long) time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) time)));
     }
 
     private void spinningRecordImage(String imgUrl, ImageView imageView) {
@@ -204,6 +261,10 @@ public class MaxTrackFragment extends Fragment {
 
         mTextTrackTitle.setText(track.getTitle());
         mTextTrackArtist.setText(track.getUser().getUsername());
+
+        seekHandler.removeCallbacks(moveSeekThread);
+        mSeekbar.setProgress(0);
+        seekHandler.postDelayed(moveSeekThread, 500);
     }
 
     @OnClick(R.id.img_skip_previous)
@@ -219,6 +280,10 @@ public class MaxTrackFragment extends Fragment {
 
         mTextTrackTitle.setText(track.getTitle());
         mTextTrackArtist.setText(track.getUser().getUsername());
+
+        seekHandler.removeCallbacks(moveSeekThread);
+        mSeekbar.setProgress(0);
+        seekHandler.postDelayed(moveSeekThread, 500);
     }
 
     private void stopAnimation() {
