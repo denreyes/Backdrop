@@ -3,10 +3,10 @@ package io.djnr.backdrop.dagger.module;
 import dagger.Module;
 import dagger.Provides;
 import io.djnr.backdrop.dagger.scope.FragmentScope;
-import io.djnr.backdrop.ui.spotlight.ISpotlight;
-import io.djnr.backdrop.ui.spotlight.model.SpotlightModel;
-import io.djnr.backdrop.ui.spotlight.presenter.SpotlightPresenter;
-import io.djnr.backdrop.ui.spotlight.view.SpotlightFragment;
+import io.djnr.backdrop.ui.fragments.spotlight.ISpotlight;
+import io.djnr.backdrop.ui.fragments.spotlight.model.SpotlightModel;
+import io.djnr.backdrop.ui.fragments.spotlight.presenter.SpotlightPresenter;
+import io.djnr.backdrop.ui.fragments.spotlight.view.SpotlightFragment;
 
 /**
  * Created by Dj on 8/22/2016.

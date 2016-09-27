@@ -1,6 +1,5 @@
-package io.djnr.backdrop.ui.track;
+package io.djnr.backdrop.ui.fragments.track;
 
-import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -15,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -31,7 +29,7 @@ import io.djnr.backdrop.R;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
-import io.djnr.backdrop.ui.playlist.view.PlaylistFragment;
+import io.djnr.backdrop.ui.fragments.playlist.view.PlaylistFragment;
 import io.djnr.backdrop.utils.MusicServiceProvider;
 import jp.wasabeef.blurry.Blurry;
 

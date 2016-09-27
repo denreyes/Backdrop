@@ -1,6 +1,6 @@
-package io.djnr.backdrop.ui.playlist.model;
+package io.djnr.backdrop.ui.fragments.playlist.model;
 
-import io.djnr.backdrop.ui.playlist.IPlaylist;
+import io.djnr.backdrop.ui.fragments.playlist.IPlaylist;
 
 /**
  * Created by Dj on 8/20/2016.

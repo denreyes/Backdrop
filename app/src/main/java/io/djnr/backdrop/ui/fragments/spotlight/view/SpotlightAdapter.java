@@ -1,4 +1,4 @@
-package io.djnr.backdrop.ui.spotlight.view;
+package io.djnr.backdrop.ui.fragments.spotlight.view;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,8 +19,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.models.soundcloud.Playlist;
-import io.djnr.backdrop.ui.playlist.view.PlaylistFragment;
-import io.djnr.backdrop.ui.MainActivity;
+import io.djnr.backdrop.ui.fragments.playlist.view.PlaylistFragment;
+import io.djnr.backdrop.ui.activities.main.view.MainActivity;
 
 /**
  * Created by Dj on 8/19/2016.

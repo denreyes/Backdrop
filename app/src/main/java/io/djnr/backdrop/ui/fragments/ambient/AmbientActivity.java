@@ -1,4 +1,4 @@
-package io.djnr.backdrop.ui.ambient;
+package io.djnr.backdrop.ui.fragments.ambient;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

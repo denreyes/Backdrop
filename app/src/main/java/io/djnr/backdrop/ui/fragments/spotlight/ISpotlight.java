@@ -1,4 +1,4 @@
-package io.djnr.backdrop.ui.spotlight;
+package io.djnr.backdrop.ui.fragments.spotlight;
 
 import android.content.Context;
 
