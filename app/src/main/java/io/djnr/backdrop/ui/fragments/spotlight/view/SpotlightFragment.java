@@ -24,7 +24,7 @@ import io.djnr.backdrop.R;
 import io.djnr.backdrop.dagger.module.SpotlightFragmentModule;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.ui.App;
-import io.djnr.backdrop.ui.fragments.ambient.AmbientActivity;
+import io.djnr.backdrop.ui.activities.ambient.AmbientActivity;
 import io.djnr.backdrop.ui.fragments.spotlight.ISpotlight;
 
 /**
@@ -60,7 +60,7 @@ public class SpotlightFragment extends Fragment implements ISpotlight.RequiredVi
     private void setupComponent() {
         App.get(getActivity())
                 .getAppComponent()
-                .getSpotlightComponent(new SpotlightFragmentModule(this))
+                .getSpotlightFragmentComponent(new SpotlightFragmentModule(this))
                 .inject(this);
     }
 

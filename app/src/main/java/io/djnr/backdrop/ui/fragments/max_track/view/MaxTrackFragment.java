@@ -1,6 +1,7 @@
-package io.djnr.backdrop.ui.fragments.track;
+package io.djnr.backdrop.ui.fragments.max_track.view;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -30,16 +31,23 @@ import com.bumptech.glide.request.target.Target;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.djnr.backdrop.R;
+import io.djnr.backdrop.dagger.module.MaxTrackFragmentModule;
+import io.djnr.backdrop.dagger.module.MinTrackFragmentModule;
 import io.djnr.backdrop.interfaces.MinControllerDisplayer;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
+import io.djnr.backdrop.ui.App;
 import io.djnr.backdrop.ui.activities.main.view.MainActivity;
+import io.djnr.backdrop.ui.fragments.max_track.IMaxTrack;
+import io.djnr.backdrop.ui.fragments.min_track.IMinTrack;
 import io.djnr.backdrop.ui.fragments.playlist.view.PlaylistAdapter;
 import io.djnr.backdrop.interfaces.TrackServiceProvider;
 import jp.wasabeef.blurry.Blurry;
@@ -47,7 +55,7 @@ import jp.wasabeef.blurry.Blurry;
 /**
  * Created by Dj on 9/7/2016.
  */
-public class MaxTrackFragment extends Fragment {
+public class MaxTrackFragment extends Fragment implements IMaxTrack.RequiredView{
     @BindView(R.id.img_bg)
     ImageView mImageBg;
     @BindView(R.id.img_track_art)
@@ -68,6 +76,9 @@ public class MaxTrackFragment extends Fragment {
     TextView mTextDuration;
     @BindView(R.id.recycler_tracks)
     RecyclerView mRecyclerTracks;
+
+    @Inject
+    IMaxTrack.ProvidedPresenter presenter;
 
     private List<Track> mTracks;
     private int currentPos;
@@ -93,6 +104,8 @@ public class MaxTrackFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_track_max, container, false);
         ButterKnife.bind(this, view);
         mRecyclerTracks.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        setupComponent();
 
         ((MainActivity) getActivity()).setSupportActionBar(mToolbar);
         Playlist playlist = ((Playlist) getArguments().getParcelable("PLAYLIST"));
@@ -170,6 +183,13 @@ public class MaxTrackFragment extends Fragment {
 
         mRecyclerTracks.setAdapter(new PlaylistAdapter(playlist, mTrackServiceCallback.getTrackService()));
         return view;
+    }
+
+    private void setupComponent() {
+        App.get(getActivity())
+                .getAppComponent()
+                .getMaxTrackFragmentComponent(new MaxTrackFragmentModule(this))
+                .inject(this);
     }
 
     @Override
@@ -301,6 +321,16 @@ public class MaxTrackFragment extends Fragment {
             mRotate.start();
             mRotate.setCurrentPlayTime(mAnimationTime);
         }
+    }
+
+    @Override
+    public Context getAppContext() {
+        return getActivity().getApplicationContext();
+    }
+
+    @Override
+    public Context getActivityContext() {
+        return getActivity();
     }
 
     public interface ControlUpdater {

@@ -17,7 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.fragments.ambient.AmbientActivity"/>
+        <activity android:name=".ui.activities.ambient.AmbientActivity"/>
 
         <service android:enabled="true" android:name=".services.TrackService" />
     </application>

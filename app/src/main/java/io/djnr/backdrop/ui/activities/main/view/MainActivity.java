@@ -19,7 +19,7 @@ import io.djnr.backdrop.dagger.module.MainActivityModule;
 import io.djnr.backdrop.interfaces.MinControllerDisplayer;
 import io.djnr.backdrop.ui.App;
 import io.djnr.backdrop.ui.activities.main.IMain;
-import io.djnr.backdrop.ui.fragments.track.MinTrackFragment;
+import io.djnr.backdrop.ui.fragments.min_track.view.MinTrackFragment;
 import io.djnr.backdrop.ui.fragments.spotlight.view.SpotlightFragment;
 import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.interfaces.TrackServiceProvider;

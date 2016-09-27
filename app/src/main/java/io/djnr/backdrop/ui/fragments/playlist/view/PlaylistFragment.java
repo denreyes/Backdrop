@@ -25,7 +25,7 @@ import io.djnr.backdrop.R;
 import io.djnr.backdrop.dagger.module.PlaylistFragmentModule;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.ui.App;
-import io.djnr.backdrop.ui.fragments.ambient.AmbientActivity;
+import io.djnr.backdrop.ui.activities.ambient.AmbientActivity;
 import io.djnr.backdrop.ui.fragments.playlist.IPlaylist;
 import io.djnr.backdrop.interfaces.TrackServiceProvider;
 
@@ -78,7 +78,7 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
     private void setupComponent() {
         App.get(getActivity())
                 .getAppComponent()
-                .getPlaylistComponent(new PlaylistFragmentModule(this))
+                .getPlaylistFragmentComponent(new PlaylistFragmentModule(this))
                 .inject(this);
     }
 

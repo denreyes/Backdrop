@@ -29,23 +29,4 @@ public class AppModule {
         return app;
     }
 
-    @Provides
-    @Singleton
-    MediaPlayer providesMediaPlayer(){
-        Log.i("TrackService", "providesMediaPlayer: ");
-        MediaPlayer mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                if (mp.isPlaying()) {
-                    mp.pause();
-                } else {
-                    mp.start();
-                }
-            }
-        });
-        return mediaPlayer;
-    }
-
 }
