@@ -48,9 +48,4 @@ public class AppModule {
         return mediaPlayer;
     }
 
-    @Provides
-    @Singleton
-    TrackService providesTrackService(){
-        return new TrackService();
-    }
 }

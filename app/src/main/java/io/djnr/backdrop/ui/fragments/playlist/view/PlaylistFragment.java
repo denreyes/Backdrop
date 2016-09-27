@@ -27,7 +27,7 @@ import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.ui.App;
 import io.djnr.backdrop.ui.fragments.ambient.AmbientActivity;
 import io.djnr.backdrop.ui.fragments.playlist.IPlaylist;
-import io.djnr.backdrop.utils.MusicServiceProvider;
+import io.djnr.backdrop.interfaces.TrackServiceProvider;
 
 /**
  * Created by Dj on 8/20/2016.
@@ -45,7 +45,7 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
     public static final String SC_PLAYLIST = "SC_PLAYLIST";
     private Playlist mPlaylist;
     private PlayerUpdater mPlayerCallback;
-    private MusicServiceProvider mMusicServiceCallback;
+    private TrackServiceProvider mMusicServiceCallback;
 
     @Inject
     IPlaylist.ProvidedPresenter mPresenter;
@@ -58,7 +58,7 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
         ButterKnife.bind(this, view);
         mRecyclerPlaylist.setLayoutManager(new LinearLayoutManager(getActivity()));
         try {
-            mMusicServiceCallback = (MusicServiceProvider) getActivity();
+            mMusicServiceCallback = (TrackServiceProvider) getActivity();
             mPlayerCallback = (PlayerUpdater) (getActivity().getSupportFragmentManager().findFragmentById(R.id.player_container));
         } catch (ClassCastException e) {
             throw new ClassCastException("Fragment must implement PlayerUpdater");

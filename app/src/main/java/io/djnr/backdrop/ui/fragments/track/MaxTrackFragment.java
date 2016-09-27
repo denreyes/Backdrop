@@ -35,12 +35,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.djnr.backdrop.R;
+import io.djnr.backdrop.interfaces.MinControllerDisplayer;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.ui.activities.main.view.MainActivity;
 import io.djnr.backdrop.ui.fragments.playlist.view.PlaylistAdapter;
-import io.djnr.backdrop.utils.MusicServiceProvider;
+import io.djnr.backdrop.interfaces.TrackServiceProvider;
 import jp.wasabeef.blurry.Blurry;
 
 /**
@@ -73,10 +74,12 @@ public class MaxTrackFragment extends Fragment {
     private boolean isPlaying;
     private ObjectAnimator mRotate;
     private Bitmap mArtBitmap;
-    private ControlUpdater mPlayerCallback;
-    private MusicServiceProvider mMusicServiceCallback;
     private long mAnimationTime = 0;
     private Handler seekHandler = new Handler();
+
+    private ControlUpdater mPlayerCallback;
+    private TrackServiceProvider mTrackServiceCallback;
+    private MinControllerDisplayer mDisplayerCallback;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,7 +92,6 @@ public class MaxTrackFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_track_max, container, false);
         ButterKnife.bind(this, view);
-        ((MainActivity) getActivity()).hideMusicController();
         mRecyclerTracks.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         ((MainActivity) getActivity()).setSupportActionBar(mToolbar);
@@ -101,12 +103,14 @@ public class MaxTrackFragment extends Fragment {
         Track track = mTracks.get(currentPos);
 
         try {
-            mMusicServiceCallback = (MusicServiceProvider) getActivity();
+            mTrackServiceCallback = (TrackServiceProvider) getActivity();
+            mDisplayerCallback = (MinControllerDisplayer) getActivity();
             mPlayerCallback = (ControlUpdater) (getActivity().getSupportFragmentManager().findFragmentById(R.id.player_container));
         } catch (ClassCastException e) {
             throw new ClassCastException("Fragment must implement PlayerUpdater");
         }
 
+        mDisplayerCallback.hideMusicController();
         mTextTrackTitle.setText(track.getTitle());
         mTextTrackArtist.setText(track.getUser().getUsername());
         if (isPlaying) {
@@ -146,7 +150,7 @@ public class MaxTrackFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if(fromUser) {
-                    TrackService trackService = mMusicServiceCallback.getTrackService();
+                    TrackService trackService = mTrackServiceCallback.getTrackService();
                     trackService.seek(progress);
                     seekBar.setProgress(progress);
                     mTextProgress.setText(getMinutesFormat(progress));
@@ -164,7 +168,7 @@ public class MaxTrackFragment extends Fragment {
             }
         });
 
-        mRecyclerTracks.setAdapter(new PlaylistAdapter(playlist, mMusicServiceCallback.getTrackService()));
+        mRecyclerTracks.setAdapter(new PlaylistAdapter(playlist, mTrackServiceCallback.getTrackService()));
         return view;
     }
 
@@ -186,12 +190,12 @@ public class MaxTrackFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ((MainActivity) getActivity()).showMusicController();
+        mDisplayerCallback.showMusicController();
     }
 
     private Runnable moveSeekThread = new Runnable() {
         public void run() {
-            TrackService trackService = mMusicServiceCallback.getTrackService();
+            TrackService trackService = mTrackServiceCallback.getTrackService();
 
             if(trackService.isPlaying()){
                 int timeProgress = trackService.getPosition();
@@ -258,14 +262,14 @@ public class MaxTrackFragment extends Fragment {
     @OnClick(R.id.img_skip_next)
     public void onSkipNextClicked() {
         this.currentPos++;
-        mMusicServiceCallback.getTrackService().playNext();
+        mTrackServiceCallback.getTrackService().playNext();
         skipUpdate();
     }
 
     @OnClick(R.id.img_skip_previous)
     public void onSkipPreviousClicked() {
         this.currentPos--;
-        mMusicServiceCallback.getTrackService().playPrev();
+        mTrackServiceCallback.getTrackService().playPrev();
         skipUpdate();
     }
 

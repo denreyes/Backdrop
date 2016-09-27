@@ -30,7 +30,7 @@ import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.ui.fragments.playlist.view.PlaylistFragment;
-import io.djnr.backdrop.utils.MusicServiceProvider;
+import io.djnr.backdrop.interfaces.TrackServiceProvider;
 import jp.wasabeef.blurry.Blurry;
 
 /**
@@ -57,7 +57,7 @@ public class MinTrackFragment extends Fragment implements PlaylistFragment.Playe
     private Handler seekHandler = new Handler();
     private Bitmap mArtBitmap;
 
-    MusicServiceProvider mMusicServiceCallback;
+    TrackServiceProvider mMusicServiceCallback;
 
     @Nullable
     @Override
@@ -72,7 +72,7 @@ public class MinTrackFragment extends Fragment implements PlaylistFragment.Playe
             }
         });
         try {
-            mMusicServiceCallback = (MusicServiceProvider) getActivity();
+            mMusicServiceCallback = (TrackServiceProvider) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException("Fragment must implement PlayerUpdater");
         }
