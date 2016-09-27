@@ -16,7 +16,7 @@ import retrofit2.Response;
  */
 public class SpotlightModel implements ISpotlight.ProvidedModel{
     private static final String TAG = "SpotlightModel";
-    ISpotlight.RequiredPresenter mPresenter;
+    private ISpotlight.RequiredPresenter mPresenter;
 
     public SpotlightModel(ISpotlight.RequiredPresenter presenter){
         this.mPresenter = presenter;

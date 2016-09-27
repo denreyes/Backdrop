@@ -1,5 +1,6 @@
-package io.djnr.backdrop.ui.fragments.track;
+package io.djnr.backdrop.ui.fragments.min_track.view;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -22,23 +23,31 @@ import com.bumptech.glide.Glide;
 
 import java.util.concurrent.ExecutionException;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.djnr.backdrop.R;
+import io.djnr.backdrop.dagger.module.MainActivityModule;
+import io.djnr.backdrop.dagger.module.MinTrackFragmentModule;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
+import io.djnr.backdrop.ui.App;
+import io.djnr.backdrop.ui.fragments.max_track.view.MaxTrackFragment;
+import io.djnr.backdrop.ui.fragments.min_track.IMinTrack;
 import io.djnr.backdrop.ui.fragments.playlist.view.PlaylistFragment;
-import io.djnr.backdrop.utils.MusicServiceProvider;
+import io.djnr.backdrop.interfaces.TrackServiceProvider;
 import jp.wasabeef.blurry.Blurry;
 
 /**
  * Created by Dj on 9/5/2016.
  *
  */
-public class MinTrackFragment extends Fragment implements PlaylistFragment.PlayerUpdater, MaxTrackFragment.ControlUpdater {
-    private static final String TAG = "MinTrackFragment";
+public class MinTrackFragment extends Fragment implements IMinTrack.RequiredView,
+        PlaylistFragment.PlayerUpdater, MaxTrackFragment.ControlUpdater {
+    private static final String TAG = "MinTrackFragmentComponent";
 
     @BindView(R.id.img_album_art)
     ImageView mImageArt;
@@ -51,19 +60,25 @@ public class MinTrackFragment extends Fragment implements PlaylistFragment.Playe
     @BindView(R.id.seekBar)
     SeekBar mSeekbar;
 
+    @Inject
+    IMinTrack.ProvidedPresenter presenter;
+
     private Playlist mPlaylist;
     private int currentPos;
     private boolean isPlaying;
     private Handler seekHandler = new Handler();
     private Bitmap mArtBitmap;
 
-    MusicServiceProvider mMusicServiceCallback;
+    TrackServiceProvider mMusicServiceCallback;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_track_min, container, false);
         ButterKnife.bind(this, view);
+
+        setupComponent();
+
         isPlaying = false;
         mSeekbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -72,12 +87,19 @@ public class MinTrackFragment extends Fragment implements PlaylistFragment.Playe
             }
         });
         try {
-            mMusicServiceCallback = (MusicServiceProvider) getActivity();
+            mMusicServiceCallback = (TrackServiceProvider) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException("Fragment must implement PlayerUpdater");
         }
 
         return view;
+    }
+
+    private void setupComponent() {
+        App.get(getActivity())
+                .getAppComponent()
+                .getMinTrackFragmentComponent(new MinTrackFragmentModule(this))
+                .inject(this);
     }
 
     private Runnable moveSeekThread = new Runnable() {
@@ -204,4 +226,13 @@ public class MinTrackFragment extends Fragment implements PlaylistFragment.Playe
         seekHandler.postDelayed(moveSeekThread, 500);
     }
 
+    @Override
+    public Context getAppContext() {
+        return getActivity().getApplicationContext();
+    }
+
+    @Override
+    public Context getActivityContext() {
+        return getActivity();
+    }
 }

@@ -1,9 +1,10 @@
-package io.djnr.backdrop.ui.fragments.ambient;
+package io.djnr.backdrop.ui.activities.ambient;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import io.djnr.backdrop.R;
+import io.djnr.backdrop.ui.fragments.ambient.AmbientFragment;
 
 /**
  * Created by Dj on 8/25/2016.
