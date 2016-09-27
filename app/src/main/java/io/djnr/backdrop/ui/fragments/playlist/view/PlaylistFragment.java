@@ -1,4 +1,4 @@
-package io.djnr.backdrop.ui.playlist.view;
+package io.djnr.backdrop.ui.fragments.playlist.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,8 +16,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -26,13 +24,9 @@ import butterknife.OnClick;
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.dagger.module.PlaylistFragmentModule;
 import io.djnr.backdrop.models.soundcloud.Playlist;
-import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.ui.App;
-import io.djnr.backdrop.ui.ambient.AmbientActivity;
-import io.djnr.backdrop.ui.playlist.IPlaylist;
-import io.djnr.backdrop.ui.MainActivity;
-import io.djnr.backdrop.services.TrackService;
-import io.djnr.backdrop.ui.spotlight.ISpotlight;
+import io.djnr.backdrop.ui.fragments.ambient.AmbientActivity;
+import io.djnr.backdrop.ui.fragments.playlist.IPlaylist;
 import io.djnr.backdrop.utils.MusicServiceProvider;
 
 /**

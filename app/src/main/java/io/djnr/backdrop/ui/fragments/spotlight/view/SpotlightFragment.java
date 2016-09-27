@@ -1,6 +1,5 @@
-package io.djnr.backdrop.ui.spotlight.view;
+package io.djnr.backdrop.ui.fragments.spotlight.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,9 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +23,9 @@ import butterknife.OnClick;
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.dagger.module.SpotlightFragmentModule;
 import io.djnr.backdrop.models.soundcloud.Playlist;
-import io.djnr.backdrop.remote.SoundcloudAPI;
 import io.djnr.backdrop.ui.App;
-import io.djnr.backdrop.ui.ambient.AmbientActivity;
-import io.djnr.backdrop.ui.spotlight.ISpotlight;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.djnr.backdrop.ui.fragments.ambient.AmbientActivity;
+import io.djnr.backdrop.ui.fragments.spotlight.ISpotlight;
 
 /**
  * Created by Dj on 8/18/2016.

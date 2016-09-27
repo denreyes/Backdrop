@@ -1,4 +1,4 @@
-package io.djnr.backdrop.ui.spotlight.presenter;
+package io.djnr.backdrop.ui.fragments.spotlight.presenter;
 
 import android.content.Context;
 
@@ -6,7 +6,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import io.djnr.backdrop.models.soundcloud.Playlist;
-import io.djnr.backdrop.ui.spotlight.ISpotlight;
+import io.djnr.backdrop.ui.fragments.spotlight.ISpotlight;
 
 /**
  * Created by Dj on 8/22/2016.

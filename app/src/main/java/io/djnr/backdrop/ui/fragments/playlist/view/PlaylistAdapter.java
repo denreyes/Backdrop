@@ -1,4 +1,4 @@
-package io.djnr.backdrop.ui.playlist.view;
+package io.djnr.backdrop.ui.fragments.playlist.view;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +18,7 @@ import io.djnr.backdrop.R;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
-import io.djnr.backdrop.ui.MainActivity;
+import io.djnr.backdrop.ui.activities.main.view.MainActivity;
 
 /**
  * Created by Dj on 8/20/2016.

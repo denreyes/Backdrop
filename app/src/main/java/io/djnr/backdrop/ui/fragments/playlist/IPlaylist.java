@@ -1,13 +1,9 @@
-package io.djnr.backdrop.ui.playlist;
+package io.djnr.backdrop.ui.fragments.playlist;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.support.v4.app.Fragment;
 
-import java.util.List;
-
 import io.djnr.backdrop.models.soundcloud.Playlist;
-import io.djnr.backdrop.models.soundcloud.Track;
 
 /**
  * Created by Dj on 8/20/2016.

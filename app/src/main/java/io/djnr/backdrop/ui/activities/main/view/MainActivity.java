@@ -1,5 +1,6 @@
-package io.djnr.backdrop.ui;
+package io.djnr.backdrop.ui.activities.main.view;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -16,12 +17,16 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.djnr.backdrop.R;
-import io.djnr.backdrop.ui.track.MinTrackFragment;
-import io.djnr.backdrop.ui.spotlight.view.SpotlightFragment;
+import io.djnr.backdrop.dagger.module.MainActivityModule;
+import io.djnr.backdrop.dagger.module.PlaylistFragmentModule;
+import io.djnr.backdrop.ui.App;
+import io.djnr.backdrop.ui.activities.main.IMain;
+import io.djnr.backdrop.ui.fragments.track.MinTrackFragment;
+import io.djnr.backdrop.ui.fragments.spotlight.view.SpotlightFragment;
 import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.utils.MusicServiceProvider;
 
-public class MainActivity extends AppCompatActivity implements MusicServiceProvider{
+public class MainActivity extends AppCompatActivity implements MusicServiceProvider, IMain.RequiredView{
     private static final String TAG = "MainActivity";
 
     @Inject
@@ -40,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements MusicServiceProvi
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        setupComponent();
+
         if (playIntent == null) {
             playIntent = new Intent(this, TrackService.class);
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
@@ -50,6 +57,13 @@ public class MainActivity extends AppCompatActivity implements MusicServiceProvi
                 .replace(R.id.container, new SpotlightFragment())
                 .replace(R.id.player_container, new MinTrackFragment())
                 .commit();
+    }
+
+    private void setupComponent() {
+        App.get(this)
+                .getAppComponent()
+                .getMainActivityComponent(new MainActivityModule(this))
+                .inject(this);
     }
 
     public void showMusicController() {
@@ -105,5 +119,15 @@ public class MainActivity extends AppCompatActivity implements MusicServiceProvi
     @Override
     public TrackService getTrackService() {
         return musicSrv;
+    }
+
+    @Override
+    public Context getAppContext() {
+        return getApplicationContext();
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
     }
 }

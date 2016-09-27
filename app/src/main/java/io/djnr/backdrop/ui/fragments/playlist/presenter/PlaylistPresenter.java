@@ -1,19 +1,13 @@
-package io.djnr.backdrop.ui.playlist.presenter;
+package io.djnr.backdrop.ui.fragments.playlist.presenter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.support.v4.app.Fragment;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 import io.djnr.backdrop.models.soundcloud.Playlist;
-import io.djnr.backdrop.models.soundcloud.Track;
-import io.djnr.backdrop.ui.playlist.IPlaylist;
-import io.djnr.backdrop.ui.playlist.view.PlaylistFragment;
-import io.djnr.backdrop.utils.Config;
+import io.djnr.backdrop.ui.fragments.playlist.IPlaylist;
+import io.djnr.backdrop.ui.fragments.playlist.view.PlaylistFragment;
 
 /**
  * Created by Dj on 8/20/2016.

@@ -1,4 +1,4 @@
-package io.djnr.backdrop.ui.spotlight.model;
+package io.djnr.backdrop.ui.fragments.spotlight.model;
 
 import android.util.Log;
 
@@ -6,8 +6,7 @@ import java.util.List;
 
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.remote.SoundcloudAPI;
-import io.djnr.backdrop.ui.spotlight.ISpotlight;
-import io.djnr.backdrop.ui.spotlight.view.SpotlightAdapter;
+import io.djnr.backdrop.ui.fragments.spotlight.ISpotlight;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
