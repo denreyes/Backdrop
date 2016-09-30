@@ -44,7 +44,7 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
 
     public static final String SC_PLAYLIST = "SC_PLAYLIST";
     private Playlist mPlaylist;
-    private PlayerUpdater mPlayerCallback;
+    private PlayerUpdater mMinCallback;
     private TrackServiceProvider mMusicServiceCallback;
 
     @Inject
@@ -59,7 +59,7 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
         mRecyclerPlaylist.setLayoutManager(new LinearLayoutManager(getActivity()));
         try {
             mMusicServiceCallback = (TrackServiceProvider) getActivity();
-            mPlayerCallback = (PlayerUpdater) (getActivity().getSupportFragmentManager().findFragmentById(R.id.player_container));
+            mMinCallback = (PlayerUpdater) (getActivity().getSupportFragmentManager().findFragmentById(R.id.player_container));
         } catch (ClassCastException e) {
             throw new ClassCastException("Fragment must implement PlayerUpdater");
         }
@@ -99,7 +99,7 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
 
     @Override
     public void setPlaylistRecycler(Playlist playlist) {
-        PlaylistAdapter adapter = new PlaylistAdapter(playlist, mMusicServiceCallback.getTrackService(), mPlayerCallback);
+        PlaylistAdapter adapter = new PlaylistAdapter(playlist, mMusicServiceCallback.getTrackService(), mMinCallback);
         mRecyclerPlaylist.setAdapter(adapter);
     }
 

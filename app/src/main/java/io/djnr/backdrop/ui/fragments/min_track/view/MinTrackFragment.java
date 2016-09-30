@@ -46,9 +46,9 @@ import jp.wasabeef.blurry.Blurry;
  *
  */
 public class MinTrackFragment extends Fragment implements IMinTrack.RequiredView,
-        PlaylistFragment.PlayerUpdater, MaxTrackFragment.ControlUpdater {
-    private static final String TAG = "MinTrackFragmentComponent";
-
+        PlaylistFragment.PlayerUpdater, MaxTrackFragment.ControlUpdater{
+    private static final String TAG = "MinTrackFragment";
+    
     @BindView(R.id.img_album_art)
     ImageView mImageArt;
     @BindView(R.id.text_title)
@@ -61,37 +61,21 @@ public class MinTrackFragment extends Fragment implements IMinTrack.RequiredView
     SeekBar mSeekbar;
 
     @Inject
-    IMinTrack.ProvidedPresenter presenter;
-
-    private Playlist mPlaylist;
-    private int currentPos;
-    private boolean isPlaying;
-    private Handler seekHandler = new Handler();
-    private Bitmap mArtBitmap;
-
-    TrackServiceProvider mMusicServiceCallback;
+    IMinTrack.ProvidedPresenter mPresenter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_track_min, container, false);
         ButterKnife.bind(this, view);
-
         setupComponent();
-
-        isPlaying = false;
         mSeekbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return true;
             }
         });
-        try {
-            mMusicServiceCallback = (TrackServiceProvider) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException("Fragment must implement PlayerUpdater");
-        }
-
+        mPresenter.initTrackServiceCallback();
         return view;
     }
 
@@ -102,128 +86,14 @@ public class MinTrackFragment extends Fragment implements IMinTrack.RequiredView
                 .inject(this);
     }
 
-    private Runnable moveSeekThread = new Runnable() {
-        public void run() {
-            TrackService trackService = mMusicServiceCallback.getTrackService();
-
-            if(trackService.isPlaying()){
-                int mediaPos_new = trackService.getPosition();
-                int mediaMax_new = trackService.getDuration();
-                mSeekbar.setMax(mediaMax_new);
-                mSeekbar.setProgress(mediaPos_new);
-            }
-
-            seekHandler.postDelayed(this, 500); //Looping the thread after 0.1 second
-
-        }
-    };
-
-    @Override
-    public void updatePlayer(Playlist playlist, int currentPos) {
-        this.mPlaylist = playlist;
-        this.currentPos = currentPos;
-
-        Track currentTrack = playlist.getTracks().get(currentPos);
-
-        new AsyncTask<Track, Void, Bitmap>() {
-            @Override
-            protected Bitmap doInBackground(Track... params) {
-                Looper.prepare();
-                mArtBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.no_img);
-                try {
-                    mArtBitmap = Glide.with(getActivity()).load(params[0].getArtworkUrl().replace("large.jpg", "t500x500.jpg"))
-                            .asBitmap().into(-1,-1).get();
-                } catch (final ExecutionException e) {
-                    Log.e(TAG, e.getMessage());
-                } catch (final InterruptedException e) {
-                    Log.e(TAG, e.getMessage());
-                } catch (final NullPointerException e) {
-                    Log.e(TAG, e.getMessage());
-                }
-                return mArtBitmap;
-            }
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                if (null != bitmap) {
-                    mImageArt.setImageBitmap(bitmap);
-
-                    new Handler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Blurry.with(getActivity()).radius(6).sampling(4)
-                                    .color(Color.argb(204, 0, 0, 0))
-                                    .animate(500)
-                                    .async().capture(mImageArt).into(mImageArt);
-                        }
-                    });
-                };
-            }
-        }.execute(currentTrack);
-
-
-        mTextTitle.setText(currentTrack.getTitle());
-        mTextArtist.setText(currentTrack.getUser().getUsername());
-
-        seekHandler.removeCallbacks(moveSeekThread);
-        mSeekbar.setProgress(0);
-        seekHandler.postDelayed(moveSeekThread, 200);
-        mImageControl.setImageResource(R.drawable.ic_pause);
-        isPlaying = true;
-    }
-
     @OnClick({R.id.img_btn_control, R.id.frame_control})
     public void onControlClicked() {
-        TrackService service = mMusicServiceCallback.getTrackService();
-        if (isPlaying) { //if playing pause
-            service.pausePlayer();
-            mImageControl.setImageResource(R.drawable.ic_play);
-            isPlaying = false;
-            seekHandler.removeCallbacks(moveSeekThread);
-        } else { // if paused play
-            service.go();
-            mImageControl.setImageResource(R.drawable.ic_pause);
-            isPlaying = true;
-            seekHandler.postDelayed(moveSeekThread, 200);
-        }
+        mPresenter.playPause();
     }
 
     @OnClick(R.id.img_btn_up)
     public void onUpClicked(){
-        Bundle args = new Bundle();
-        args.putParcelable("PLAYLIST", mPlaylist);
-        args.putInt("CURRENT_POS", currentPos);
-        args.putBoolean("IS_PLAYING", isPlaying);
-        args.putParcelable("BITMAP_IMAGE", mArtBitmap);
-
-        MaxTrackFragment maxTrackFragment = new MaxTrackFragment();
-        maxTrackFragment.setArguments(args);
-
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.slide_out_up, R.anim.slide_in_up,
-                        R.anim.slide_out_up, R.anim.slide_in_up)
-                .add(R.id.container, maxTrackFragment)
-                .addToBackStack(maxTrackFragment.getClass().getSimpleName())
-                .commit();
-    }
-
-    @Override
-    public void updateOnPause(boolean isPlaying) {
-        this.isPlaying = isPlaying;
-        onControlClicked();
-    }
-
-    @Override
-    public void updateOnSkip(int currentPos) {
-        this.currentPos = currentPos;
-        Track track = mPlaylist.getTracks().get(currentPos);
-        Glide.with(this).load(track.getArtworkUrl().replace("large.jpg", "t500x500.jpg"))
-                .centerCrop().crossFade().into(mImageArt);
-        mTextTitle.setText(track.getTitle());
-        mTextArtist.setText(track.getUser().getUsername());
-
-        seekHandler.removeCallbacks(moveSeekThread);
-        mSeekbar.setProgress(0);
-        seekHandler.postDelayed(moveSeekThread, 500);
+        mPresenter.switchToMaxView();
     }
 
     @Override
@@ -234,5 +104,71 @@ public class MinTrackFragment extends Fragment implements IMinTrack.RequiredView
     @Override
     public Context getActivityContext() {
         return getActivity();
+    }
+
+    @Override
+    public void setMaxProgress(int mediaMax_new, int mediaPos_new) {
+        mSeekbar.setMax(mediaMax_new);
+        mSeekbar.setProgress(mediaPos_new);
+    }
+
+    @Override
+    public void setBackgroundArt(Bitmap bitmap) {
+        mImageArt.setImageBitmap(bitmap);
+
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                Blurry.with(getActivity()).radius(6).sampling(4)
+                        .color(Color.argb(204, 0, 0, 0))
+                        .animate(500)
+                        .async().capture(mImageArt).into(mImageArt);
+            }
+        });
+    }
+
+    @Override
+    public void setViews(String title, String username) {
+        mTextTitle.setText(title);
+        mTextArtist.setText(username);
+        mSeekbar.setProgress(0);
+        mImageControl.setImageResource(R.drawable.ic_pause);
+    }
+
+    @Override
+    public void setImageControl(boolean b) {
+        if(b == true) {
+            //play
+            mImageControl.setImageResource(R.drawable.ic_play);
+        }else{
+            //pause
+            mImageControl.setImageResource(R.drawable.ic_pause);
+        }
+    }
+
+    @Override
+    public void launchMaxFragment(MaxTrackFragment fragment) {
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_out_up, R.anim.slide_in_up,
+                        R.anim.slide_out_up, R.anim.slide_in_up)
+                .add(R.id.container, fragment)
+                .addToBackStack(fragment.getClass().getSimpleName())
+                .commit();
+    }
+
+    //Callbacks
+    @Override
+    public void updateOnPause(boolean isPlaying) {
+        mPresenter.updateOnPause(isPlaying);
+    }
+
+    @Override
+    public void updateOnSkip(int currentPos) {
+        mPresenter.updateOnSkip(currentPos);
+    }
+
+    @Override
+    public void updatePlayer(Playlist playlist, int currentPos) {
+        mPresenter.updatePlayer(playlist, currentPos);
     }
 }
