@@ -103,6 +103,7 @@ public class MaxTrackFragment extends Fragment implements IMaxTrack.RequiredView
         mPresenter.getArguments();
         mPresenter.initCallbacks();
         mPresenter.setupViews();
+        mPresenter.setupSeekbar();
 
         mSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -224,11 +225,11 @@ public class MaxTrackFragment extends Fragment implements IMaxTrack.RequiredView
     }
 
     @Override
-    public void setSeekbarProgress(int timeMax, int timeProgress) {
-        mSeekbar.setMax(timeMax);
+    public void setSeekbarProgress(int timeProgress, int timeMax) {
         mSeekbar.setProgress(timeProgress);
-        mTextDuration.setText(Utils.getMinutesFormat(timeMax));
+        mSeekbar.setMax(timeMax);
         mTextProgress.setText(Utils.getMinutesFormat(timeProgress));
+        mTextDuration.setText(Utils.getMinutesFormat(timeMax));
     }
 
     //Spinning Disc Animation

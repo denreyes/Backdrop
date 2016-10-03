@@ -24,7 +24,7 @@ public interface IMaxTrack {
         void setFabPlay();
         void setFabPause();
 
-        void setSeekbarProgress(int timeMax, int timeProgress);
+        void setSeekbarProgress(int timeProgress, int timeMax);
         void updateSeekbarProgress(int progress);
         void resetSeekbar();
 
@@ -42,6 +42,8 @@ public interface IMaxTrack {
         void initCallbacks();
 
         void setupViews();
+
+        void setupSeekbar();
 
         void userSeeked(int progress);
 

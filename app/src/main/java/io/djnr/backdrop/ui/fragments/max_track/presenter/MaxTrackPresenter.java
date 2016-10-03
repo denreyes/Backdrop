@@ -1,11 +1,8 @@
 package io.djnr.backdrop.ui.fragments.max_track.presenter;
 
-import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,12 +10,10 @@ import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.animation.LinearInterpolator;
 
 import com.bumptech.glide.Glide;
 
 import java.lang.ref.WeakReference;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import io.djnr.backdrop.R;
@@ -32,7 +27,6 @@ import io.djnr.backdrop.ui.fragments.max_track.view.MaxTrackFragment;
 import io.djnr.backdrop.ui.fragments.max_track.view.MaxTrackFragment.ControlUpdater;
 import io.djnr.backdrop.ui.fragments.playlist.view.PlaylistAdapter;
 import io.djnr.backdrop.utils.Utils;
-import jp.wasabeef.blurry.Blurry;
 
 /**
  * Created by Dj on 9/27/2016.
@@ -127,6 +121,12 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
     }
 
     @Override
+    public void setupSeekbar() {
+        TrackService trackService = mTrackServiceCallback.getTrackService();
+        getView().setSeekbarProgress(trackService.getPosition(), trackService.getDuration());
+    }
+
+    @Override
     public void userSeeked(int progress) {
         TrackService trackService = mTrackServiceCallback.getTrackService();
         trackService.seek(progress);
@@ -177,7 +177,7 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
             TrackService trackService = mTrackServiceCallback.getTrackService();
 
             if (trackService.isPlaying()) {
-                getView().setSeekbarProgress(trackService.getDuration(), trackService.getPosition());
+                getView().setSeekbarProgress(trackService.getPosition(), trackService.getDuration());
             }
 
             seekHandler.postDelayed(this, 500); //Looping the thread after 0.1 second
