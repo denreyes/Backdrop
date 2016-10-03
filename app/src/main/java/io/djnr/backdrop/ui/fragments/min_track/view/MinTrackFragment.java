@@ -43,12 +43,11 @@ import jp.wasabeef.blurry.Blurry;
 
 /**
  * Created by Dj on 9/5/2016.
- *
  */
 public class MinTrackFragment extends Fragment implements IMinTrack.RequiredView,
-        PlaylistFragment.PlayerUpdater, MaxTrackFragment.ControlUpdater{
+        PlaylistFragment.PlayerUpdater, MaxTrackFragment.ControlUpdater {
     private static final String TAG = "MinTrackFragment";
-    
+
     @BindView(R.id.img_album_art)
     ImageView mImageArt;
     @BindView(R.id.text_title)
@@ -92,7 +91,7 @@ public class MinTrackFragment extends Fragment implements IMinTrack.RequiredView
     }
 
     @OnClick(R.id.img_btn_up)
-    public void onUpClicked(){
+    public void onUpClicked() {
         mPresenter.switchToMaxView();
     }
 
@@ -136,11 +135,11 @@ public class MinTrackFragment extends Fragment implements IMinTrack.RequiredView
     }
 
     @Override
-    public void setImageControl(boolean b) {
-        if(b == true) {
+    public void setImagePausePlay(boolean b) {
+        if (b) {
             //play
             mImageControl.setImageResource(R.drawable.ic_play);
-        }else{
+        } else {
             //pause
             mImageControl.setImageResource(R.drawable.ic_pause);
         }

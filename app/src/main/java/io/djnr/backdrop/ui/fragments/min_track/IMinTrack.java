@@ -17,7 +17,7 @@ public interface IMinTrack {
         void setMaxProgress(int mediaMax_new, int mediaPos_new);
         void setBackgroundArt(Bitmap bitmap);
         void setViews(String title, String username);
-        void setImageControl(boolean b);
+        void setImagePausePlay(boolean b);
         void launchMaxFragment(MaxTrackFragment fragment);
     };
 

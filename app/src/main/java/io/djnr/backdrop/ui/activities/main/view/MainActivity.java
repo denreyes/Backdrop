@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements IMain.RequiredVie
     }
 
     @Override
-    public void showMusicController() {
+    public void showMinController() {
         if (mPlayerContainer.getVisibility() != View.VISIBLE) {
             mPlayerContainer.setVisibility(View.VISIBLE);
 
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements IMain.RequiredVie
     }
 
     @Override
-    public void hideMusicController() {
+    public void hideMinController() {
         if (mPlayerContainer.getVisibility() == View.VISIBLE) {
             mPlayerContainer.setVisibility(View.INVISIBLE);
 

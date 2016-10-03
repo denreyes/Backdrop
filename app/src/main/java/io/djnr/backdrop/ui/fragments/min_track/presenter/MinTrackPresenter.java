@@ -82,12 +82,12 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
         TrackService service = mTrackServiceCallback.getTrackService();
         if (isPlaying) { //if playing pause
             service.pausePlayer();
-            getView().setImageControl(true);
+            getView().setImagePausePlay(true);
             isPlaying = false;
             seekHandler.removeCallbacks(moveSeekThread);
         } else { // if paused play
             service.go();
-            getView().setImageControl(false);
+            getView().setImagePausePlay(false);
             isPlaying = true;
             seekHandler.postDelayed(moveSeekThread, 200);
         }
@@ -120,7 +120,7 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
         }
     };
 
-    private void setImageBg(String imageUrl) {
+    private void setAlbumArt(String imageUrl) {
         new AsyncTask<String, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(String... params) {
@@ -157,7 +157,7 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
     public void updateOnSkip(int currentPos) {
         this.currentPos = currentPos;
         Track track = mPlaylist.getTracks().get(currentPos);
-        setImageBg(track.getArtworkUrl());
+        setAlbumArt(track.getArtworkUrl());
         getView().setViews(track.getTitle(), track.getUser().getUsername());
 
         seekHandler.removeCallbacks(moveSeekThread);
@@ -171,7 +171,7 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
 
         Track currentTrack = playlist.getTracks().get(currentPos);
 
-        setImageBg(currentTrack.getArtworkUrl());
+        setAlbumArt(currentTrack.getArtworkUrl());
         getView().setViews(currentTrack.getTitle(), currentTrack.getUser().getUsername());
         seekHandler.removeCallbacks(moveSeekThread);
         seekHandler.postDelayed(moveSeekThread, 200);

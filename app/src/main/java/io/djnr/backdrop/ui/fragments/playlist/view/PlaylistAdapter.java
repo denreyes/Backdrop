@@ -67,7 +67,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
             mTrackService.playSong();
 
             if (mUpdater != null){
-                ((MainActivity) context).showMusicController();
+                ((MainActivity) context).showMinController();
                 mUpdater.updatePlayer(mPlaylist, getPosition());
             }
         }
