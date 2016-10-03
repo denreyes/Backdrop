@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Backdrop</string>
+    <string name="search">Search</string>
+    <string name="spotlight">Spotlight</string>
+    <string name="spotify">Spotify</string>
+    <string name="saved">Saved</string>
 </resources>

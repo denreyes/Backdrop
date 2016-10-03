@@ -5,8 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -17,6 +21,7 @@ import butterknife.ButterKnife;
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.dagger.module.MainActivityModule;
 import io.djnr.backdrop.interfaces.MinControllerDisplayer;
+import io.djnr.backdrop.interfaces.NavDrawerToggle;
 import io.djnr.backdrop.ui.App;
 import io.djnr.backdrop.ui.activities.main.IMain;
 import io.djnr.backdrop.ui.fragments.min_track.view.MinTrackFragment;
@@ -24,13 +29,18 @@ import io.djnr.backdrop.ui.fragments.spotlight.view.SpotlightFragment;
 import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.interfaces.TrackServiceProvider;
 
-public class MainActivity extends AppCompatActivity implements IMain.RequiredView, TrackServiceProvider, MinControllerDisplayer {
+public class MainActivity extends AppCompatActivity implements IMain.RequiredView,
+        TrackServiceProvider, MinControllerDisplayer, NavDrawerToggle {
     private static final String TAG = "MainActivity";
 
     @BindView(R.id.player_container)
     FrameLayout mPlayerContainer;
     @BindView(R.id.container)
     FrameLayout mContainer;
+    @BindView(R.id.nav_view)
+    NavigationView mNavView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
 
     @Inject
     IMain.ProvidedPresenter presenter;
@@ -42,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements IMain.RequiredVie
     CoordinatorLayout.LayoutParams params;
 
     TrackService mTrackService;
+    ActionBarDrawerToggle mActionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,5 +121,12 @@ public class MainActivity extends AppCompatActivity implements IMain.RequiredVie
     @Override
     public Activity getActivity() {
         return this;
+    }
+
+    @Override
+    public void setupNavToggle(Toolbar toolbar) {
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout,toolbar,R.string.app_name,R.string.app_name);
+        mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
+        mActionBarDrawerToggle.syncState();
     }
 }

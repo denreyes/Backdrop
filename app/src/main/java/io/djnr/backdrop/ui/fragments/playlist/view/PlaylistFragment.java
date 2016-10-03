@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.dagger.module.PlaylistFragmentModule;
+import io.djnr.backdrop.interfaces.NavDrawerToggle;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.ui.App;
 import io.djnr.backdrop.ui.activities.ambient.AmbientActivity;
@@ -33,6 +35,8 @@ import io.djnr.backdrop.interfaces.TrackServiceProvider;
  * Created by Dj on 8/20/2016.
  */
 public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView{
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     @BindView(R.id.recycler_spotlight)
     RecyclerView mRecyclerPlaylist;
     @BindView(R.id.img_art)
@@ -66,7 +70,12 @@ public class PlaylistFragment extends Fragment implements IPlaylist.RequiredView
 
         setupComponent();
 
+        showNavToggle();
         return view;
+    }
+
+    private void showNavToggle() {
+        ((NavDrawerToggle) getActivity()).setupNavToggle(mToolbar);
     }
 
     @OnClick(R.id.fab_drop)
