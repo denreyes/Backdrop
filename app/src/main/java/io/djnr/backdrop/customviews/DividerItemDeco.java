@@ -1,4 +1,4 @@
-package io.djnr.backdrop.views;
+package io.djnr.backdrop.customviews;
 
 import android.content.Context;
 import android.graphics.Canvas;
