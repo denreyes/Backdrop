@@ -28,9 +28,6 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -39,17 +36,10 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.dagger.module.MaxTrackFragmentModule;
-import io.djnr.backdrop.dagger.module.MinTrackFragmentModule;
-import io.djnr.backdrop.interfaces.MinControllerDisplayer;
-import io.djnr.backdrop.models.soundcloud.Playlist;
-import io.djnr.backdrop.models.soundcloud.Track;
-import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.ui.App;
 import io.djnr.backdrop.ui.activities.main.view.MainActivity;
 import io.djnr.backdrop.ui.fragments.max_track.IMaxTrack;
-import io.djnr.backdrop.ui.fragments.min_track.IMinTrack;
 import io.djnr.backdrop.ui.fragments.playlist.view.PlaylistAdapter;
-import io.djnr.backdrop.interfaces.TrackServiceProvider;
 import io.djnr.backdrop.utils.Utils;
 import jp.wasabeef.blurry.Blurry;
 
@@ -136,7 +126,7 @@ public class MaxTrackFragment extends Fragment implements IMaxTrack.RequiredView
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.trackfragment, menu);
+        inflater.inflate(R.menu.track_fragment, menu);
     }
 
     @Override

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search" />
+
+    <item
+        android:id="@+id/nav_spotlight"
+        android:icon="@drawable/ic_search"
+        android:title="@string/spotlight" />
+
+    <item
+        android:id="@+id/nav_saved"
+        android:icon="@drawable/ic_search"
+        android:title="@string/saved" />
+
+    <item
+        android:id="@+id/nav_spotify"
+        android:icon="@drawable/ic_search"
+        android:title="@string/spotify" />
+
+</menu>

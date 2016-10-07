@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +23,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.dagger.module.SpotlightFragmentModule;
+import io.djnr.backdrop.interfaces.NavDrawerToggle;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.ui.App;
 import io.djnr.backdrop.ui.activities.ambient.AmbientActivity;
+import io.djnr.backdrop.ui.activities.main.view.MainActivity;
 import io.djnr.backdrop.ui.fragments.spotlight.ISpotlight;
 
 /**
@@ -36,6 +39,8 @@ public class SpotlightFragment extends Fragment implements ISpotlight.RequiredVi
     RecyclerView mRecyclerSpotlight;
     @BindView(R.id.img_ambient)
     ImageView mImageAmbient;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Inject
     ISpotlight.ProvidedPresenter mPresenter;
@@ -46,8 +51,16 @@ public class SpotlightFragment extends Fragment implements ISpotlight.RequiredVi
         View view = inflater.inflate(R.layout.fragment_spotlight, container, false);
         ButterKnife.bind(this, view);
         mRecyclerSpotlight.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        ((MainActivity)getActivity()).setSupportActionBar(mToolbar);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("");
         setupComponent();
+
+        showNavToggle();
         return view;
+    }
+
+    private void showNavToggle() {
+        ((NavDrawerToggle) getActivity()).setupNavToggle(mToolbar);
     }
 
     @OnClick(R.id.fab_drop)
