@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import io.djnr.backdrop.dagger.module.AppModule;
+import io.djnr.backdrop.dagger.module.LoginActivityModule;
 import io.djnr.backdrop.dagger.module.MainActivityModule;
 import io.djnr.backdrop.dagger.module.MaxTrackFragmentModule;
 import io.djnr.backdrop.dagger.module.MinTrackFragmentModule;
@@ -21,6 +22,7 @@ import io.djnr.backdrop.dagger.module.TrackServiceModule;
 public interface AppComponent {
     Application application();
     MainActivityComponent getMainActivityComponent(MainActivityModule module);
+    LoginActivityComponent getLoginActivityComponent(LoginActivityModule module);
     PlaylistFragmentComponent getPlaylistFragmentComponent(PlaylistFragmentModule module);
     SpotlightFragmentComponent getSpotlightFragmentComponent(SpotlightFragmentModule module);
     MinTrackFragmentComponent getMinTrackFragmentComponent(MinTrackFragmentModule module);
