@@ -2,15 +2,11 @@ package io.djnr.backdrop.ui.fragments.min_track.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,26 +15,18 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
-import java.util.concurrent.ExecutionException;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.djnr.backdrop.R;
-import io.djnr.backdrop.dagger.module.MainActivityModule;
 import io.djnr.backdrop.dagger.module.MinTrackFragmentModule;
 import io.djnr.backdrop.models.soundcloud.Playlist;
-import io.djnr.backdrop.models.soundcloud.Track;
-import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.ui.App;
 import io.djnr.backdrop.ui.fragments.max_track.view.MaxTrackFragment;
 import io.djnr.backdrop.ui.fragments.min_track.IMinTrack;
 import io.djnr.backdrop.ui.fragments.playlist.view.PlaylistFragment;
-import io.djnr.backdrop.interfaces.TrackServiceProvider;
 import jp.wasabeef.blurry.Blurry;
 
 /**

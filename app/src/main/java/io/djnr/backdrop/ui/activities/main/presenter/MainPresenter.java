@@ -2,9 +2,16 @@ package io.djnr.backdrop.ui.activities.main.presenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import java.lang.ref.WeakReference;
 
+import io.djnr.backdrop.ui.activities.LoginActivity;
 import io.djnr.backdrop.ui.activities.main.IMain;
 
 /**
@@ -38,5 +45,17 @@ public class MainPresenter implements IMain.ProvidedPresenter, IMain.RequiredPre
     @Override
     public Activity getActivity() {
         return getView().getActivity();
+    }
+
+    @Override
+    public void logOut(GoogleApiClient client) {
+
+        Auth.GoogleSignInApi.signOut(client).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        getView().launchLoginScreen();
+                    }
+                });
     }
 }

@@ -5,8 +5,8 @@ import android.app.Application;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import io.djnr.backdrop.dagger.module.ActivityModule;
 import io.djnr.backdrop.dagger.module.AppModule;
-import io.djnr.backdrop.dagger.module.MainActivityModule;
 import io.djnr.backdrop.dagger.module.MaxTrackFragmentModule;
 import io.djnr.backdrop.dagger.module.MinTrackFragmentModule;
 import io.djnr.backdrop.dagger.module.PlaylistFragmentModule;
@@ -20,7 +20,7 @@ import io.djnr.backdrop.dagger.module.TrackServiceModule;
 @Component( modules = AppModule.class )
 public interface AppComponent {
     Application application();
-    MainActivityComponent getMainActivityComponent(MainActivityModule module);
+    ActivityComponent getActivityComponent(ActivityModule module);
     PlaylistFragmentComponent getPlaylistFragmentComponent(PlaylistFragmentModule module);
     SpotlightFragmentComponent getSpotlightFragmentComponent(SpotlightFragmentModule module);
     MinTrackFragmentComponent getMinTrackFragmentComponent(MinTrackFragmentModule module);
