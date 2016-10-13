@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import io.djnr.backdrop.services.TrackService;
 
 /**
@@ -15,9 +17,12 @@ public interface IMain {
     interface RequiredView{
         Context getAppContext();
         Activity getActivity();
+
+        void launchLoginScreen();
     };
 
     interface ProvidedPresenter{
+        void logOut(GoogleApiClient client);
     };
 
     interface RequiredPresenter{

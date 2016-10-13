@@ -22,7 +22,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -33,7 +32,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.djnr.backdrop.R;
-import io.djnr.backdrop.dagger.module.MainActivityModule;
+import io.djnr.backdrop.dagger.module.ActivityModule;
 import io.djnr.backdrop.interfaces.MinControllerDisplayer;
 import io.djnr.backdrop.interfaces.NavDrawerToggle;
 import io.djnr.backdrop.ui.App;
@@ -72,13 +71,15 @@ public class MainActivity extends AppCompatActivity implements IMain.RequiredVie
     public static String CURRENT_TAG = TAG_SPOTLIGHT;
 
     @Inject
-    IMain.ProvidedPresenter presenter;
+    IMain.ProvidedPresenter mPresenter;
     @Inject
     Intent playIntent;
     @Inject
     ServiceConnection musicConnection;
     @Inject
     CoordinatorLayout.LayoutParams params;
+    @Inject
+    GoogleApiClient mClient;
 
     TrackService mTrackService;
     ActionBarDrawerToggle mActionBarDrawerToggle;
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements IMain.RequiredVie
     private void setupComponent() {
         App.get(this)
                 .getAppComponent()
-                .getMainActivityComponent(new MainActivityModule(this))
+                .getActivityComponent(new ActivityModule(this, this))
                 .inject(this);
     }
 
@@ -163,6 +164,13 @@ public class MainActivity extends AppCompatActivity implements IMain.RequiredVie
     }
 
     @Override
+    public void launchLoginScreen() {
+        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+    }
+
+    @Override
     public void setupNavToggle(Toolbar toolbar) {
         mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
@@ -188,15 +196,7 @@ public class MainActivity extends AppCompatActivity implements IMain.RequiredVie
                     case R.id.nav_logout:
                         mDrawerLayout.closeDrawers();
 
-//                        Auth.GoogleSignInApi.signOut(client).setResultCallback(
-//                                new ResultCallback<Status>() {
-//                                    @Override
-//                                    public void onResult(Status status) {
-                                        Intent i = new Intent(MainActivity.this, LoginActivity.class);
-                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(i);
-//                                    }
-//                                });
+                        mPresenter.logOut(mClient);
 
                         break;
                     default:

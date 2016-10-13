@@ -21,6 +21,7 @@ import io.djnr.backdrop.R;
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.ui.fragments.playlist.view.PlaylistFragment;
 import io.djnr.backdrop.ui.activities.main.view.MainActivity;
+import io.djnr.backdrop.utils.Utils;
 
 /**
  * Created by Dj on 8/19/2016.
@@ -34,10 +35,6 @@ public class SpotlightAdapter extends RecyclerView.Adapter<SpotlightAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        //        @BindView(R.id.text_title)
-//        TextView mTextTitle;
-//        @BindView(R.id.text_count)
-//        TextView mTextCount;
         @BindView(R.id.thumbnail)
         ImageView mThumbnail;
         Context context;
@@ -72,10 +69,10 @@ public class SpotlightAdapter extends RecyclerView.Adapter<SpotlightAdapter.View
 
     @Override
     public void onBindViewHolder(SpotlightAdapter.ViewHolder holder, int position) {
-//        holder.mTextTitle.setText(mList.get(position).getTitle());
-//        holder.mTextCount.setText(mList.get(position).getTrackCount() + " songs.");
         try {
-            Glide.with(holder.context).load(mList.get(position).getArtworkUrl().toString().replace("large.jpg", "t500x500.jpg"))
+            Glide.with(holder.context).load(Utils.largeSCImg(mList.get(position).getArtworkUrl()+""))
+                    .crossFade()
+                    .centerCrop()
                     .into(holder.mThumbnail);
         } catch (NullPointerException e) {
         }
