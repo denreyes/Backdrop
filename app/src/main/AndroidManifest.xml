@@ -24,6 +24,7 @@
         <activity android:name=".ui.activities.ambient.AmbientActivity" android:screenOrientation="portrait"/>
 
         <service android:enabled="true" android:name=".services.TrackService" />
+        <service android:enabled="true" android:name=".services.AmbientService" />
     </application>
 
 </manifest>

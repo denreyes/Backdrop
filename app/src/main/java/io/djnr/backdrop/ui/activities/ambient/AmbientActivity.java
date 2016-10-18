@@ -14,7 +14,7 @@ public class AmbientActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_ambient);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new AmbientFragment()).commit();
     }
 }

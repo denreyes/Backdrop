@@ -20,9 +20,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:src="@drawable/img_rain_white"
                 android:id="@+id/img_ambient"
-                android:transitionName="ambient"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
