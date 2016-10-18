@@ -43,8 +43,7 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:clickable="true"
-                android:src="@drawable/img_activated_rain"
-                android:transitionName="ambient" />
+                android:src="@drawable/img_ambient_rain" />
 
             <Space
                 android:id="@+id/space2"
@@ -81,7 +80,7 @@
             android:layout_weight="1">
 
             <ImageView
-                android:id="@+id/img_waves"
+                android:id="@+id/img_night"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/space4"
@@ -94,9 +93,9 @@
                 android:id="@+id/space4"
                 android:layout_width="75dp"
                 android:layout_height="20dp"
-                android:layout_alignLeft="@+id/img_waves"
+                android:layout_alignLeft="@+id/img_night"
                 android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/img_waves" />
+                android:layout_alignStart="@+id/img_night" />
 
 
             <ImageView

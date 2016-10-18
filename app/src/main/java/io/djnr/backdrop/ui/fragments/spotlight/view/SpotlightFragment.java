@@ -2,6 +2,7 @@ package io.djnr.backdrop.ui.fragments.spotlight.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -42,6 +43,10 @@ public class SpotlightFragment extends Fragment implements ISpotlight.RequiredVi
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
+    private int mAmbienceKey;
+    private int[] mAmbientResId = {R.drawable.img_rain_white, R.drawable.img_cafe_white, R.drawable.img_storm_white,
+            R.drawable.img_park_white, R.drawable.img_night_white, R.drawable.img_diner_white};
+
     @Inject
     ISpotlight.ProvidedPresenter mPresenter;
 
@@ -51,7 +56,7 @@ public class SpotlightFragment extends Fragment implements ISpotlight.RequiredVi
         View view = inflater.inflate(R.layout.fragment_spotlight, container, false);
         ButterKnife.bind(this, view);
         mRecyclerSpotlight.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        ((MainActivity)getActivity()).setSupportActionBar(mToolbar);
+        ((MainActivity) getActivity()).setSupportActionBar(mToolbar);
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("");
         setupComponent();
 
@@ -59,14 +64,29 @@ public class SpotlightFragment extends Fragment implements ISpotlight.RequiredVi
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences prefAmbience = getActivity().getSharedPreferences("AMBIENCE_PREF", getActivity().MODE_PRIVATE);
+        mAmbienceKey = prefAmbience.getInt("AMBIENCE", -1);
+        if (mAmbienceKey != -1) {
+            mImageAmbient.setImageResource(mAmbientResId[mAmbienceKey]);
+        }
+    }
+
     private void showNavToggle() {
         ((NavDrawerToggle) getActivity()).setupNavToggle(mToolbar);
     }
 
     @OnClick(R.id.fab_drop)
-    public void onClickDrop(){
-        ActivityOptionsCompat options = ActivityOptionsCompat.
-                makeSceneTransitionAnimation(getActivity(), (View)mImageAmbient, "ambient");
+    public void onClickDrop() {
+        ActivityOptionsCompat options;
+
+//        if (mAmbienceKey != -1)
+//            options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), (View) mImageAmbient, "ambient");
+//        else
+            options =  ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity());
+
         startActivity(new Intent(getActivity(), AmbientActivity.class), options.toBundle());
     }
 
