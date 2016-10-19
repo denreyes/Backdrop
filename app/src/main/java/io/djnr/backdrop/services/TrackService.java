@@ -24,6 +24,7 @@ public class TrackService extends Service implements
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
         MediaPlayer.OnCompletionListener {
     private static final String TAG = "TrackService";
+    public static String broadcastStringAction = "io.djnr.backdrop.broadcast.next";
 
     @Inject
     MediaPlayer player;
@@ -81,7 +82,15 @@ public class TrackService extends Service implements
 
     @Override
     public void onCompletion(MediaPlayer mp) {
+        if(songPosn <= songs.size())
+            playNext();
+        else
+            songPosn = 0;
 
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.putExtra("SONG_POSN", songPosn);
+        broadcastIntent.setAction(broadcastStringAction);
+        sendBroadcast(broadcastIntent);
     }
 
     @Override

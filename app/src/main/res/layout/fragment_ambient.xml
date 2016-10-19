@@ -80,22 +80,22 @@
             android:layout_weight="1">
 
             <ImageView
-                android:id="@+id/img_night"
+                android:id="@+id/img_waves"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/space4"
                 android:layout_toLeftOf="@+id/img_park"
                 android:layout_toStartOf="@+id/img_park"
                 android:clickable="true"
-                android:src="@drawable/img_ambient_night" />
+                android:src="@drawable/img_ambient_waves" />
 
             <Space
                 android:id="@+id/space4"
                 android:layout_width="75dp"
                 android:layout_height="20dp"
-                android:layout_alignLeft="@+id/img_night"
+                android:layout_alignLeft="@+id/img_waves"
                 android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/img_night" />
+                android:layout_alignStart="@+id/img_waves" />
 
 
             <ImageView

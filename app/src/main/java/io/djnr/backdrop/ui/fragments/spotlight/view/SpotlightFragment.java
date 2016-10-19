@@ -45,7 +45,7 @@ public class SpotlightFragment extends Fragment implements ISpotlight.RequiredVi
 
     private int mAmbienceKey;
     private int[] mAmbientResId = {R.drawable.img_rain_white, R.drawable.img_cafe_white, R.drawable.img_storm_white,
-            R.drawable.img_park_white, R.drawable.img_night_white, R.drawable.img_diner_white};
+            R.drawable.img_park_white, R.drawable.img_waves_white, R.drawable.img_diner_white};
 
     @Inject
     ISpotlight.ProvidedPresenter mPresenter;

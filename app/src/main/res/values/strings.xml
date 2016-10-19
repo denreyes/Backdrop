@@ -7,13 +7,13 @@
 
     <string-array name="ambient_urls">
         <!--rain-->
-        <item>http://www.freesound.org/data/previews/194/194204_2367966-lq.mp3</item>
+        <item>http://www.freesound.org/data/previews/22/22132_28867-lq.mp3</item>
         <!--coffee-->
         <item>http://www.freesound.org/data/previews/264/264347_2977451-lq.mp3</item>
         <!--thunder-->
-        <item>http://www.freesound.org/data/previews/250/250677_149018-lq.mp3</item>
+        <item>http://www.freesound.org/data/previews/2/2523_1112-lq.mp3</item>
         <!--park-->
-        <item>http://www.freesound.org/data/previews/243/243008_4437257-lq.mp3</item>
+        <item>http://www.freesound.org/data/previews/30/30832_37876-lq.mp3</item>
         <!--night-->
         <item>http://www.freesound.org/data/previews/60/60507_649468-lq.mp3</item>
         <!--diner-->

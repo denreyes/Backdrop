@@ -124,7 +124,7 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
         new AsyncTask<String, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(String... params) {
-                Looper.prepare();
+//                Looper.prepare();
                 mArtBitmap = BitmapFactory.decodeResource(getActivityContext().getResources(), R.drawable.no_img);
                 try {
                     mArtBitmap = Glide.with(getActivityContext())
@@ -155,13 +155,13 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
 
     @Override
     public void updateOnSkip(int currentPos) {
+        seekHandler.removeCallbacks(moveSeekThread);
+        seekHandler.postDelayed(moveSeekThread, 500);
+
         this.currentPos = currentPos;
         Track track = mPlaylist.getTracks().get(currentPos);
         setAlbumArt(track.getArtworkUrl());
         getView().setViews(track.getTitle(), track.getUser().getUsername());
-
-        seekHandler.removeCallbacks(moveSeekThread);
-        seekHandler.postDelayed(moveSeekThread, 500);
     }
 
     @Override

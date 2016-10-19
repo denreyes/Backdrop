@@ -1,13 +1,10 @@
 package io.djnr.backdrop.ui.fragments.ambient;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +20,6 @@ import io.djnr.backdrop.services.AmbientService;
  * Created by Dj on 8/25/2016.
  */
 public class AmbientFragment extends Fragment{
-    private static final String TAG = "AmbientFragment";
     @BindView(R.id.img_rain)
     ImageView mImageRain;
     @BindView(R.id.img_cafe)
@@ -32,8 +28,8 @@ public class AmbientFragment extends Fragment{
     ImageView mImageStorm;
     @BindView(R.id.img_park)
     ImageView mImagePark;
-    @BindView(R.id.img_night)
-    ImageView mImageNight;
+    @BindView(R.id.img_waves)
+    ImageView mImageWaves;
     @BindView(R.id.img_diner)
     ImageView mImageDiner;
 
@@ -41,15 +37,15 @@ public class AmbientFragment extends Fragment{
     private static int KEY_CAFE = 1;
     private static int KEY_STORM = 2;
     private static int KEY_PARK = 3;
-    private static int KEY_NIGHT = 4;
+    private static int KEY_WAVES = 4;
     private static int KEY_DINER = 5;
 
     private SharedPreferences mPrefAmbience;
 
     private int[] mAmbientOnResIds = {R.drawable.img_activated_rain, R.drawable.img_activated_cafe, R.drawable.img_activated_storm,
-            R.drawable.img_activated_park, R.drawable.img_activated_night, R.drawable.img_activated_diner};
+            R.drawable.img_activated_park, R.drawable.img_activated_waves, R.drawable.img_activated_diner};
     private int[] mAmbientOffResIds = {R.drawable.img_ambient_rain, R.drawable.img_ambient_cafe, R.drawable.img_ambient_storm,
-            R.drawable.img_ambient_park, R.drawable.img_ambient_night, R.drawable.img_ambient_diner};
+            R.drawable.img_ambient_park, R.drawable.img_ambient_waves, R.drawable.img_ambient_diner};
     private String[] mAmbientUrls;
 
     @Nullable
@@ -62,7 +58,6 @@ public class AmbientFragment extends Fragment{
         mPrefAmbience = getActivity().getSharedPreferences("AMBIENCE_PREF", getActivity().MODE_PRIVATE);
         int key = getAmbientKeyFromPref(mPrefAmbience);
         loadAmbientImage(key, true);
-//        setTransition(key, true);
 
         return view;
     }
@@ -88,9 +83,9 @@ public class AmbientFragment extends Fragment{
         switchAmbient(KEY_PARK);
     }
 
-    @OnClick(R.id.img_night)
+    @OnClick(R.id.img_waves)
     public void onWaves() {
-        switchAmbient(KEY_NIGHT);
+        switchAmbient(KEY_WAVES);
     }
 
     @OnClick(R.id.img_diner)
@@ -114,8 +109,6 @@ public class AmbientFragment extends Fragment{
         setAmbientKeyOnPref(mPrefAmbience, amb);
 
         if(amb != -1){
-            Log.i(TAG, "switchAmbient: "+amb);
-            Log.i(TAG, "switchAmbient: "+mAmbientUrls[amb]);
             Intent i = new Intent(getActivity(), AmbientService.class);
             i.putExtra("AUDIO_LINK", mAmbientUrls[amb]);
             getActivity().startService(i);
@@ -134,7 +127,7 @@ public class AmbientFragment extends Fragment{
             case 1: mImageCafe.setImageResource(resId[key]);break;
             case 2: mImageStorm.setImageResource(resId[key]);break;
             case 3: mImagePark.setImageResource(resId[key]);break;
-            case 4: mImageNight.setImageResource(resId[key]);break;
+            case 4: mImageWaves.setImageResource(resId[key]);break;
             case 5: mImageDiner.setImageResource(resId[key]);break;
         }
     }
