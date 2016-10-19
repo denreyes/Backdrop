@@ -1,6 +1,9 @@
 package io.djnr.backdrop.ui.fragments.min_track.view;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,6 +26,7 @@ import butterknife.OnClick;
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.dagger.module.MinTrackFragmentModule;
 import io.djnr.backdrop.models.soundcloud.Playlist;
+import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.ui.App;
 import io.djnr.backdrop.ui.fragments.max_track.view.MaxTrackFragment;
 import io.djnr.backdrop.ui.fragments.min_track.IMinTrack;
@@ -50,11 +54,17 @@ public class MinTrackFragment extends Fragment implements IMinTrack.RequiredView
     @Inject
     IMinTrack.ProvidedPresenter mPresenter;
 
+    private IntentFilter mIntentFilter;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_track_min, container, false);
         ButterKnife.bind(this, view);
+
+        mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction(TrackService.broadcastStringAction);
+
         setupComponent();
         mSeekbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -64,6 +74,18 @@ public class MinTrackFragment extends Fragment implements IMinTrack.RequiredView
         });
         mPresenter.initTrackServiceCallback();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().registerReceiver(mReceiver, mIntentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(mReceiver);
     }
 
     private void setupComponent() {
@@ -142,6 +164,20 @@ public class MinTrackFragment extends Fragment implements IMinTrack.RequiredView
                 .addToBackStack(fragment.getClass().getSimpleName())
                 .commit();
     }
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mSeekbar.setProgress(0);
+            int posn = intent.getIntExtra("SONG_POSN", -1);
+            if(posn != -1){
+                mPresenter.updateOnSkip(posn);
+            }
+            if(posn == 0){
+                mPresenter.playPause();
+            }
+        }
+    };
 
     //Callbacks
     @Override

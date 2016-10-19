@@ -51,11 +51,15 @@ public interface IMaxTrack {
 
         void pausePlay();
 
+        void skip();
+
         void skipNext();
 
         void skipPrev();
 
         void tearDown();
+
+        void setPosition(int posn);
     }
 
     ;

@@ -172,6 +172,11 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
         Log.i(TAG, "playing on tear: "+isPlaying);
     }
 
+    @Override
+    public void setPosition(int posn) {
+        currentPos = posn;
+    }
+
     private Runnable moveSeekThread = new Runnable() {
         public void run() {
             TrackService trackService = mTrackServiceCallback.getTrackService();
@@ -184,24 +189,25 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
         }
     };
 
-    private void skip() {
+    @Override
+    public void skip() {
+        seekHandler.removeCallbacks(moveSeekThread);
+        getView().resetSeekbar();
+        seekHandler.postDelayed(moveSeekThread, 500);
+
         mPlayerCallback.updateOnSkip(currentPos);
         mTrack = mPlaylist.getTracks().get(currentPos);
 
         getView().endDiscAnimation();
         getView().setTexts(mTrack.getTitle(), mTrack.getUser().getUsername());
         setAlbumArt(Utils.largeSCImg(mTrack.getArtworkUrl()));
-
-        seekHandler.removeCallbacks(moveSeekThread);
-        getView().resetSeekbar();
-        seekHandler.postDelayed(moveSeekThread, 500);
     }
 
     private void setAlbumArt(String imageUrl) {
         new AsyncTask<String, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(String... params) {
-                Looper.prepare();
+//                Looper.prepare();
                 mArtBitmap = BitmapFactory.decodeResource(getActivityContext().getResources(), R.drawable.no_img);
                 try {
                     mArtBitmap = Glide.with(getActivityContext())
@@ -221,6 +227,7 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
             protected void onPostExecute(Bitmap bitmap) {
                 getView().setAlbumArt(bitmap);
                 getView().setupDiscAnimation();
+                getView().playDiscAnimation();
             }
         }.execute(imageUrl);
     }

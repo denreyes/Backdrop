@@ -1,7 +1,10 @@
 package io.djnr.backdrop.ui.fragments.max_track.view;
 
 import android.animation.ObjectAnimator;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -36,6 +39,7 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.dagger.module.MaxTrackFragmentModule;
+import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.ui.App;
 import io.djnr.backdrop.ui.activities.main.view.MainActivity;
 import io.djnr.backdrop.ui.fragments.max_track.IMaxTrack;
@@ -73,6 +77,7 @@ public class MaxTrackFragment extends Fragment implements IMaxTrack.RequiredView
 
     private ObjectAnimator mRotate;
     private long mAnimationTime = 0;
+    private IntentFilter mIntentFilter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +92,9 @@ public class MaxTrackFragment extends Fragment implements IMaxTrack.RequiredView
         ButterKnife.bind(this, view);
         mRecyclerTracks.setLayoutManager(new LinearLayoutManager(getActivity()));
         ((MainActivity) getActivity()).setSupportActionBar(mToolbar);
+
+        mIntentFilter = new IntentFilter();
+        mIntentFilter.addAction(TrackService.broadcastStringAction);
 
         setupComponent();
 
@@ -115,6 +123,18 @@ public class MaxTrackFragment extends Fragment implements IMaxTrack.RequiredView
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().registerReceiver(mReceiver, mIntentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(mReceiver);
     }
 
     private void setupComponent() {
@@ -270,6 +290,21 @@ public class MaxTrackFragment extends Fragment implements IMaxTrack.RequiredView
     public void onSkipPreviousClicked() {
         mPresenter.skipPrev();
     }
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mSeekbar.setProgress(0);
+            int posn = intent.getIntExtra("SONG_POSN", -1);
+            if(posn != -1){
+                mPresenter.setPosition(posn);
+                mPresenter.skip();
+            }
+            if(posn == 0){
+                mFabPlay.setImageResource(R.drawable.ic_play);
+            }
+        }
+    };
 
     public interface ControlUpdater {
         public void updateOnPause(boolean isPlaying);
