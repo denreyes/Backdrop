@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 
 import io.djnr.backdrop.R;
 import io.djnr.backdrop.ui.fragments.playlist.view.PlaylistAdapter;
+import jp.wasabeef.blurry.Blurry;
 
 /**
  * Created by Dj on 9/27/2016.
@@ -17,7 +18,8 @@ public interface IMaxTrack {
         Context getActivityContext();
         Fragment getFragment();
 
-        void setAlbumArt(Bitmap mArtBitmap);
+        void setAlbumArt(Bitmap bitmap);
+        void setBlurredAlbumArt(Blurry.BitmapComposer composer);
         void setTexts(String title, String username);
         void setRecyclerAdapter(PlaylistAdapter playlistAdapter);
 

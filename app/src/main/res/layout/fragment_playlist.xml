@@ -41,25 +41,25 @@
                     android:layout_weight="6"
                     android:gravity="center_vertical">
 
-                        <TextView
-                            android:id="@+id/album_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:fontFamily="sans-serif-black"
-                            android:text="Title"
-                            android:textAllCaps="true"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
+                    <TextView
+                        android:id="@+id/album_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="sans-serif-black"
+                        android:text="Title"
+                        android:textAllCaps="true"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 
-                        <TextView
-                            android:id="@+id/album_artist"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/album_title"
-                            android:layout_marginLeft="16dp"
-                            android:text="Large Text"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead" />
-                    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/album_artist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/album_title"
+                        android:layout_marginStart="16dp"
+                        android:text="Large Text"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead" />
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -87,7 +87,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_drop"
         app:layout_anchor="@id/album_info"
-        app:layout_anchorGravity="top|right|end" />
+        app:layout_anchorGravity="top|end|end" />
 
 
     <android.support.design.widget.FloatingActionButton
@@ -99,6 +99,6 @@
         android:src="@drawable/ic_play"
         app:backgroundTint="@color/fab_dark"
         app:layout_anchor="@id/album_info"
-        app:layout_anchorGravity="top|right|end" />
+        app:layout_anchorGravity="top|end|end" />
 
 </android.support.design.widget.CoordinatorLayout>

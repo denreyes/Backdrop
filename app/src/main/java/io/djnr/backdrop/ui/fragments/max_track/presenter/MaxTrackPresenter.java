@@ -3,6 +3,7 @@ package io.djnr.backdrop.ui.fragments.max_track.presenter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +28,7 @@ import io.djnr.backdrop.ui.fragments.max_track.view.MaxTrackFragment;
 import io.djnr.backdrop.ui.fragments.max_track.view.MaxTrackFragment.ControlUpdater;
 import io.djnr.backdrop.ui.fragments.playlist.view.PlaylistAdapter;
 import io.djnr.backdrop.utils.Utils;
+import jp.wasabeef.blurry.Blurry;
 
 /**
  * Created by Dj on 9/27/2016.
@@ -107,8 +109,15 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
     public void setupViews() {
         mDisplayerCallback.hideMinController();
 
-        getView().setTexts(mTrack.getTitle(), mTrack.getUser().getUsername());
+        Blurry.BitmapComposer composer = Blurry.with(getActivityContext())
+                .radius(6).sampling(4)
+                .color(Color.argb(204, 0, 0, 0))
+                .animate(500)
+                .async().from(mArtBitmap);
+
         getView().setAlbumArt(mArtBitmap);
+        getView().setBlurredAlbumArt(composer);
+        getView().setTexts(mTrack.getTitle(), mTrack.getUser().getUsername());
         getView().setupDiscAnimation();
         getView().setRecyclerAdapter(new PlaylistAdapter(mPlaylist, mTrackServiceCallback.getTrackService()));
 
@@ -225,7 +234,15 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
 
             @Override
             protected void onPostExecute(Bitmap bitmap) {
+
+                Blurry.BitmapComposer composer = Blurry.with(getActivityContext())
+                        .radius(6).sampling(4)
+                        .color(Color.argb(204, 0, 0, 0))
+                        .animate(500)
+                        .async().from(bitmap);
+
                 getView().setAlbumArt(bitmap);
+                getView().setBlurredAlbumArt(composer);
                 getView().setupDiscAnimation();
                 getView().playDiscAnimation();
             }

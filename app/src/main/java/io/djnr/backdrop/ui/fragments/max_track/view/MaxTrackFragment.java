@@ -184,18 +184,12 @@ public class MaxTrackFragment extends Fragment implements IMaxTrack.RequiredView
     //View Setup
     @Override
     public void setAlbumArt(Bitmap bitmap) {
-        mImageBg.setImageBitmap(bitmap);
         mImageArt.setImageBitmap(bitmap);
+    }
 
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                Blurry.with(getActivity()).radius(6).sampling(4)
-                        .color(Color.argb(204, 0, 0, 0))
-                        .animate(500)
-                        .async().capture(mImageBg).into(mImageBg);
-            }
-        });
+    @Override
+    public void setBlurredAlbumArt(Blurry.BitmapComposer composer) {
+        composer.into(mImageBg);
     }
 
     @Override

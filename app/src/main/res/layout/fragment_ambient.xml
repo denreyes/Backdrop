@@ -20,7 +20,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/space1"
-                android:layout_toLeftOf="@+id/img_rain"
                 android:layout_toStartOf="@+id/img_rain"
                 android:clickable="true"
                 android:src="@drawable/img_ambient_diner" />
@@ -29,7 +28,6 @@
                 android:id="@+id/space1"
                 android:layout_width="75dp"
                 android:layout_height="20dp"
-                android:layout_alignLeft="@+id/img_diner"
                 android:layout_alignParentBottom="true"
                 android:layout_alignStart="@+id/img_diner" />
 
@@ -40,8 +38,8 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/space2"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp"
                 android:clickable="true"
                 android:src="@drawable/img_ambient_rain" />
 
@@ -51,8 +49,8 @@
                 android:layout_height="90dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp" />
+                android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp" />
 
 
             <ImageView
@@ -61,7 +59,6 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/space3"
                 android:layout_toEndOf="@+id/img_rain"
-                android:layout_toRightOf="@+id/img_rain"
                 android:clickable="true"
                 android:src="@drawable/img_ambient_cafe" />
 
@@ -70,8 +67,7 @@
                 android:layout_width="75dp"
                 android:layout_height="20dp"
                 android:layout_alignEnd="@+id/img_cafe"
-                android:layout_alignParentBottom="true"
-                android:layout_alignRight="@+id/img_cafe" />
+                android:layout_alignParentBottom="true" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -84,7 +80,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/space4"
-                android:layout_toLeftOf="@+id/img_park"
                 android:layout_toStartOf="@+id/img_park"
                 android:clickable="true"
                 android:src="@drawable/img_ambient_waves" />
@@ -93,7 +88,6 @@
                 android:id="@+id/space4"
                 android:layout_width="75dp"
                 android:layout_height="20dp"
-                android:layout_alignLeft="@+id/img_waves"
                 android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/img_waves" />
 
@@ -104,8 +98,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/space5"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp"
                 android:clickable="true"
                 android:src="@drawable/img_ambient_park" />
 
@@ -115,8 +109,8 @@
                 android:layout_height="90dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp" />
+                android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp" />
 
 
             <ImageView
@@ -125,7 +119,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/space6"
                 android:layout_toEndOf="@+id/img_park"
-                android:layout_toRightOf="@+id/img_park"
                 android:clickable="true"
                 android:src="@drawable/img_ambient_storm" />
 
@@ -134,8 +127,7 @@
                 android:layout_width="75dp"
                 android:layout_height="20dp"
                 android:layout_alignEnd="@+id/img_storm"
-                android:layout_alignParentTop="true"
-                android:layout_alignRight="@+id/img_storm" />
+                android:layout_alignParentTop="true" />
         </RelativeLayout>
     </LinearLayout>
 </FrameLayout>

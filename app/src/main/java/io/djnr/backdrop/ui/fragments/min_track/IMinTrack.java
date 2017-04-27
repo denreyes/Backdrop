@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 
 import io.djnr.backdrop.models.soundcloud.Playlist;
 import io.djnr.backdrop.ui.fragments.max_track.view.MaxTrackFragment;
+import jp.wasabeef.blurry.Blurry;
 
 /**
  * Created by Dj on 9/27/2016.
@@ -15,7 +16,7 @@ public interface IMinTrack {
         Context getAppContext();
         Context getActivityContext();
         void setMaxProgress(int mediaMax_new, int mediaPos_new);
-        void setBackgroundArt(Bitmap bitmap);
+        void setBlurredBackgroundArt(Blurry.BitmapComposer composer);
         void setViews(String title, String username);
         void setImagePausePlay(boolean b);
         void launchMaxFragment(MaxTrackFragment fragment);

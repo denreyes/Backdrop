@@ -8,7 +8,7 @@
         android:id="@+id/img_prof_pic"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="25dp"
         android:src="@color/colorAccent" />
 
@@ -16,7 +16,7 @@
         android:id="@+id/txt_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Name Here"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />

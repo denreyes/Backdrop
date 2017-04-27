@@ -58,7 +58,7 @@
                         android:id="@+id/img_skip_previous"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left|center"
+                        android:layout_gravity="start|center"
                         android:layout_margin="25dp"
                         android:clickable="true"
                         android:padding="10dp"
@@ -82,15 +82,14 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/frame_layout"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginRight="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
                     android:layout_marginTop="16dp">
 
                     <TextView
                         android:id="@+id/txt_seek_progress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
                         android:text="0:00"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
 
@@ -116,8 +115,11 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/linearLayout"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginEnd="36dp"
                     android:layout_marginTop="12dp"
+                    android:gravity="center"
                     android:fontFamily="sans-serif-black"
+                    android:maxLines="1"
                     android:text="Track Title"
                     android:textColor="@android:color/white"
                     android:textSize="14sp" />

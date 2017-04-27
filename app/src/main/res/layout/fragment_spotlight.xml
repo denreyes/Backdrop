@@ -51,6 +51,6 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_drop"
         app:layout_anchor="@id/appbar"
-        app:layout_anchorGravity="bottom|right|end" />
+        app:layout_anchorGravity="bottom|end|end" />
 
 </android.support.design.widget.CoordinatorLayout>

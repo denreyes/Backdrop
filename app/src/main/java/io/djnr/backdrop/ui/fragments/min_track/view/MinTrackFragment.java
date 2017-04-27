@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -61,6 +63,7 @@ public class MinTrackFragment extends Fragment implements IMinTrack.RequiredView
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_track_min, container, false);
         ButterKnife.bind(this, view);
+        mTextTitle.setSelected(true);
 
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(TrackService.broadcastStringAction);
@@ -122,16 +125,22 @@ public class MinTrackFragment extends Fragment implements IMinTrack.RequiredView
     }
 
     @Override
-    public void setBackgroundArt(Bitmap bitmap) {
-        mImageArt.setImageBitmap(bitmap);
+    public void setBlurredBackgroundArt(final Blurry.BitmapComposer composer) {
+        Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
+        mImageArt.startAnimation(fadeOut);
 
-        new Handler().post(new Runnable() {
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void run() {
-                Blurry.with(getActivity()).radius(6).sampling(4)
-                        .color(Color.argb(204, 0, 0, 0))
-                        .animate(500)
-                        .async().capture(mImageArt).into(mImageArt);
+            public void onAnimationStart(Animation animation) {
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                composer.into(mImageArt);
+                Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+                mImageArt.startAnimation(fadeIn);
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {
             }
         });
     }

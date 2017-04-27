@@ -142,7 +142,14 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
 
             @Override
             protected void onPostExecute(Bitmap bitmap) {
-                getView().setBackgroundArt(bitmap);
+
+                Blurry.BitmapComposer composer = Blurry.with(getActivityContext())
+                        .radius(6).sampling(4)
+                        .color(Color.argb(204, 0, 0, 0))
+                        .animate(500)
+                        .async().from(bitmap);
+
+                getView().setBlurredBackgroundArt(composer);
             }
         }.execute(imageUrl);
     }
