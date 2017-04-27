@@ -27,7 +27,8 @@
             android:id="@+id/text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
+            android:maxLines="1"
+            android:ellipsize="marquee"
             android:textColor="@android:color/white"
             android:text="Title"
             android:textSize="14sp" />
@@ -36,7 +37,8 @@
             android:id="@+id/text_artist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
+            android:maxLines="1"
+            android:ellipsize="marquee"
             android:text="Artist"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
     </LinearLayout>

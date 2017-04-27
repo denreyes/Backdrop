@@ -16,27 +16,16 @@
         android:scaleType="centerCrop" />
 
     <TextView
-        android:id="@+id/text_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="12dp"
-        android:layout_toEndOf="@+id/frame_control"
-        android:layout_toRightOf="@+id/frame_control"
-        android:fontFamily="sans-serif-black"
-        android:paddingTop="14dp"
-        android:text="Title"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
-
-    <TextView
         android:id="@+id/text_artist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_title"
         android:layout_marginLeft="12dp"
         android:layout_toEndOf="@+id/frame_control"
+        android:layout_marginRight="36dp"
         android:layout_toRightOf="@+id/frame_control"
+        android:ellipsize="marquee"
+        android:maxLines="1"
         android:text="Artist"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
 
@@ -80,5 +69,21 @@
         android:paddingEnd="0dp"
         android:paddingStart="0dp"
         android:thumb="@null" />
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/text_artist"
+        android:layout_alignStart="@+id/text_artist"
+        android:layout_below="@+id/seekBar"
+        android:ellipsize="marquee"
+        android:fontFamily="sans-serif-black"
+        android:layout_marginRight="36dp"
+        android:maxLines="1"
+        android:paddingTop="14dp"
+        android:text="Title"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
 
 </RelativeLayout>

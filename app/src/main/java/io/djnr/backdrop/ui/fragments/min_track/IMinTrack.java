@@ -19,7 +19,7 @@ public interface IMinTrack {
         void setViews(String title, String username);
         void setImagePausePlay(boolean b);
         void launchMaxFragment(MaxTrackFragment fragment);
-    };
+    }
 
     public interface ProvidedPresenter{
         void initTrackServiceCallback();
@@ -29,14 +29,14 @@ public interface IMinTrack {
         void updateOnPause(boolean isPlaying);
         void updateOnSkip(int currentPos);
         void updatePlayer(Playlist playlist, int currentPos);
-    };
+    }
 
     public interface RequiredPresenter{
         Context getAppContext();
         Context getActivityContext();
-    };
+    }
 
     public interface ProvidedModel{
 
-    };
+    }
 }
