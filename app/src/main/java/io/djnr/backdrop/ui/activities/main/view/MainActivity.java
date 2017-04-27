@@ -1,5 +1,7 @@
 package io.djnr.backdrop.ui.activities.main.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -121,20 +123,47 @@ public class MainActivity extends AppCompatActivity implements IMain.RequiredVie
     @Override
     public void showMinController() {
         if (mPlayerContainer.getVisibility() != View.VISIBLE) {
-            mPlayerContainer.setVisibility(View.VISIBLE);
+            mPlayerContainer.animate()
+                    .translationY(0)
+                    .setListener(new AnimatorListenerAdapter() {
 
-            params.setMargins(0, 0, 0, 82);
-            mContainer.setLayoutParams(params);
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            mPlayerContainer.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            params.setMargins(0, 0, 0, mPlayerContainer.getMeasuredHeight());
+                            mContainer.setLayoutParams(params);
+                        }
+                    });
         }
     }
 
     @Override
     public void hideMinController() {
         if (mPlayerContainer.getVisibility() == View.VISIBLE) {
-            mPlayerContainer.setVisibility(View.INVISIBLE);
 
-            params.setMargins(0, 0, 0, 0);
-            mContainer.setLayoutParams(params);
+            mPlayerContainer.animate()
+                    .translationY(mPlayerContainer.getMeasuredHeight())
+                    .setListener(new AnimatorListenerAdapter() {
+
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            super.onAnimationStart(animation);
+                            params.setMargins(0, 0, 0, 0);
+                            mContainer.setLayoutParams(params);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            mPlayerContainer.setVisibility(View.INVISIBLE);
+                        }
+                    });
         }
     }
 
