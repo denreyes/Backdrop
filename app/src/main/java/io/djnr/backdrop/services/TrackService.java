@@ -82,11 +82,12 @@ public class TrackService extends Service implements
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        if(songPosn <= songs.size())
+        if(songPosn <= songs.size() && !mp.isPlaying())
             playNext();
         else
             songPosn = 0;
 
+        Log.i("DEBUG ME!", "Track completed");
         Intent broadcastIntent = new Intent();
         broadcastIntent.putExtra("SONG_POSN", songPosn);
         broadcastIntent.setAction(broadcastStringAction);

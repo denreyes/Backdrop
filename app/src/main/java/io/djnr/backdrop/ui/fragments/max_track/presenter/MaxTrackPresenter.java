@@ -15,6 +15,8 @@ import android.util.Log;
 import com.bumptech.glide.Glide;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import io.djnr.backdrop.R;
@@ -39,7 +41,7 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
     IMaxTrack.ProvidedModel mModel;
 
     private Playlist mPlaylist;
-    private Bitmap mArtBitmap;
+    private Bitmap mArtBitmap, mPrevArtBitmap, mNextArtBitmap;
     private Track mTrack;
     private int currentPos;
     private boolean isPlaying;
@@ -86,7 +88,9 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
         currentPos = args.getInt("CURRENT_POS");
         isPlaying = args.getBoolean("IS_PLAYING");
         mArtBitmap = args.getParcelable("BITMAP_IMAGE");
-        mPlaylist = ((Playlist) args.getParcelable("PLAYLIST"));
+        mPrevArtBitmap = args.getParcelable("BITMAP_IMAGE_PREV");
+        mNextArtBitmap = args.getParcelable("BITMAP_IMAGE_NEXT");
+        mPlaylist = args.getParcelable("PLAYLIST");
         mTrack = mPlaylist.getTracks().get(currentPos);
 
         Log.i(TAG, "playing on prep: "+isPlaying);
@@ -116,6 +120,8 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
                 .async().from(mArtBitmap);
 
         getView().setAlbumArt(mArtBitmap);
+        getView().setNextAlbumArt(mNextArtBitmap);
+        getView().setPrevAlbumArt(mPrevArtBitmap);
         getView().setBlurredAlbumArt(composer);
         getView().setTexts(mTrack.getTitle(), mTrack.getUser().getUsername());
         getView().setupDiscAnimation();
@@ -132,7 +138,9 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
     @Override
     public void setupSeekbar() {
         TrackService trackService = mTrackServiceCallback.getTrackService();
-        getView().setSeekbarProgress(trackService.getPosition(), trackService.getDuration());
+        if(trackService.isPlaying() && isPlaying) {
+            getView().setSeekbarProgress(trackService.getPosition(), trackService.getDuration());
+        }
     }
 
     @Override
@@ -209,19 +217,54 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
 
         getView().endDiscAnimation();
         getView().setTexts(mTrack.getTitle(), mTrack.getUser().getUsername());
-        setAlbumArt(Utils.largeSCImg(mTrack.getArtworkUrl()));
+        setAlbumArt(Utils.largeSCImg(mTrack.getArtworkUrl()),
+                Utils.largeSCImg(mPlaylist.getTracks().get(currentPos-1).getArtworkUrl()),
+                Utils.largeSCImg(mPlaylist.getTracks().get(currentPos+1).getArtworkUrl()));
+
+        Log.i("DEBUG ME!", "skip: "+mTrack.getTitle());
     }
 
-    private void setAlbumArt(String imageUrl) {
-        new AsyncTask<String, Void, Bitmap>() {
+    private void setAlbumArt(String imageUrl, String prevImageUrl, String nextImageUrl) {
+        new AsyncTask<String, Void, List<Bitmap>>() {
             @Override
-            protected Bitmap doInBackground(String... params) {
-//                Looper.prepare();
-                mArtBitmap = BitmapFactory.decodeResource(getActivityContext().getResources(), R.drawable.no_img);
+            protected List<Bitmap> doInBackground(String... params) {
+                mArtBitmap = getBitmap(params[0]);
+                mPrevArtBitmap = params[1] != null ? getBitmap(params[1]) : null;
+                mNextArtBitmap = params[2] != null ? getBitmap(params[2]) : null;
+
+                List<Bitmap> bitmaps = new ArrayList<Bitmap>();
+                bitmaps.add(mArtBitmap);
+                bitmaps.add(mPrevArtBitmap);
+                bitmaps.add(mNextArtBitmap);
+
+                return bitmaps;
+            }
+
+            @Override
+            protected void onPostExecute(List<Bitmap> bitmaps) {
+
+                Blurry.BitmapComposer composer = Blurry.with(getActivityContext())
+                        .radius(6).sampling(4)
+                        .color(Color.argb(204, 0, 0, 0))
+                        .animate(500)
+                        .async().from(bitmaps.get(0));
+
+                getView().setAlbumArt(bitmaps.get(0));
+                getView().setPrevAlbumArt(bitmaps.get(1));
+                getView().setNextAlbumArt(bitmaps.get(2));
+
+                getView().setBlurredAlbumArt(composer);
+                getView().setupDiscAnimation();
+                getView().playDiscAnimation();
+            }
+
+            private Bitmap getBitmap(String url){
                 try {
                     mArtBitmap = Glide.with(getActivityContext())
-                            .load(Utils.largeSCImg(params[0]))
+                            .load(Utils.largeSCImg(url))
                             .asBitmap().into(-1, -1).get();
+
+                    return mArtBitmap;
                 } catch (final ExecutionException e) {
                     Log.e(TAG, e.getMessage());
                 } catch (final InterruptedException e) {
@@ -229,23 +272,8 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
                 } catch (final NullPointerException e) {
                     Log.e(TAG, e.getMessage());
                 }
-                return mArtBitmap;
+                return BitmapFactory.decodeResource(getActivityContext().getResources(), R.drawable.no_img);
             }
-
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-
-                Blurry.BitmapComposer composer = Blurry.with(getActivityContext())
-                        .radius(6).sampling(4)
-                        .color(Color.argb(204, 0, 0, 0))
-                        .animate(500)
-                        .async().from(bitmap);
-
-                getView().setAlbumArt(bitmap);
-                getView().setBlurredAlbumArt(composer);
-                getView().setupDiscAnimation();
-                getView().playDiscAnimation();
-            }
-        }.execute(imageUrl);
+        }.execute(imageUrl, prevImageUrl, nextImageUrl);
     }
 }

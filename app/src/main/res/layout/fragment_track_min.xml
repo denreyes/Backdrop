@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="16dp"
+        android:padding="16dp"
         android:clickable="true"
         android:src="@drawable/ic_arrow_up" />
 
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/text_artist"
         android:layout_below="@+id/seekBar"
-        android:layout_marginEnd="36dp"
+        android:paddingEnd="36dp"
         android:ellipsize="marquee"
         android:fontFamily="sans-serif-black"
         android:marqueeRepeatLimit="marquee_forever"

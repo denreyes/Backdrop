@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements IMain.RequiredVie
     DrawerLayout mDrawerLayout;
 
     //Nav Views
-    ImageView mImageProf;
-    TextView mTextName;
+//    ImageView mImageProf;
+//    TextView mTextName;
 
     // index to identify current nav menu item
     public static int navItemIndex = 0;
@@ -95,12 +95,12 @@ public class MainActivity extends AppCompatActivity implements IMain.RequiredVie
         ButterKnife.bind(this);
 
         View headerView = mNavView.getHeaderView(0);
-        mImageProf = ButterKnife.findById(headerView, R.id.img_prof_pic);
-        mTextName = ButterKnife.findById(headerView, R.id.txt_name);
+//        mImageProf = ButterKnife.findById(headerView, R.id.img_prof_pic);
+//        mTextName = ButterKnife.findById(headerView, R.id.txt_name);
 
-        mAccount = getIntent().getParcelableExtra("ACCOUNT");
-        mTextName.setText(mAccount.getGivenName());
-        Glide.with(this).load(mAccount.getPhotoUrl()).centerCrop().crossFade().into(mImageProf);
+//        mAccount = getIntent().getParcelableExtra("ACCOUNT");
+//        mTextName.setText(mAccount.getGivenName());
+//        Glide.with(this).load(mAccount.getPhotoUrl()).centerCrop().crossFade().into(mImageProf);
 
         setupComponent();
 

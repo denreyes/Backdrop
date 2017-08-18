@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1070117117776",
+    "project_id": "backdrop-60910"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070117117776:android:2472c16f9745889c",
+        "android_client_info": {
+          "package_name": "io.djnr.backdrop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070117117776-bosaubk52kpnd2dtbcrifgjdijsjomt4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpzjOdQmRAZa2_lnELJkSPGtrMokFHLf0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

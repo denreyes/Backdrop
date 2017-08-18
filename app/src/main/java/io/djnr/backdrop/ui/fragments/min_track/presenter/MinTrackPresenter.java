@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
@@ -22,7 +21,6 @@ import io.djnr.backdrop.models.soundcloud.Track;
 import io.djnr.backdrop.services.TrackService;
 import io.djnr.backdrop.ui.fragments.max_track.view.MaxTrackFragment;
 import io.djnr.backdrop.ui.fragments.min_track.IMinTrack;
-import io.djnr.backdrop.ui.fragments.playlist.view.PlaylistFragment;
 import io.djnr.backdrop.utils.Utils;
 import jp.wasabeef.blurry.Blurry;
 
@@ -40,7 +38,7 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
     private Playlist mPlaylist;
     private int currentPos;
     private boolean isPlaying;
-    private Bitmap mArtBitmap;
+    private Bitmap mArtBitmap, mPrevArtBitmap, mNextArtBitmap;
 
     public MinTrackPresenter(IMinTrack.RequiredView view) {
         mView = new WeakReference<IMinTrack.RequiredView>(view);
@@ -100,6 +98,8 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
         args.putInt("CURRENT_POS", currentPos);
         args.putBoolean("IS_PLAYING", isPlaying);
         args.putParcelable("BITMAP_IMAGE", mArtBitmap);
+        args.putParcelable("BITMAP_IMAGE_NEXT", mNextArtBitmap);
+        args.putParcelable("BITMAP_IMAGE_PREV", mPrevArtBitmap);
 
         MaxTrackFragment maxTrackFragment = new MaxTrackFragment();
         maxTrackFragment.setArguments(args);
@@ -120,23 +120,14 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
         }
     };
 
-    private void setAlbumArt(String imageUrl) {
+    private void setAlbumArt(String imageUrl, String prevImageUrl, String nextImageUrl) {
         new AsyncTask<String, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(String... params) {
-//                Looper.prepare();
-                mArtBitmap = BitmapFactory.decodeResource(getActivityContext().getResources(), R.drawable.no_img);
-                try {
-                    mArtBitmap = Glide.with(getActivityContext())
-                            .load(Utils.largeSCImg(params[0]))
-                            .asBitmap().into(-1, -1).get();
-                } catch (final ExecutionException e) {
-                    Log.e(TAG, e.getMessage());
-                } catch (final InterruptedException e) {
-                    Log.e(TAG, e.getMessage());
-                } catch (final NullPointerException e) {
-                    Log.e(TAG, e.getMessage());
-                }
+                mArtBitmap = getBitmap(params[0]);
+                mPrevArtBitmap = getBitmap(params[1]);
+                mNextArtBitmap = getBitmap(params[2]);
+
                 return mArtBitmap;
             }
 
@@ -151,7 +142,22 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
 
                 getView().setBlurredBackgroundArt(composer);
             }
-        }.execute(imageUrl);
+
+            private Bitmap getBitmap(String url){
+                try {
+                    return Glide.with(getActivityContext())
+                            .load(Utils.largeSCImg(url))
+                            .asBitmap().into(-1, -1).get();
+                } catch (final ExecutionException e) {
+                    Log.e(TAG, e.getMessage());
+                } catch (final InterruptedException e) {
+                    Log.e(TAG, e.getMessage());
+                } catch (final NullPointerException e) {
+                    Log.e(TAG, e.getMessage());
+                }
+                return BitmapFactory.decodeResource(getActivityContext().getResources(), R.drawable.no_img);
+            }
+        }.execute(imageUrl, prevImageUrl, nextImageUrl);
     }
 
     @Override
@@ -166,9 +172,23 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
         seekHandler.postDelayed(moveSeekThread, 500);
 
         this.currentPos = currentPos;
-        Track track = mPlaylist.getTracks().get(currentPos);
-        setAlbumArt(track.getArtworkUrl());
-        getView().setViews(track.getTitle(), track.getUser().getUsername());
+        Track currentTrack = mPlaylist.getTracks().get(currentPos);
+
+        String prevArtworkUrl, nextArtworkUrl;
+        try{
+            prevArtworkUrl = mPlaylist.getTracks().get(currentPos-1).getArtworkUrl();
+        }catch (ArrayIndexOutOfBoundsException e){
+            prevArtworkUrl = null;
+        }
+
+        try {
+            nextArtworkUrl = mPlaylist.getTracks().get(currentPos+1).getArtworkUrl();
+        }catch (ArrayIndexOutOfBoundsException e){
+            nextArtworkUrl = null;
+        }
+
+        setAlbumArt(currentTrack.getArtworkUrl(), prevArtworkUrl, nextArtworkUrl);
+        getView().setViews(currentTrack.getTitle(), currentTrack.getUser().getUsername());
     }
 
     @Override
@@ -178,7 +198,20 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
 
         Track currentTrack = playlist.getTracks().get(currentPos);
 
-        setAlbumArt(currentTrack.getArtworkUrl());
+        String prevArtworkUrl, nextArtworkUrl;
+        try{
+            prevArtworkUrl = mPlaylist.getTracks().get(currentPos-1).getArtworkUrl();
+        }catch (ArrayIndexOutOfBoundsException e){
+            prevArtworkUrl = null;
+        }
+
+        try {
+            nextArtworkUrl = mPlaylist.getTracks().get(currentPos+1).getArtworkUrl();
+        }catch (ArrayIndexOutOfBoundsException e){
+            nextArtworkUrl = null;
+        }
+
+        setAlbumArt(currentTrack.getArtworkUrl(), prevArtworkUrl, nextArtworkUrl);
         getView().setViews(currentTrack.getTitle(), currentTrack.getUser().getUsername());
         seekHandler.removeCallbacks(moveSeekThread);
         seekHandler.postDelayed(moveSeekThread, 200);

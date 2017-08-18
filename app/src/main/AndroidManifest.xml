@@ -2,29 +2,40 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.djnr.backdrop">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+
     <application
+        android:name=".ui.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:name=".ui.App"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.LoginActivity" android:screenOrientation="portrait">
+        <activity
+            android:name=".ui.activities.LoginActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".ui.activities.main.view.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.activities.ambient.AmbientActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.activities.main.view.MainActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activities.ambient.AmbientActivity" android:screenOrientation="portrait"/>
-
-        <service android:enabled="true" android:name=".services.TrackService" />
-        <service android:enabled="true" android:name=".services.AmbientService" />
+        <service
+            android:name=".services.TrackService"
+            android:enabled="true" />
+        <service
+            android:name=".services.AmbientService"
+            android:enabled="true" />
     </application>
 
 </manifest>
