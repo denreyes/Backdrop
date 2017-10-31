@@ -19,9 +19,11 @@ public interface IMaxTrack {
         Fragment getFragment();
 
         void setAlbumArt(Bitmap bitmap);
-        void setNextAlbumArt(Bitmap bitmap);
-        void setPrevAlbumArt(Bitmap bitmap);
+        void setNextAlbumArt(Blurry.BitmapComposer composer);
+        void setPrevAlbumArt(Blurry.BitmapComposer composer);
         void setBlurredAlbumArt(Blurry.BitmapComposer composer);
+        void hideNextAlbumArt();
+        void hidePrevAlbumArt();
         void setTexts(String title, String username);
         void setRecyclerAdapter(PlaylistAdapter playlistAdapter);
 

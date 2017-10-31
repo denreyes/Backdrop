@@ -93,7 +93,7 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
         mPlaylist = args.getParcelable("PLAYLIST");
         mTrack = mPlaylist.getTracks().get(currentPos);
 
-        Log.i(TAG, "playing on prep: "+isPlaying);
+        Log.i(TAG, "playing on prep: " + isPlaying);
     }
 
     @Override
@@ -113,16 +113,18 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
     public void setupViews() {
         mDisplayerCallback.hideMinController();
 
-        Blurry.BitmapComposer composer = Blurry.with(getActivityContext())
-                .radius(6).sampling(4)
-                .color(Color.argb(204, 0, 0, 0))
-                .animate(500)
-                .async().from(mArtBitmap);
-
         getView().setAlbumArt(mArtBitmap);
-        getView().setNextAlbumArt(mNextArtBitmap);
-        getView().setPrevAlbumArt(mPrevArtBitmap);
-        getView().setBlurredAlbumArt(composer);
+
+        if (mPrevArtBitmap == null)
+            getView().hidePrevAlbumArt();
+        else
+            getView().setPrevAlbumArt(getComposer(mPrevArtBitmap, 2, 1, Color.argb(150, 0, 0, 0), 500));
+        if (mNextArtBitmap == null)
+            getView().hideNextAlbumArt();
+        else
+            getView().setNextAlbumArt(getComposer(mNextArtBitmap, 2, 1, Color.argb(150, 0, 0, 0), 500));
+
+        getView().setBlurredAlbumArt(getComposer(mArtBitmap, 6, 4, Color.argb(204, 0, 0, 0), 500));
         getView().setTexts(mTrack.getTitle(), mTrack.getUser().getUsername());
         getView().setupDiscAnimation();
         getView().setRecyclerAdapter(new PlaylistAdapter(mPlaylist, mTrackServiceCallback.getTrackService()));
@@ -135,10 +137,24 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
         }
     }
 
+    private Blurry.BitmapComposer getComposer(Bitmap bmp, int radius, int sampling, int color, int animate) {
+        Blurry.Composer composer = Blurry.with(getActivityContext())
+                .radius(radius).sampling(sampling)
+                .async();
+
+        if (color != -1)
+            composer.color(color);
+
+        if (animate != -1)
+            composer.animate(animate);
+
+        return composer.from(bmp);
+    }
+
     @Override
     public void setupSeekbar() {
         TrackService trackService = mTrackServiceCallback.getTrackService();
-        if(trackService.isPlaying() && isPlaying) {
+        if (trackService.isPlaying() && isPlaying) {
             getView().setSeekbarProgress(trackService.getPosition(), trackService.getDuration());
         }
     }
@@ -186,7 +202,7 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
     @Override
     public void tearDown() {
         seekHandler.removeCallbacks(moveSeekThread);
-        Log.i(TAG, "playing on tear: "+isPlaying);
+        Log.i(TAG, "playing on tear: " + isPlaying);
     }
 
     @Override
@@ -218,10 +234,10 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
         getView().endDiscAnimation();
         getView().setTexts(mTrack.getTitle(), mTrack.getUser().getUsername());
         setAlbumArt(Utils.largeSCImg(mTrack.getArtworkUrl()),
-                Utils.largeSCImg(mPlaylist.getTracks().get(currentPos-1).getArtworkUrl()),
-                Utils.largeSCImg(mPlaylist.getTracks().get(currentPos+1).getArtworkUrl()));
+                Utils.largeSCImg(mPlaylist.getTracks().get(currentPos - 1).getArtworkUrl()),
+                Utils.largeSCImg(mPlaylist.getTracks().get(currentPos + 1).getArtworkUrl()));
 
-        Log.i("DEBUG ME!", "skip: "+mTrack.getTitle());
+        Log.i("DEBUG ME!", "skip: " + mTrack.getTitle());
     }
 
     private void setAlbumArt(String imageUrl, String prevImageUrl, String nextImageUrl) {
@@ -243,22 +259,23 @@ public class MaxTrackPresenter implements IMaxTrack.ProvidedPresenter, IMaxTrack
             @Override
             protected void onPostExecute(List<Bitmap> bitmaps) {
 
-                Blurry.BitmapComposer composer = Blurry.with(getActivityContext())
-                        .radius(6).sampling(4)
-                        .color(Color.argb(204, 0, 0, 0))
-                        .animate(500)
-                        .async().from(bitmaps.get(0));
-
                 getView().setAlbumArt(bitmaps.get(0));
-                getView().setPrevAlbumArt(bitmaps.get(1));
-                getView().setNextAlbumArt(bitmaps.get(2));
 
-                getView().setBlurredAlbumArt(composer);
+                if (bitmaps.get(1) == null)
+                    getView().hidePrevAlbumArt();
+                else
+                    getView().setPrevAlbumArt(getComposer(bitmaps.get(0), 1, 1, Color.argb(150, 0, 0, 0), 500));
+                if (bitmaps.get(2) == null)
+                    getView().hideNextAlbumArt();
+                else
+                    getView().setNextAlbumArt(getComposer(bitmaps.get(0), 1, 1, Color.argb(150, 0, 0, 0), 500));
+
+                getView().setBlurredAlbumArt(getComposer(bitmaps.get(0), 6, 4, Color.argb(204, 0, 0, 0), 500));
                 getView().setupDiscAnimation();
                 getView().playDiscAnimation();
             }
 
-            private Bitmap getBitmap(String url){
+            private Bitmap getBitmap(String url) {
                 try {
                     mArtBitmap = Glide.with(getActivityContext())
                             .load(Utils.largeSCImg(url))

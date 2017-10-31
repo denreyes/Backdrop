@@ -25,10 +25,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <io.djnr.backdrop.customviews.SquareImageView
+                <ImageView
                     android:id="@+id/img_art"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="250dp"
                     android:fitsSystemWindows="true"
                     android:transitionName="album_art"
                     app:layout_collapseMode="parallax" />

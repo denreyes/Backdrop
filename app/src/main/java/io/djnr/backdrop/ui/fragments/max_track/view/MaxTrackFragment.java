@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -44,9 +45,9 @@ import jp.wasabeef.blurry.Blurry;
 /**
  * Created by Dj on 9/7/2016.
  */
-public class MaxTrackFragment extends Fragment implements IMaxTrack.RequiredView{
+public class MaxTrackFragment extends Fragment implements IMaxTrack.RequiredView {
     private static final String TAG = "MaxTrackFragment";
-    
+
     @BindView(R.id.img_bg)
     ImageView mImageBg;
     @BindView(R.id.img_track_art)
@@ -106,7 +107,7 @@ public class MaxTrackFragment extends Fragment implements IMaxTrack.RequiredView
         mSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(fromUser) {
+                if (fromUser) {
                     mPresenter.userSeeked(progress);
                 }
             }
@@ -188,28 +189,28 @@ public class MaxTrackFragment extends Fragment implements IMaxTrack.RequiredView
     }
 
     @Override
-    public void setNextAlbumArt(Bitmap bitmap) {
-        if(bitmap != null) {
-            mImageNextArt.setImageBitmap(bitmap);
-            mImageNextArt.setVisibility(View.VISIBLE);
-        }else {
-            mImageNextArt.setVisibility(View.GONE);
-        }
+    public void setNextAlbumArt(Blurry.BitmapComposer composer) {
+        composer.into(mImageNextArt);
     }
 
     @Override
-    public void setPrevAlbumArt(Bitmap bitmap) {
-        if(bitmap != null) {
-            mImagePrevArt.setImageBitmap(bitmap);
-            mImagePrevArt.setVisibility(View.VISIBLE);
-        }else {
-            mImagePrevArt.setVisibility(View.GONE);
-        }
+    public void setPrevAlbumArt(Blurry.BitmapComposer composer) {
+        composer.into(mImagePrevArt);
     }
 
     @Override
     public void setBlurredAlbumArt(Blurry.BitmapComposer composer) {
         composer.into(mImageBg);
+    }
+
+    @Override
+    public void hideNextAlbumArt() {
+        mImageNextArt.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hidePrevAlbumArt() {
+        mImagePrevArt.setVisibility(View.GONE);
     }
 
     @Override
@@ -310,12 +311,12 @@ public class MaxTrackFragment extends Fragment implements IMaxTrack.RequiredView
         public void onReceive(Context context, Intent intent) {
 //            mSeekbar.setProgress(0);
             int posn = intent.getIntExtra("SONG_POSN", -1);
-            if(posn != -1){
+            if (posn != -1) {
                 mPresenter.setPosition(posn);
                 Log.i("DEBUG ME!", "onReceive: skip on Fragment");
                 mPresenter.skip();
             }
-            if(posn == 0){
+            if (posn == 0) {
                 mFabPlay.setImageResource(R.drawable.ic_play);
             }
         }

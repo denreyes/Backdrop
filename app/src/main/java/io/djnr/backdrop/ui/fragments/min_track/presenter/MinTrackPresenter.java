@@ -125,8 +125,8 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
             @Override
             protected Bitmap doInBackground(String... params) {
                 mArtBitmap = getBitmap(params[0]);
-                mPrevArtBitmap = getBitmap(params[1]);
-                mNextArtBitmap = getBitmap(params[2]);
+                mPrevArtBitmap = "breach".equals(params[1]) ? null : getBitmap(params[1]);
+                mNextArtBitmap = "breach".equals(params[2]) ? null : getBitmap(params[2]);
 
                 return mArtBitmap;
             }
@@ -177,14 +177,14 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
         String prevArtworkUrl, nextArtworkUrl;
         try{
             prevArtworkUrl = mPlaylist.getTracks().get(currentPos-1).getArtworkUrl();
-        }catch (ArrayIndexOutOfBoundsException e){
-            prevArtworkUrl = null;
+        }catch (IndexOutOfBoundsException e){
+            prevArtworkUrl = "breach";
         }
 
         try {
             nextArtworkUrl = mPlaylist.getTracks().get(currentPos+1).getArtworkUrl();
-        }catch (ArrayIndexOutOfBoundsException e){
-            nextArtworkUrl = null;
+        }catch (IndexOutOfBoundsException e){
+            nextArtworkUrl = "breach";
         }
 
         setAlbumArt(currentTrack.getArtworkUrl(), prevArtworkUrl, nextArtworkUrl);
@@ -201,14 +201,14 @@ public class MinTrackPresenter implements IMinTrack.ProvidedPresenter, IMinTrack
         String prevArtworkUrl, nextArtworkUrl;
         try{
             prevArtworkUrl = mPlaylist.getTracks().get(currentPos-1).getArtworkUrl();
-        }catch (ArrayIndexOutOfBoundsException e){
-            prevArtworkUrl = null;
+        }catch (IndexOutOfBoundsException e){
+            prevArtworkUrl = "breach";
         }
 
         try {
             nextArtworkUrl = mPlaylist.getTracks().get(currentPos+1).getArtworkUrl();
-        }catch (ArrayIndexOutOfBoundsException e){
-            nextArtworkUrl = null;
+        }catch (IndexOutOfBoundsException e){
+            nextArtworkUrl = "breach";
         }
 
         setAlbumArt(currentTrack.getArtworkUrl(), prevArtworkUrl, nextArtworkUrl);
