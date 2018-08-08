@@ -3,30 +3,60 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
+    android:background="@color/colorPrimaryDark">
 
     <WebView
-        android:id="@+id/web_view"
+        android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000" />
+
     <ImageView
-        android:id="@+id/img_backdrop"
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="85dp"
         android:src="@drawable/drop" />
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/btn_signin"
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="18dp"
+        android:text="@string/app_name"
+        android:textSize="48sp" />
+
+    <Button
+        android:id="@+id/btnSignin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/tvDisclaimer"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:backgroundTint="@color/spotify_green"
+        android:paddingBottom="24dp"
+        android:paddingTop="24dp"
+        android:text="Sign in with Spotify" />
+
+    <TextView
+        android:id="@+id/tvDisclaimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:visibility="gone" />
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="85dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="This app only works for users who are on Spotify Premium."
+        android:textSize="13sp" />
 
 </RelativeLayout>

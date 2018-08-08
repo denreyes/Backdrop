@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/ivBonfire"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_above="@+id/space1"
+                android:layout_toStartOf="@+id/ivRain"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:src="@drawable/ic_ambience_bonfire" />
+
+            <Space
+                android:id="@+id/space1"
+                android:layout_width="75dp"
+                android:layout_height="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignStart="@+id/ivBonfire" />
+
+
+            <ImageView
+                android:id="@+id/ivRain"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_above="@+id/space2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="44dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:src="@drawable/ic_ambience_rain" />
+
+            <Space
+                android:id="@+id/space2"
+                android:layout_width="75dp"
+                android:layout_height="92dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp" />
+
+
+            <ImageView
+                android:id="@+id/ivCafe"
+                android:layout_above="@+id/space3"
+                android:layout_toEndOf="@+id/ivRain"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/ic_ambience_coffee" />
+
+            <Space
+                android:id="@+id/space3"
+                android:layout_width="75dp"
+                android:layout_height="24dp"
+                android:layout_alignEnd="@+id/ivCafe"
+                android:layout_alignParentBottom="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/ivWaves"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_below="@+id/space4"
+                android:layout_toStartOf="@+id/ivWoods"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:src="@drawable/ic_ambience_waves" />
+
+            <Space
+                android:id="@+id/space4"
+                android:layout_width="75dp"
+                android:layout_height="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/ivWaves" />
+
+
+            <ImageView
+                android:id="@+id/ivWoods"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_below="@+id/space5"
+                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:src="@drawable/ic_ambience_woods" />
+
+            <Space
+                android:id="@+id/space5"
+                android:layout_width="75dp"
+                android:layout_height="92dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp" />
+
+
+            <ImageView
+                android:id="@+id/ivStorm"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_below="@+id/space6"
+                android:layout_toEndOf="@+id/ivWoods"
+                android:background="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:src="@drawable/ic_ambience_storm" />
+
+            <Space
+                android:id="@+id/space6"
+                android:layout_width="75dp"
+                android:layout_height="24dp"
+                android:layout_alignEnd="@+id/ivStorm"
+                android:layout_alignParentTop="true" />
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
