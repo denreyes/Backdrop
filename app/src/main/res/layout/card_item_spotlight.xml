@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_margin="@dimen/card_margin"
-    android:clickable="true"
-    android:elevation="3dp"
-    android:foreground="?android:attr/selectableItemBackground"
-    card_view:cardCornerRadius="@dimen/card_album_radius">
+    android:layout_height="wrap_content"></RelativeLayout>
 
-    <io.djnr.backdrop.customviews.SquareImageView
-        android:id="@+id/thumbnail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:scaleType="fitXY"
-        android:transitionName="album_art" />
+<!--<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+    <!--android:id="@+id/card_view"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_margin="@dimen/card_margin"-->
+    <!--android:clickable="true"-->
+    <!--android:elevation="3dp"-->
+    <!--android:foreground="?android:attr/selectableItemBackground"-->
+    <!--card_view:cardCornerRadius="@dimen/card_album_radius">-->
 
-</android.support.v7.widget.CardView>
+    <!--&lt;!&ndash;<io.djnr.backdrop.customviews.SquareImageView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/thumbnail"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:background="?android:attr/selectableItemBackground"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:clickable="true"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:scaleType="fitXY"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:transitionName="album_art" />&ndash;&gt;-->
+
+<!--</android.support.v7.widget.CardView>-->

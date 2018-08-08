@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Backdrop.iml" filepath="$PROJECT_DIR$/Backdrop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Dropback.iml" filepath="$PROJECT_DIR$/Dropback.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
