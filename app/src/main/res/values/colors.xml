@@ -2,9 +2,9 @@
 <resources>
     <color name="colorPrimary">#424242</color>
     <color name="colorPrimaryDark">#212121</color>
-    <color name="colorAccent">#d05254</color>
+    <color name="colorPrimaryLight">#6d6d6d</color>
+    <color name="colorAccent">#52aed0</color>
 
-    <color name="divider">#424242</color>
     <color name="fab_dark">@color/colorPrimaryDark</color>
-    <color name="dark_background">#303030</color>
+    <color name="spotify_green">#6AE368</color>
 </resources>
