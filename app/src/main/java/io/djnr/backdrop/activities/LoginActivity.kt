@@ -14,8 +14,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 
 class LoginActivity : BaseActivity() {
-    val CLIENT_ID = "86155f399889413f95ea13b289b8121b"
-    val REDIRECT_URI = "backdrop-io://callback"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
