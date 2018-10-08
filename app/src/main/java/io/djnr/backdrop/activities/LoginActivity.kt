@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -45,6 +44,7 @@ class LoginActivity : BaseActivity() {
 
                             // Now you can start interacting with App Remote
                             Constants.sSpotifyAppRemote = spotifyAppRemote
+
 //                          connected()
                         }
 

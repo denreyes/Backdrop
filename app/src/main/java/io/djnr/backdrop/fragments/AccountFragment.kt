@@ -18,6 +18,13 @@ class AccountFragment : Fragment() {
         v.tvToolbarTitle.typeface = Typeface.createFromAsset(activity!!.assets, "montserrat_bold.ttf")
         v.tvToolbarTitle.text = "Account"
 
+        v.webView.loadDataWithBaseURL("file:///android_asset/", "<html style=\"" +
+                "    background-image: url('rainy-jeff.gif');\n" +
+                "    background-repeat: no-repeat;\n" +
+                "    background-attachment: fixed;\n" +
+                "    background-position: 0% 20%;\n" +
+                "    background-size: 107%;;\"></html>", "text/html", "utf-8", "")
+
         return v
     }
 }

@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
                                         Log.i("NIGGUH", "i: " + item.title)
                                         Constants.sSpotifyAppRemote?.imagesApi?.getImage(item.imageUri)?.setResultCallback { bitmap ->
                                             Log.i("NIGGUH", "image added " + bitmap.toString())
-                                            mAdapter?.add(Playlist(item, bitmap))
+                                            mAdapter?.add(Playlist(childListItems.items[i], bitmap))
                                         }?.setErrorCallback { error ->
                                             Log.i("NIGGUH", "image error $error")
                                         }

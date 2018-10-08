@@ -56,6 +56,7 @@ class MainActivity : BaseActivity() {
         adapter.addFragment(AmbienceFragment(), "Ambience")
         adapter.addFragment(AccountFragment(), "Account")
         adapter.notifyDataSetChanged()
+        vpMain.offscreenPageLimit = adapter.count
 
         tlMain.setupWithViewPager(vpMain)
         for (i in 0 until tlMain.tabCount) {
