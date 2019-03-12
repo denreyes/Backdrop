@@ -5,6 +5,7 @@
     <color name="colorPrimaryLight">#6d6d6d</color>
     <color name="colorAccent">#52aed0</color>
 
+    <color name="translucent_white">#AAFFFFFF</color>
+
     <color name="fab_dark">@color/colorPrimaryDark</color>
-    <color name="spotify_green">#6AE368</color>
 </resources>

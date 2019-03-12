@@ -4,20 +4,14 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.content.ContextCompat
-import android.util.Log
-import com.spotify.android.appremote.api.ContentApi
-import com.spotify.protocol.types.ListItem
 import io.djnr.backdrop.R
 import io.djnr.backdrop.adapters.MainPagerAdapter
 import io.djnr.backdrop.fragments.AccountFragment
 import io.djnr.backdrop.fragments.AmbienceFragment
 import io.djnr.backdrop.fragments.HomeFragment
 import io.djnr.backdrop.fragments.SearchFragment
-import io.djnr.backdrop.models.Playlist
-import io.djnr.backdrop.utils.Constants
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
-import android.R.attr.data
 
 
 class MainActivity : BaseActivity() {
@@ -35,18 +29,11 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
 
-        Constants.sSpotifyAppRemote?.userApi
-                ?.capabilities
-                ?.setResultCallback { capabilities ->
-                    Log.i("NIGGUH", String.format("Can play on demand: %s", capabilities.canPlayOnDemand))
-                }
-
-//        Constants.sSpotifyAppRemote?.contentApi?.getRecommendedContentItems(ContentApi.ContentType.DEFAULT)?.setResultCallback { listItems ->
-//            Log.i("NIGGUH", "size: " + listItems.items.size)
-//            listItems.items.forEach { item ->
-//                Log.i("NIGGUH", "item: " + Gson().toJson(item))
-//            }
-//        }
+//        Constants.sSpotifyAppRemote?.userApi
+//                ?.capabilities
+//                ?.setResultCallback { capabilities ->
+//                    Log.i("NIGGUH", String.format("Can play on demand: %s", capabilities.canPlayOnDemand))
+//                }
 
 
         var adapter = MainPagerAdapter(supportFragmentManager)

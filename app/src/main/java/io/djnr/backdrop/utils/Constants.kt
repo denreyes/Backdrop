@@ -1,7 +1,5 @@
 package io.djnr.backdrop.utils
 
-import com.spotify.android.appremote.api.SpotifyAppRemote
-
 class Constants {
 
     companion object {
@@ -14,6 +12,5 @@ class Constants {
         val ARR_AMBIENCE = arrayOf(AMBIENCE_RAIN, AMBIENCE_CAFE, AMBIENCE_STORM,
                 AMBIENCE_BONFIRE, AMBIENCE_WAVES, AMBIENCE_WOODS)
 
-        var sSpotifyAppRemote : SpotifyAppRemote? = null
     }
 }

@@ -32,8 +32,8 @@ class PlaylistAdapter(var list: ArrayList<Playlist>) : RecyclerView.Adapter<Play
     override fun onBindViewHolder(holder: PlaylistHolder, position: Int) {
         var item = list[position]
         holder.ivImage?.setImageBitmap(item.bitmap)
-        holder.tvTitle?.text = item.item?.title
-        holder.tvSubtitle?.text = item.item?.subtitle
+//        holder.tvTitle?.text = item.item?.title
+//        holder.tvSubtitle?.text = item.item?.subtitle
 
         holder.tvTitle?.typeface = Typeface.createFromAsset(holder.itemView.context!!.assets, "montserrat_bold.ttf")
 
@@ -47,11 +47,11 @@ class PlaylistAdapter(var list: ArrayList<Playlist>) : RecyclerView.Adapter<Play
         }
 
         holder.itemView.setOnClickListener {
-            try {
-                Constants.sSpotifyAppRemote?.playerApi?.play(item?.item?.uri)?.setResultCallback { empty -> Log.i("NIGGUH", "Content item played!") }
-            } catch (e: IllegalArgumentException) {
-                Log.i("NIGGUH", "error: $e")
-            }
+            //            try {
+//                Constants.sSpotifyAppRemote?.playerApi?.play(item?.item?.uri)?.setResultCallback { empty -> Log.i("NIGGUH", "Content item played!") }
+//            } catch (e: IllegalArgumentException) {
+//                Log.i("NIGGUH", "error: $e")
+//            }
         }
     }
 

@@ -42,7 +42,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.github.bumptech.glide:glide:4.7.1'
 
-    implementation project(':spotify-app-remote-release-0.4.0')
     implementation 'com.google.code.gson:gson:2.8.2'
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
