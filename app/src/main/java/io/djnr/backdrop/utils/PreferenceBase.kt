@@ -16,18 +16,34 @@ abstract class PreferenceBase(private val mContext: Context) {
     }
 
     protected fun setPreference(key: String, value: Int) {
-        mPreferences!!.edit().putInt(PREF_KEY, value).apply()
+        mPreferences!!.edit().putInt(key, value).apply()
     }
 
     protected fun setPreference(key: String, value: Boolean) {
-        mPreferences!!.edit().putBoolean(PREF_KEY, value).apply()
+        mPreferences!!.edit().putBoolean(key, value).apply()
+    }
+
+    protected fun setPreference(key: String, value: Float) {
+        mPreferences!!.edit().putFloat(key, value).apply()
     }
 
     protected fun getStringPreference(key: String) : String {
-        return mPreferences!!.getString(PREF_KEY, "")
+        return mPreferences!!.getString(key, "")
     }
 
     protected fun getIntPreference(key: String) : Int {
-        return mPreferences!!.getInt(PREF_KEY, -1)
+        return mPreferences!!.getInt(key, -1)
+    }
+
+    protected fun getIntPreference(key: String, default: Int) : Int {
+        return mPreferences!!.getInt(key, default)
+    }
+
+    protected fun getFloatPreference(key: String) : Float {
+        return mPreferences!!.getFloat(key, (-1).toFloat())
+    }
+
+    protected fun getFloatPreference(key: String, default: Float) : Float {
+        return mPreferences!!.getFloat(key, default)
     }
 }

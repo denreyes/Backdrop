@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:background="@drawable/dialog_rounded_bg"
+	android:orientation="vertical"
+	android:padding="16dp">
+
+	<TextView
+		android:id="@+id/tvVolume"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_marginBottom="2dp"
+		android:text="Volume"
+		android:textColor="@color/colorPrimaryLight"
+		android:textSize="11sp" />
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginEnd="24dp"
+			android:orientation="vertical">
+
+			<io.djnr.backdrop.widgets.VerticalSeekbar
+				android:id="@+id/sbMusicVolume"
+				android:layout_width="wrap_content"
+				android:layout_height="200dp"
+				android:layout_gravity="center" />
+
+			<ImageView
+				android:layout_width="20dp"
+				android:layout_height="20dp"
+				android:layout_gravity="center"
+				android:layout_marginTop="4dp"
+				android:layout_marginBottom="6dp"
+				android:src="@drawable/ic_note"
+				android:tint="@color/colorPrimaryLight" />
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@drawable/dialog_rounded_bg"
+			android:orientation="vertical">
+
+			<io.djnr.backdrop.widgets.VerticalSeekbar
+				android:id="@+id/sbAmbienceVolume"
+				android:layout_width="wrap_content"
+				android:layout_height="200dp"
+				android:layout_gravity="center" />
+
+			<ImageView
+				android:layout_width="20dp"
+				android:layout_height="20dp"
+				android:layout_gravity="center"
+				android:layout_marginTop="4dp"
+				android:layout_marginBottom="6dp"
+				android:src="@drawable/ic_drop"
+				android:tint="@color/colorPrimaryLight" />
+
+		</LinearLayout>
+
+	</LinearLayout>
+</LinearLayout>

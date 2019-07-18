@@ -12,5 +12,6 @@ class Constants {
         val ARR_AMBIENCE = arrayOf(AMBIENCE_RAIN, AMBIENCE_CAFE, AMBIENCE_STORM,
                 AMBIENCE_BONFIRE, AMBIENCE_WAVES, AMBIENCE_WOODS)
 
+        val VOLUME_MAX = 100
     }
 }
